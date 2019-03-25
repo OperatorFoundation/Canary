@@ -47,12 +47,14 @@ class ShapeshifterController
                 return
             }
             
+            print("Found shapeshifter-dispatcher here: \(shShDispatcherURL.path)")
+            
             launchTask!.launchPath = shShDispatcherURL.path
             launchTask!.arguments = arguments
             print("\nlaunchShapeshifterClient arguments:\n\(arguments)\n")
             launchTask!.launch()
             
-            print("\nShapeshifter Dispathcer is running = \(launchTask!.isRunning)")
+            print("\nShapeshifter Dispatcher is running = \(launchTask!.isRunning)")
         }
         else
         {
@@ -99,6 +101,8 @@ class ShapeshifterController
                 print("\nUnable to find IP File")
                 return nil
             }
+            
+            print("\nFound the ip file at \(ipURL.path)")
             
             do
             {
@@ -192,7 +196,9 @@ class ShapeshifterController
                 processArguments.append("-ptversion")
                 processArguments.append("2")
                 
-                //TODO Listen on a port for OpenVPN Client
+                //Port for shapeshifter client to listen on
+                processArguments.append("-proxylistenaddr")
+                processArguments.append("127.0.0.1:1234")
                 
                 return processArguments
             }
@@ -230,9 +236,12 @@ class ShapeshifterController
         guard let optionsURL = Bundle.main.url(forResource: "obfs4.json", withExtension: nil)
             else
         {
-            print("\nUnable to find IP File")
+            print("\nUnable to find obfs4 File")
             return nil
         }
+        
+        print("\nFound the obfs4 file at \(optionsURL.path)")
+        
         do
         {
             let obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: optionsURL.path, isDirectory: false), options: .uncached)
