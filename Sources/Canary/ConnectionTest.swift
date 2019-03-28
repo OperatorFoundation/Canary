@@ -10,7 +10,6 @@ import Foundation
 class ConnectionTest
 {
     let testWebAddress = "http://127.0.0.1:1234/"
-    //let testWebAddress = "https://www.google.com/"
     
     let canaryString = "Yeah!\n"
     
@@ -74,11 +73,6 @@ class ConnectionTest
             {
                 print("\nUnable to connect to test web address.")
             }
-            
-            //            if let urlResponse = taskResponse
-            //            {
-            //                print("Received a url response from our test web address: \(urlResponse)")
-            //            }
             
             if let error = taskError
             {

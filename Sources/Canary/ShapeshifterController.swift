@@ -13,15 +13,16 @@ class ShapeshifterController
     private var launchTask: Process?
     let ptServerPort = "1234"
     let shsocksServerPort = "2345"
-    let serverIPFilePath = "Resources/serverIP"
+    let serverIPFileName = "serverIP"
+    let shShifterResource = "shapeshifter-dispatcher"
     let shSocksServerIPFilePath = "Resources/shSocksServerIP"
-    let obfs4OptionsPath = "Resources/obfs4.json"
+    let obfs4FileName = "obfs4.json"
     let meekOptionsPath = "Resources/meek.json"
-    let shSocksOptionsPath = "Resources/shadowsocks.json"
+    let shSocksFileName = "shadowsocks.json"
     let stateDirectoryPath = "TransportState"
     static let sharedInstance = ShapeshifterController()
     
-    func launchShapeshifterClient(forTransport transport: String)
+    func launchShapeshifterClient(forTransport transport: String) -> Bool
     {
         if let arguments = shapeshifterArguments(forTransport: transport)
         {
@@ -40,25 +41,25 @@ class ShapeshifterController
             }
             
             //The launchPath is the path to the executable to run.
-            guard let shShDispatcherURL = Bundle.main.url(forResource: "shapeshifter-dispatcher", withExtension: nil)
+            guard let shShDispatcherURL = Bundle.main.url(forResource: shShifterResource, withExtension: nil)
             else
             {
                 print("\nFailed to find the path for shapeshifter-dispatcher")
-                return
+                return false
             }
-            
-            print("Found shapeshifter-dispatcher here: \(shShDispatcherURL.path)")
             
             launchTask!.launchPath = shShDispatcherURL.path
             launchTask!.arguments = arguments
             print("\nlaunchShapeshifterClient arguments:\n\(arguments)\n")
             launchTask!.launch()
             
-            print("\nShapeshifter Dispatcher is running = \(launchTask!.isRunning)")
+            return launchTask!.isRunning
         }
         else
         {
             print("\nFailed to launch Shapeshifter Client.\nCould not create/find the transport state directory path, which is required.")
+            
+            return false
         }
     }
     
@@ -81,7 +82,7 @@ class ShapeshifterController
         //The launchPath is the path to the executable to run.
         killTask.launchPath = "/usr/bin/killall"
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
-        killTask.arguments = ["shapeshifter-dispatcher"]
+        killTask.arguments = [shShifterResource]
         
         //Go ahead and launch the process/task
         killTask.launch()
@@ -95,7 +96,7 @@ class ShapeshifterController
         {
             var options: String?
 
-            guard let ipURL = Bundle.main.url(forResource: "serverIP", withExtension: nil)
+            guard let ipURL = Bundle.main.url(forResource: serverIPFileName, withExtension: nil)
             else
             {
                 print("\nUnable to find IP File")
@@ -137,18 +138,9 @@ class ShapeshifterController
                 {
                     options = getShadowSocksOptions()
                     
-                    //If shSocks use special port and IP
-                    do
-                    {
-                        let shSocksServerIP = try String(contentsOfFile: shSocksServerIPFilePath, encoding: String.Encoding.ascii).replacingOccurrences(of: "\n", with: "")
-                        processArguments.append("-target")
-                        processArguments.append("\(shSocksServerIP):\(shsocksServerPort)")
-                    }
-                    catch
-                    {
-                        print("Could not run shadow socks test: Could not find server IP.")
-                        return nil
-                    }
+                    //Use Shadowsocks port
+                    processArguments.append("-target")
+                    processArguments.append("\(serverIP):\(shsocksServerPort)")
                 }
                 
                 if options == nil
@@ -233,14 +225,12 @@ class ShapeshifterController
     
     func getObfs4Options() -> String?
     {
-        guard let optionsURL = Bundle.main.url(forResource: "obfs4.json", withExtension: nil)
+        guard let optionsURL = Bundle.main.url(forResource: obfs4FileName, withExtension: nil)
             else
         {
             print("\nUnable to find obfs4 File")
             return nil
         }
-        
-        print("\nFound the obfs4 file at \(optionsURL.path)")
         
         do
         {
@@ -258,9 +248,16 @@ class ShapeshifterController
     
     func getShadowSocksOptions() -> String?
     {
+        guard let optionsURL = Bundle.main.url(forResource: shSocksFileName, withExtension: nil)
+            else
+        {
+            print("\nUnable to find shadowsocks File")
+            return nil
+        }
+        
         do
         {
-            let shSocksOptionsData = try Data(contentsOf: URL(fileURLWithPath: shSocksOptionsPath, isDirectory: false) , options: .uncached)
+            let shSocksOptionsData = try Data(contentsOf: optionsURL, options: .uncached)
             let rawOptions = String(data: shSocksOptionsData, encoding: String.Encoding.ascii)
             let shSocksOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")
             return shSocksOptions

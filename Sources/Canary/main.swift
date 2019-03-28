@@ -13,13 +13,22 @@ AdversaryLabController.sharedInstance.stopAdversaryLab()
 //Now we are running the things. Hooray!
 //AdversaryLabController.sharedInstance.launchAdversaryLabServer()
 
+// obfs4
 if let obfs4TestResult = TestController.sharedInstance.runTest(forTransport: obfs4)
 {
-    print("Test result for obfs4: \(obfs4TestResult)")
+    print("\nTest result for obfs4:\n\(obfs4TestResult)")
+    let _ = obfs4TestResult.saveToFile()
 }
 else
 {
     print("Received a nil result when testing obfs4")
+}
+
+// ShadowSocks
+if let shadowSocksTestResult = TestController.sharedInstance.runTest(forTransport: shadowsocks)
+{
+    print("\nTest result for shadowsocks:\n\(shadowSocksTestResult)")
+    let _ = shadowSocksTestResult.saveToFile()
 }
 
 //AdversaryLabController.sharedInstance.stopAdversaryLabServer()
