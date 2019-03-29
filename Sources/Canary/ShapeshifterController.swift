@@ -70,9 +70,10 @@ class ShapeshifterController
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
             launchTask?.terminate()
-            #endif
-
             launchTask?.waitUntilExit()
+            #else
+            killAllShShifter()
+            #endif
             launchTask = nil
         }
     }
