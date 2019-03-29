@@ -8,7 +8,7 @@ let allTransports = [obfs4, meek, shadowsocks]
 
 //Stop any possible processes that may be left over from a previous run
 //AdversaryLabController.sharedInstance.stopAdversaryLabServer()
-AdversaryLabController.sharedInstance.stopAdversaryLab()
+//AdversaryLabController.sharedInstance.stopAdversaryLab()
 
 //Now we are running the things. Hooray!
 //AdversaryLabController.sharedInstance.launchAdversaryLabServer()
@@ -32,8 +32,7 @@ if let shadowSocksTestResult = TestController.sharedInstance.runTest(forTranspor
 }
 
 //AdversaryLabController.sharedInstance.stopAdversaryLabServer()
-
-//TODO: Write a Report
+ShapeshifterController.sharedInstance.killAllShShifter()
 
 signal(SIGINT)
 {

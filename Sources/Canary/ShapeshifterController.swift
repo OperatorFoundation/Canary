@@ -67,7 +67,11 @@ class ShapeshifterController
     {
         if launchTask != nil
         {
+            // FIXME: terminate() is not yet implemented for Linux
+            #if os(macOS)
             launchTask?.terminate()
+            #endif
+
             launchTask?.waitUntilExit()
             launchTask = nil
         }
