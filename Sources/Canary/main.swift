@@ -16,8 +16,7 @@ let allTransports = [obfs4, meek, shadowsocks]
 // obfs4
 if let obfs4TestResult = TestController.sharedInstance.runTest(forTransport: obfs4)
 {
-    print("\nTest result for obfs4:\n\(obfs4TestResult)")
-    let _ = obfs4TestResult.saveToFile()
+    print("\nTest result for obfs4:\n\(obfs4TestResult)\n")
 }
 else
 {
@@ -28,7 +27,6 @@ else
 if let shadowSocksTestResult = TestController.sharedInstance.runTest(forTransport: shadowsocks)
 {
     print("\nTest result for shadowsocks:\n\(shadowSocksTestResult)")
-    let _ = shadowSocksTestResult.saveToFile()
 }
 
 //AdversaryLabController.sharedInstance.stopAdversaryLabServer()

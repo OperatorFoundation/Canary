@@ -66,7 +66,7 @@ class ConnectionTest
                         print("Here's what we got back instead: \(observedString)")
                     }
                     
-                    success = true
+                    success = false
                 }
             }
             else

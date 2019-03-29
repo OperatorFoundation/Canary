@@ -15,7 +15,7 @@ class ShapeshifterController
     let shsocksServerPort = "2345"
     let serverIPFileName = "serverIP"
     let shShifterResource = "shapeshifter-dispatcher"
-    let shSocksServerIPFilePath = "Resources/shSocksServerIP"
+    //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
     let obfs4FileName = "obfs4.json"
     let meekOptionsPath = "Resources/meek.json"
     let shSocksFileName = "shadowsocks.json"
@@ -26,7 +26,6 @@ class ShapeshifterController
     {
         if let arguments = shapeshifterArguments(forTransport: transport)
         {
-            //print("👀 LaunchShapeShifterDispatcher Args:\n \(arguments))")
             print("\n👀 LaunchShapeShifterDispatcher")
             
             if launchTask == nil
@@ -50,7 +49,6 @@ class ShapeshifterController
             
             launchTask!.launchPath = shShDispatcherURL.path
             launchTask!.arguments = arguments
-            print("\nlaunchShapeshifterClient arguments:\n\(arguments)\n")
             launchTask!.launch()
             
             return launchTask!.isRunning
@@ -107,8 +105,6 @@ class ShapeshifterController
                 print("\nUnable to find IP File")
                 return nil
             }
-            
-            print("\nFound the ip file at \(ipURL.path)")
             
             do
             {
