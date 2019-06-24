@@ -46,37 +46,5 @@ class AdversaryLabController
         
         killAll(processToKill: "AdversaryLabClient")
     }
-    
-    func launchAdversaryLabServer()
-    {
-        if serverLaunchTask == nil
-        {
-            //Creates a new Process and assigns it to the launchTask property.
-            serverLaunchTask = Process()
-        }
-        else
-        {
-            serverLaunchTask!.terminate()
-            serverLaunchTask = Process()
-        }
-        
-        //The launchPath is the path to the executable to run.
-        serverLaunchTask!.launchPath = "Resources/AdversaryLab"
-        serverLaunchTask!.launch()
-        print("Launched Adversary Lab Server. 👀")
-    }
-    
-    func stopAdversaryLabServer()
-    {
-        if serverLaunchTask != nil
-        {
-            serverLaunchTask?.terminate()
-            serverLaunchTask?.waitUntilExit()
-            serverLaunchTask = nil
-            print("Stopped Adversary Lab Server. 👀")
-        }
-        
-        killAll(processToKill: "AdversaryLab")
-    }
 
 }

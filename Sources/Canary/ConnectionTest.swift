@@ -10,7 +10,6 @@ import Foundation
 class ConnectionTest
 {
     let testWebAddress = "http://127.0.0.1:1234/"
-    
     let canaryString = "Yeah!\n"
     
     func run() -> Bool
