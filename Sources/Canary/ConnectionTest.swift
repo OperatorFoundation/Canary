@@ -14,6 +14,8 @@ class ConnectionTest
     
     func run() -> Bool
     {
+        print("\n📣 Running connection test...")
+        
         var success = false
         
         //Control Data

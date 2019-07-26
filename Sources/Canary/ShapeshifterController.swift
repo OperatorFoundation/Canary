@@ -14,7 +14,7 @@ class ShapeshifterController
     let ptServerPort = "1234"
     let shsocksServerPort = "2345"
     let serverIPFileName = "serverIP"
-    let shShifterResource = "shapeshifter-dispatcher"
+    let shShifterResourcePath = "shapeshifter-dispatcher"
     //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
     let obfs4FileName = "obfs4.json"
     let meekOptionsPath = "Resources/meek.json"
@@ -31,23 +31,27 @@ class ShapeshifterController
             if launchTask == nil
             {
                 //Creates a new Process and assigns it to the launchTask property.
+                print("\nCreating a new launch process.")
                 launchTask = Process()
+                
             }
             else
             {
+                print("\nLaunch process already running. Terminating current process and creating a new one.")
                 launchTask!.terminate()
                 launchTask = Process()
             }
             
             //The launchPath is the path to the executable to run.
-            guard let shShDispatcherURL = Bundle.main.url(forResource: shShifterResource, withExtension: nil)
+            guard FileManager.default.fileExists(atPath: shShifterResourcePath)
             else
             {
                 print("\nFailed to find the path for shapeshifter-dispatcher")
                 return false
             }
             
-            launchTask!.launchPath = shShDispatcherURL.path
+            print("\nFound shapeshifter-dispatcher")
+            launchTask!.launchPath = shShifterResourcePath
             launchTask!.arguments = arguments
             launchTask!.launch()
             
@@ -85,7 +89,7 @@ class ShapeshifterController
         //The launchPath is the path to the executable to run.
         killTask.launchPath = "/usr/bin/killall"
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
-        killTask.arguments = [shShifterResource]
+        killTask.arguments = [shShifterResourcePath]
         
         //Go ahead and launch the process/task
         killTask.launch()

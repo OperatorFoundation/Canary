@@ -14,6 +14,8 @@ class AdversaryLabController
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
     private var serverLaunchTask: Process?
+    private var adLabClientPath = "AdversaryLabClient"
+    private var adLabClientProcessName = "AdversaryLabClient"
     
     func launchAdversaryLab(forTransport transport: String)
     {
@@ -30,7 +32,7 @@ class AdversaryLabController
         }
         
         //The launchPath is the path to the executable to run.
-        clientLaunchTask!.launchPath = "Resources/AdversaryLabClient"
+        clientLaunchTask!.launchPath = adLabClientPath
         clientLaunchTask!.arguments = arguments
         clientLaunchTask!.launch()
     }
@@ -44,7 +46,7 @@ class AdversaryLabController
             clientLaunchTask = nil
         }
         
-        killAll(processToKill: "AdversaryLabClient")
+        killAll(processToKill: adLabClientProcessName)
     }
 
 }

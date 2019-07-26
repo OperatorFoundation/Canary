@@ -31,12 +31,14 @@ class TestController
             guard ShapeshifterController.sharedInstance.launchShapeshifterClient(forTransport: transport) == true
             else
             {
+                print("\n❗️ Failed to launch SahpeshifterClient for \(transport)")
                 return nil
             }
             
-            sleep(10)
+            //sleep(10)
             
             ///Connection Test
+            print("\nInitializing connection test.")
             let connectionTest = ConnectionTest()
             let success = connectionTest.run()
             
@@ -85,7 +87,6 @@ class TestController
             
             print("Saved test results to file: \(resultFilePath)")
             return true
-            
         }
         else
         {

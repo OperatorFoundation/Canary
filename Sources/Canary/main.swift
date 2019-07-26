@@ -10,18 +10,36 @@ func doTheThing(forTransports transports: [String])
 {
     for transport in transports
     {
-        AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
-        
-        if let transportTestResult = TestController.sharedInstance.runTest(forTransport: transport)
+        RedisServerController.sharedInstance.launchRedisServer
         {
-            print("\nTest result for \(transport):\n\(transportTestResult)\n")
+            (result) in
+            
+            switch result
+            {
+            case .corruptRedisOnPort(pid: let pid):
+                print("\n🛑  Redis is already running on our port. PID: \(pid)")
+            case .failure(let failure):
+                print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
+            case .otherProcessOnPort(name: let processName):
+                print("\n🛑  Another process \(processName) is using our port.")
+            case .okay(_):
+                print("\n✅  Redis successfully launched.")
+                
+                AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+                
+                if let transportTestResult = TestController.sharedInstance.runTest(forTransport: transport)
+                {
+                    print("\nTest result for \(transport):\n\(transportTestResult)\n")
+                }
+                else
+                {
+                    print("Received a nil result when testing \(transport)")
+                }
+                
+                AdversaryLabController.sharedInstance.stopAdversaryLab()
+                RedisServerController.sharedInstance.shutdownRedisServer()
+            }
         }
-        else
-        {
-            print("Received a nil result when testing \(transport)")
-        }
-        
-        AdversaryLabController.sharedInstance.stopAdversaryLab()
     }
 }
 
