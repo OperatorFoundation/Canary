@@ -8,38 +8,60 @@ let allTransports = [obfs4, meek, shadowsocks]
 
 func doTheThing(forTransports transports: [String])
 {
+    guard CommandLine.argc > 1
+    else
+    {
+        print("\nServer IP:port are required for testing")
+        return
+    }
+    
+    let ipString = CommandLine.arguments[1]
+
     for transport in transports
     {
-        RedisServerController.sharedInstance.launchRedisServer
+        let queue = OperationQueue()
+        let op = BlockOperation(block:
         {
-            (result) in
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
             
-            switch result
+            RedisServerController.sharedInstance.launchRedisServer
             {
-            case .corruptRedisOnPort(pid: let pid):
-                print("\n🛑  Redis is already running on our port. PID: \(pid)")
-            case .failure(let failure):
-                print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
-            case .otherProcessOnPort(name: let processName):
-                print("\n🛑  Another process \(processName) is using our port.")
-            case .okay(_):
-                print("\n✅  Redis successfully launched.")
+                (result) in
                 
-                AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
-                
-                if let transportTestResult = TestController.sharedInstance.runTest(forTransport: transport)
+                switch result
                 {
-                    print("\nTest result for \(transport):\n\(transportTestResult)\n")
-                }
-                else
-                {
-                    print("Received a nil result when testing \(transport)")
+                case .corruptRedisOnPort(pid: let pid):
+                    print("\n🛑  Redis is already running on our port. PID: \(pid)")
+                case .failure(let failure):
+                    print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
+                case .otherProcessOnPort(name: let processName):
+                    print("\n🛑  Another process \(processName) is using our port.")
+                case .okay(_):
+                    print("\n✅  Redis successfully launched.")
+                    
+                    AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+                    
+                    if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
+                    {
+                        print("\nTest result for \(transport):\n\(transportTestResult)\n")
+                    }
+                    else
+                    {
+                        print("Received a nil result when testing \(transport)")
+                    }
+                    
+                    AdversaryLabController.sharedInstance.stopAdversaryLab()
+                    RedisServerController.sharedInstance.shutdownRedisServer()
                 }
                 
-                AdversaryLabController.sharedInstance.stopAdversaryLab()
-                RedisServerController.sharedInstance.shutdownRedisServer()
+                dispatchGroup.leave()
             }
-        }
+            
+            dispatchGroup.wait()
+        })
+        
+        queue.addOperations([op], waitUntilFinished: true)
     }
 }
 

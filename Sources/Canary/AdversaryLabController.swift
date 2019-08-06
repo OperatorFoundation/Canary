@@ -35,6 +35,8 @@ class AdversaryLabController
         clientLaunchTask!.launchPath = adLabClientPath
         clientLaunchTask!.arguments = arguments
         clientLaunchTask!.launch()
+        
+        print("\n⏺  Launched AdLab at \(adLabClientPath), with arguments: \(arguments)")
     }
     
     func stopAdversaryLab()

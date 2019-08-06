@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Auburn
 
 class RedisServerController
 {
@@ -298,26 +299,108 @@ class RedisServerController
         processQueue.async
         {
             print("🚀🚀🚀🚀🚀🚀🚀")
-            self.redisProcess = Process()
-            self.redisProcess.launchPath = path
+            
+            if self.redisProcess == nil
+            {
+                //Creates a new Process and assigns it to the launchTask property.
+                print("\nCreating a new launch process.")
+                self.redisProcess = Process()
+                
+            }
+            else
+            {
+                print("\nLaunch process already running. Terminating current process and creating a new one.")
+                self.redisProcess!.terminate()
+                self.redisProcess = Process()
+            }
+            
+            self.redisProcess!.launchPath = path
             
             if let arguments = arguments
             {
-                self.redisProcess.arguments = arguments
+                self.redisProcess!.arguments = arguments
             }
             
-            self.redisProcess.terminationHandler =
+            self.redisProcess!.terminationHandler =
             {
                 (task) in
                 
+                print("\nRedis Script Has Terminated.")
+                
                 //Main Thread Stuff Here If Needed
                 DispatchQueue.main.async(execute:
-                    {
-                        print("Redis Script Has Terminated.")
-                        completion(true)
+                {
+                    print("\nRedis Script Has Terminated.")
+                    completion(true)
                 })
             }
-            self.redisProcess.launch()
+            
+            self.redisProcess!.launch()
+        }
+    }
+    
+    // Redis considers switching databases to be switching between numbered partitions within the same db file.
+    // We will be switching instead to a database represented by a completely different file.
+    func switchDatabaseFile(withFile fileURL: URL, completion:@escaping (_ completion:Bool) -> Void)
+    {
+        let fileManager = FileManager.default
+        let currentDirectory = fileManager.currentDirectoryPath
+        let newDBName = fileURL.lastPathComponent
+        let destinationURL = URL(fileURLWithPath: currentDirectory).appendingPathComponent(newDBName)
+        
+        // Rewrite redis.conf to use the dbfilename for the name of the new .rdb file
+        // Setting the dbFilename calls config rewrite with the new name in Redis
+        Auburn.dbfilename = newDBName
+        //        NotificationCenter.default.post(name: .updateDBFilename, object: nil)
+        
+        // Issue a SHUTDOWN command to the Redis server
+        Auburn.shutdownRedis()
+        Auburn.restartRedis()
+        
+        // Copy the .rdb file into the Redis working directory, as specified in redis.conf (defaults to ./, which is the directory the Redis server was run from)
+        /*
+         # The working directory.
+         #
+         # The DB will be written inside this directory, with the filename specified
+         # above using the 'dbfilename' configuration directive.
+         #
+         # The Append Only File will also be created inside this directory.
+         #
+         # Note that you must specify a directory here, not a file name.
+         dir ./
+         */
+        
+        do
+        {
+            if fileManager.fileExists(atPath: destinationURL.path)
+            {
+                try fileManager.removeItem(at: destinationURL)
+            }
+            
+            try fileManager.copyItem(at: fileURL, to: destinationURL)
+            
+            print("\n📂  Copied file from: \n\(fileURL)\nto:\n\(destinationURL)\n")
+            // Start Redis
+            launchRedisServer
+                {
+                    (success) in
+                    
+                    completion(true)
+            }
+        }
+        catch let copyError
+        {
+            print("\nError copying redis DB file from \(fileURL) to \(currentDirectory):\n\(copyError)")
+            // Start Redis
+            launchRedisServer
+                {
+                    (success) in
+                    
+                    completion(true)
+            }
+            
+            // Reset dbfilename to the default as we failed to copy the new file over
+            Auburn.dbfilename = "dump.rdb"
         }
     }
     

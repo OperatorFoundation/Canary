@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Auburn",
+        "repositoryURL": "https://github.com/OperatorFoundation/Auburn.git",
+        "state": {
+          "branch": null,
+          "revision": "48856a02650add508c2b0e40eb9bae8fdd86ccd7",
+          "version": "0.2.1"
+        }
+      },
+      {
+        "package": "Datable",
+        "repositoryURL": "https://github.com/OperatorFoundation/Datable.git",
+        "state": {
+          "branch": null,
+          "revision": "eccbedd3c89007691034b951a1fc0780e54701ea",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "RedShot",
+        "repositoryURL": "https://github.com/OperatorFoundation/Redshot.git",
+        "state": {
+          "branch": null,
+          "revision": "e80546f6552c712fd1c643b1b757aef5669a7113",
+          "version": "0.4.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

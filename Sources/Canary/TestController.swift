@@ -13,50 +13,34 @@ class TestController
     static let sharedInstance = TestController()
     let resultsFileName = "CanaryResults.csv"
     
-    func runTest(forTransport transport: String) -> TestResult?
+    func runTest(withIP serverIP: String, forTransport transport: String) -> TestResult?
     {
         var result: TestResult?
-        
-        guard let ipURL = Bundle.main.url(forResource: "serverIP", withExtension: nil)
-            else
+
+        ///ShapeShifter
+        guard ShapeshifterController.sharedInstance.launchShapeshifterClient(serverIP: serverIP, transport: transport) == true
+        else
         {
-            print("\nUnable to find IP File")
+            print("\n❗️ Failed to launch SahpeshifterClient for \(transport)")
             return nil
         }
-        do
-        {
-            let serverIP = try String(contentsOfFile: ipURL.path, encoding: String.Encoding.ascii).replacingOccurrences(of: "\n", with: "")
-            
-            ///ShapeShifter
-            guard ShapeshifterController.sharedInstance.launchShapeshifterClient(forTransport: transport) == true
-            else
-            {
-                print("\n❗️ Failed to launch SahpeshifterClient for \(transport)")
-                return nil
-            }
-            
-            //sleep(10)
-            
-            ///Connection Test
-            print("\nInitializing connection test.")
-            let connectionTest = ConnectionTest()
-            let success = connectionTest.run()
-            
-            result = TestResult.init(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
-            
-            // Save this result to a file
-            let _ = save(result: result!)
-            
-            ///Cleanup
-            print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
-            ShapeshifterController.sharedInstance.stopShapeshifterClient()
-        }
-        catch let error
-        {
-            print("Failed to run test.")
-            print("Error reading serverIP file: \(error)")
-        }
-
+        
+        //sleep(10)
+        
+        ///Connection Test
+        print("\nInitializing connection test.")
+        let connectionTest = ConnectionTest()
+        let success = connectionTest.run()
+        
+        result = TestResult.init(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
+        
+        // Save this result to a file
+        let _ = save(result: result!)
+        
+        ///Cleanup
+        print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
+        ShapeshifterController.sharedInstance.stopShapeshifterClient()
+        
         sleep(5)
         return result
     }
