@@ -3,7 +3,7 @@
 /Packages
 /*.xcodeproj
 
-/Sources/Resources
+/Sources/Resources/Configs
 serverIP
 shSocksServerIP
 ca.crt
