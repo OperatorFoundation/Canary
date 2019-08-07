@@ -11,10 +11,15 @@ import Foundation
 
 class AdversaryLabController
 {
+    #if os(macOS)
+    private var adLabClientPath = "AdversaryLabClient"
+    #elseif os(Linux)
+    private var adLabClientPath = "~/Canary/Sources/Resources/AdversaryLabClient"
+    #endif
+    
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
     private var serverLaunchTask: Process?
-    private var adLabClientPath = "AdversaryLabClient"
     private var adLabClientProcessName = "AdversaryLabClient"
     
     func launchAdversaryLab(forTransport transport: String)

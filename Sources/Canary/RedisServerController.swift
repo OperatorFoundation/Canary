@@ -18,18 +18,21 @@ class RedisServerController
     let redisServerPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-server"
     let shutdownRedisServerScriptPath = "ShutdownRedisServerScriptMac.sh"
     let launchRedisServerScriptPath = "LaunchRedisServerScriptMac.sh"
-    #elseif os(Linux)
-    // TODO: Where is Redis installed on ubuntu?
-    let redisCliPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-cli"
-    let redisServerPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-server"
-    let shutdownRedisServerScriptPath = "ShutdownRedisServerScriptUbuntu.sh"
-    let launchRedisServerScriptPath = "LaunchRedisServerScriptUbuntu.sh"
-    #endif
-
     let checkRedisServerScriptPath = "CheckRedisServerScript.sh"
     let killRedisServerScriptPath = "KillRedisServerScript.sh"
     let checkRedisServerPortScriptPath = "CheckRedisServerPortScript.sh"
     let redisConfigPath = "redis.conf"
+    #elseif os(Linux)
+    // TODO: Where is Redis installed on ubuntu?
+    let redisCliPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-cli"
+    let redisServerPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-server"
+    let shutdownRedisServerScriptPath = "~/Canary/Sources/Resources/ShutdownRedisServerScriptUbuntu.sh"
+    let launchRedisServerScriptPath = "~/Canary/Sources/Resources/LaunchRedisServerScriptUbuntu.sh"
+    let checkRedisServerScriptPath = "~/Canary/Sources/Resources/CheckRedisServerScript.sh"
+    let killRedisServerScriptPath = "~/Canary/Sources/Resources/KillRedisServerScript.sh"
+    let checkRedisServerPortScriptPath = "~/Canary/Sources/Resources/CheckRedisServerPortScript.sh"
+    let redisConfigPath = "~/Canary/Sources/Resources/redis.conf"
+    #endif
     
     var redisProcess:Process!
     
