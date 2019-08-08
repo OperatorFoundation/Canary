@@ -24,8 +24,8 @@ class RedisServerController
     let redisConfigPath = "redis.conf"
     #elseif os(Linux)
     // TODO: Where is Redis installed on ubuntu?
-    let redisCliPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-cli"
-    let redisServerPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-server"
+    let redisCliPath = "/usr/redis-cli"
+    let redisServerPath = "/usr/redis-server"
     let shutdownRedisServerScriptPath = "~/Canary/Sources/Resources/ShutdownRedisServerScriptUbuntu.sh"
     let launchRedisServerScriptPath = "~/Canary/Sources/Resources/LaunchRedisServerScriptUbuntu.sh"
     let checkRedisServerScriptPath = "~/Canary/Sources/Resources/CheckRedisServerScript.sh"
