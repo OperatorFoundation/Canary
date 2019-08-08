@@ -14,10 +14,18 @@ class ShapeshifterController
     let ptServerPort = "1234"
     let shsocksServerPort = "2345"
     //let serverIPFileName = "serverIP"
-    let shShifterResourcePath = "shapeshifter-dispatcher"
+    
     //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
     let obfs4FileName = "obfs4.json"
+    
+    #if os(macOS)
+    let meekOptionsPath = "Resources/Configs/meek.json"
+    let shShifterResourcePath = "shapeshifter-dispatcher"
+    #elseif os(Linux)
     let meekOptionsPath = "Resources/meek.json"
+    let shShifterResourcePath = "Sources/Resources/shapeshifter-dispatcher"
+    #endif
+    
     let shSocksFileName = "shadowsocks.json"
     let stateDirectoryPath = "TransportState"
     static let sharedInstance = ShapeshifterController()

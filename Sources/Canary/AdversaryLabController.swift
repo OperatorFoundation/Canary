@@ -14,7 +14,7 @@ class AdversaryLabController
     #if os(macOS)
     private var adLabClientPath = "AdversaryLabClient"
     #elseif os(Linux)
-    private var adLabClientPath = "~/Canary/Sources/Resources/AdversaryLabClient"
+    private var adLabClientPath = "Sources/Resources/AdversaryLabClient"
     #endif
     
     static let sharedInstance = AdversaryLabController()
