@@ -14,15 +14,15 @@ class ShapeshifterController
     let ptServerPort = "1234"
     let shsocksServerPort = "2345"
     //let serverIPFileName = "serverIP"
-    
     //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
-    let obfs4FileName = "obfs4.json"
     
     #if os(macOS)
     let meekOptionsPath = "Resources/Configs/meek.json"
+    let obfs4FilePath = "Resources/Configs/obfs4.json"
     let shShifterResourcePath = "shapeshifter-dispatcher"
     #elseif os(Linux)
-    let meekOptionsPath = "Resources/meek.json"
+    let meekOptionsPath = "Sources/Resources/meek.json"
+    let obfs4FilePath = "Sources/Resources/obfs4.json"
     let shShifterResourcePath = "Sources/Resources/shapeshifter-dispatcher"
     #endif
     
@@ -220,7 +220,7 @@ class ShapeshifterController
     
     func getObfs4Options() -> String?
     {
-        guard let optionsURL = Bundle.main.url(forResource: obfs4FileName, withExtension: nil)
+        guard FileManager.default.fileExists(atPath: obfs4FilePath)
             else
         {
             print("\nUnable to find obfs4 File")
@@ -229,7 +229,7 @@ class ShapeshifterController
         
         do
         {
-            let obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: optionsURL.path, isDirectory: false), options: .uncached)
+            let obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4FilePath, isDirectory: false), options: .uncached)
             let rawOptions = String(data: obfs4OptionsData, encoding: String.Encoding.ascii)
             let obfs4Options = rawOptions?.replacingOccurrences(of: "\n", with: "")
             return obfs4Options
