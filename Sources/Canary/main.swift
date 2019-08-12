@@ -52,10 +52,14 @@ func doTheThing(forTransports transports: [String])
                     }
                     
                     AdversaryLabController.sharedInstance.stopAdversaryLab()
-                    RedisServerController.sharedInstance.shutdownRedisServer()
+                    
+                    RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
+                    {
+                        (didSave) in
+                        RedisServerController.sharedInstance.shutdownRedisServer()
+                        dispatchGroup.leave()
+                    })
                 }
-                
-                dispatchGroup.leave()
             }
             
             dispatchGroup.wait()
