@@ -20,7 +20,7 @@ final class CanaryTests: XCTestCase {
         let pipe = Pipe()
         process.standardOutput = pipe
 
-        try process.run()
+        try process.launch()
         process.waitUntilExit()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()

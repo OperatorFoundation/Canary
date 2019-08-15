@@ -32,17 +32,6 @@ class AdversaryLabController
         clientLaunchTask!.executableURL = URL(fileURLWithPath: adversaryLabClientPath, isDirectory: false)
         clientLaunchTask!.arguments = arguments
         clientLaunchTask!.launch()
-//        do
-//        {
-//            try clientLaunchTask!.run()
-//        }
-//        catch
-//        {
-//            print("\n⏹  Error running launchAdversaryLab task: \(error)")
-//            return
-//        }
-//        
-//        print("\n⏺  Launched Adversary Lab at \(adversaryLabClientPath), with arguments: \(arguments)")
     }
     
     func stopAdversaryLab()

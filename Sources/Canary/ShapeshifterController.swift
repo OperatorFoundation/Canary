@@ -43,17 +43,7 @@ class ShapeshifterController
             print("\nFound shapeshifter-dispatcher")
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
-            
-            do
-            {
-                try launchTask!.run()
-            }
-            catch
-            {
-                print("\n⏹  Error running shShifterResource: \(error)")
-                return false
-            }
-            
+            launchTask!.launch()
             return launchTask!.isRunning
         }
         else
@@ -94,17 +84,7 @@ class ShapeshifterController
         killTask.arguments = [shShifterResourcePath]
         
         //Go ahead and run the process/task
-        
-        do
-        {
-            try killTask.run()
-        }
-        catch
-        {
-            print("\n⏹ Error running killtask: \(error)")
-            return
-        }
-        
+        killTask.launch()
         killTask.waitUntilExit()
     }
     

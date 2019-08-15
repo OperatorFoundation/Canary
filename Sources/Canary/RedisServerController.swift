@@ -140,17 +140,7 @@ class RedisServerController
             }
         }
         process.waitUntilExit()
-        
-        
-        do
-        {
-            try process.run()
-        }
-        catch
-        {
-            print("\n⏹  Error running checkRedisServerScript: \(error)")
-            return
-        }
+        process.launch()
     }
     
     func checkServerPortIsAvailable(completion:@escaping (_ completion: ServerCheckResult) -> Void)
@@ -212,17 +202,8 @@ class RedisServerController
                 }
             }
         }
-        
-        do
-        {
-            try process.run()
-        }
-        catch
-        {
-            print("\n⏹ Error running checkRedisServerScript: \(error)")
-            return
-        }
-        
+
+        process.launch()
         process.waitUntilExit()
     }
     
@@ -283,17 +264,8 @@ class RedisServerController
             
             completion(true)
         }
-        
-        do
-        {
-            try process.run()
-        }
-        catch
-        {
-            print("\n⏹  Error running killRedisServerScript:\(error)")
-            return
-        }
-        
+
+        process.launch()
         process.waitUntilExit()
     }
     
@@ -333,15 +305,7 @@ class RedisServerController
                 completion(true)
             }
             
-            do
-            {
-                try self.redisProcess!.run()
-            }
-            catch
-            {
-                print("\n⏹  Error running redis script: \(error)")
-                return
-            }
+            self.redisProcess!.launch()
         }
     }
     
