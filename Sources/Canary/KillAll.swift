@@ -13,9 +13,9 @@ func killAll(processToKill: String)
     print("******* ☠️ KILLALL \(processToKill) CALLED ☠️ *******")
     
     let killTask = Process()
+    let executablePath = "/usr/bin/killall"
     
-    //The launchPath is the path to the executable to run.
-    killTask.launchPath = "/usr/bin/killall"
+    killTask.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
     //Arguments will pass the arguments to the executable, as though typed directly into terminal.
     killTask.arguments = [processToKill]
     
@@ -27,7 +27,7 @@ func killAll(processToKill: String)
     //Do it again, maybe it doesn't want to die.
     
     let killAgain = Process()
-    killAgain.launchPath = "/usr/bin/killall"
+    killAgain.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
     killAgain.arguments = ["-9", processToKill]
     killAgain.launch()
     killAgain.waitUntilExit()

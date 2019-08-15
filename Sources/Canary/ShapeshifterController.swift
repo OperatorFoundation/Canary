@@ -33,7 +33,6 @@ class ShapeshifterController
                 launchTask = Process()
             }
             
-            //The launchPath is the path to the executable to run.
             guard FileManager.default.fileExists(atPath: shShifterResourcePath)
             else
             {
@@ -42,7 +41,7 @@ class ShapeshifterController
             }
             
             print("\nFound shapeshifter-dispatcher")
-            launchTask!.launchPath = shShifterResourcePath
+            launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
             launchTask!.launch()
             
@@ -79,9 +78,9 @@ class ShapeshifterController
         print("******* ☠️ KILLALL ShShifters CALLED ☠️ *******")
         
         let killTask = Process()
+        let killTaskExecutableURL = URL(fileURLWithPath: "/usr/bin/killall", isDirectory: false)
+        killTask.executableURL = killTaskExecutableURL
         
-        //The launchPath is the path to the executable to run.
-        killTask.launchPath = "/usr/bin/killall"
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
         killTask.arguments = [shShifterResourcePath]
         

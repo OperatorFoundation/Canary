@@ -62,7 +62,7 @@ class RedisServerController
                             completion(.okay(nil))
                         }
                         #elseif os(Linux)
-                        self.runRedisScript(path: self.launchRedisServerScriptPath, arguments: nil)
+                        self.runRedisScript(path: launchRedisServerScriptPath, arguments: nil)
                         {
                             (hasCompleted) in
                             
@@ -125,7 +125,7 @@ class RedisServerController
         }
         
         let process = Process()
-        process.launchPath = checkRedisServerScriptPath
+        process.executableURL = URL(fileURLWithPath: checkRedisServerScriptPath, isDirectory: false)
         let pipe = Pipe()
         process.standardOutput = pipe
         process.terminationHandler =
@@ -164,7 +164,7 @@ class RedisServerController
         }
         
         let process = Process()
-        process.launchPath = checkRedisServerScriptPath
+        process.executableURL = URL(fileURLWithPath: checkRedisServerScriptPath, isDirectory: false)
         let pipe = Pipe()
         process.standardOutput = pipe
         process.terminationHandler =
@@ -266,7 +266,7 @@ class RedisServerController
         }
         
         let process = Process()
-        process.launchPath = killRedisServerScriptPath
+        process.executableURL = URL(fileURLWithPath: killRedisServerScriptPath, isDirectory: false)
         process.arguments = [pid]
         process.terminationHandler =
         {
@@ -300,7 +300,7 @@ class RedisServerController
                 self.redisProcess = Process()
             }
             
-            self.redisProcess!.launchPath = path
+            self.redisProcess!.executableURL = URL(fileURLWithPath: path, isDirectory: false)
             
             if let arguments = arguments
             {

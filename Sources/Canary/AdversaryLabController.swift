@@ -29,8 +29,7 @@ class AdversaryLabController
             clientLaunchTask = Process()
         }
         
-        //The launchPath is the path to the executable to run.
-        clientLaunchTask!.launchPath = adversaryLabClientPath
+        clientLaunchTask!.executableURL = URL(fileURLWithPath: adversaryLabClientPath, isDirectory: false)
         clientLaunchTask!.arguments = arguments
         clientLaunchTask!.launch()
         
