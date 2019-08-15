@@ -53,7 +53,6 @@ class RedisServerController
                         
                         print("\n👇👇 Running Script 👇👇:\n")
                         
-                        #if os(macOS)
                         self.runRedisScript(path: launchRedisServerScriptPath, arguments: [redisConfigPath])
                         {
                             (hasCompleted) in
@@ -61,15 +60,6 @@ class RedisServerController
                             print("\n🚀 Launch Redis Server Script Complete 🚀")
                             completion(.okay(nil))
                         }
-                        #elseif os(Linux)
-                        self.runRedisScript(path: launchRedisServerScriptPath, arguments: nil)
-                        {
-                            (hasCompleted) in
-                            
-                            print("\n🚀 Launch Redis Server Script Complete 🚀")
-                            completion(.okay(nil))
-                        }
-                        #endif
    
                     case .otherProcessOnPort(let name):
                         print("\n🛑  Another process is using our port. Process name: \(name)")
