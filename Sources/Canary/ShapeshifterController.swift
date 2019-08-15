@@ -44,8 +44,8 @@ class ShapeshifterController
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
             launchTask!.launch()
-            sleep(1)
-            return launchTask!.isRunning
+            return true
+            //return launchTask!.isRunning
         }
         else
         {
