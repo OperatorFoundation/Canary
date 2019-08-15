@@ -20,7 +20,7 @@ class TestController
         guard ShapeshifterController.sharedInstance.launchShapeshifterClient(serverIP: serverIP, transport: transport) == true
         else
         {
-            print("\n❗️ Failed to launch Shapeshifter Client for \(transport)")
+            print("\n❗️ Failed to launch Shapeshifter Client for \(transport) with serverIP: \(serverIP)")
             return nil
         }
         
