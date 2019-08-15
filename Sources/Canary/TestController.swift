@@ -11,7 +11,6 @@ import Foundation
 class TestController
 {
     static let sharedInstance = TestController()
-    let resultsFileName = "CanaryResults.csv"
     
     func runTest(withIP serverIP: String, forTransport transport: String) -> TestResult?
     {
@@ -21,7 +20,7 @@ class TestController
         guard ShapeshifterController.sharedInstance.launchShapeshifterClient(serverIP: serverIP, transport: transport) == true
         else
         {
-            print("\n❗️ Failed to launch SahpeshifterClient for \(transport)")
+            print("\n❗️ Failed to launch Shapeshifter Client for \(transport)")
             return nil
         }
         
@@ -53,7 +52,8 @@ class TestController
             else { return false }
         
         let currentDirectoryPath = FileManager.default.currentDirectoryPath
-        let resultFilePath = "\(currentDirectoryPath)/\(resultsFileName)"
+        let outputDirectoryPath = "\(currentDirectoryPath)/\(outputDirectoryName)"
+        let resultFilePath = "/\(outputDirectoryPath)/\(resultsFileName)"
         
         if FileManager.default.fileExists(atPath: resultFilePath)
         {
@@ -84,7 +84,21 @@ class TestController
             // Append our results to the label row
             let newFileData = labelData + resultData
             
-            // Create the new file
+            // Make sure our output directory exists
+            if !FileManager.default.fileExists(atPath: outputDirectoryPath)
+            {
+                do
+                {
+                    try FileManager.default.createDirectory(at: URL(fileURLWithPath: outputDirectoryPath, isDirectory: true), withIntermediateDirectories: true, attributes: nil)
+                }
+                catch
+                {
+                    print("Error creating output directory at \(outputDirectoryPath): \(error)")
+                    return false
+                }
+            }
+            
+            // Save the new file
             let saved = FileManager.default.createFile(atPath: resultFilePath, contents: newFileData, attributes: nil)
             print("\nAttempted to create file and save test results to file: \(resultFilePath)\nSuccess: \(saved.description)")
             

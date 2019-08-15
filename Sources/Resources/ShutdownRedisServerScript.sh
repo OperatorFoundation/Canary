@@ -1,4 +1,4 @@
 #!/bin/sh
 
 echo "Shutdown Redis Server*******"
-sudo systemctl stop redis-server.service
+redis-cli -p 6380 shutdown

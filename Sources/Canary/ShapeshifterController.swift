@@ -11,23 +11,6 @@ import Foundation
 class ShapeshifterController
 {
     private var launchTask: Process?
-    let ptServerPort = "1234"
-    let shsocksServerPort = "2345"
-    //let serverIPFileName = "serverIP"
-    //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
-    
-    #if os(macOS)
-    let meekOptionsPath = "Resources/Configs/meek.json"
-    let obfs4FilePath = "Resources/Configs/obfs4.json"
-    let shShifterResourcePath = "shapeshifter-dispatcher"
-    #elseif os(Linux)
-    let meekOptionsPath = "Sources/Resources/meek.json"
-    let obfs4FilePath = "Sources/Resources/obfs4.json"
-    let shShifterResourcePath = "Sources/Resources/shapeshifter-dispatcher"
-    #endif
-    
-    let shSocksFileName = "shadowsocks.json"
-    let stateDirectoryPath = "TransportState"
     static let sharedInstance = ShapeshifterController()
     
     func launchShapeshifterClient(serverIP: String, transport: String) -> Bool
@@ -75,12 +58,15 @@ class ShapeshifterController
     
     func stopShapeshifterClient()
     {
+        print("\nTerminating Shapeshifter launch task...")
         if launchTask != nil
         {
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
             launchTask?.terminate()
+            print("\nStarting wait until exit.")
             launchTask?.waitUntilExit()
+            print("\nWait until exit finished.")
             #else
             killAllShShifter()
             #endif
@@ -223,7 +209,7 @@ class ShapeshifterController
         guard FileManager.default.fileExists(atPath: obfs4FilePath)
             else
         {
-            print("\nUnable to find obfs4 File")
+            print("\nUnable to find obfs4 File at path: \(obfs4FilePath)")
             return nil
         }
         
@@ -243,7 +229,7 @@ class ShapeshifterController
     
     func getShadowSocksOptions() -> String?
     {
-        guard let optionsURL = Bundle.main.url(forResource: shSocksFileName, withExtension: nil)
+        guard FileManager.default.fileExists(atPath: shSocksFilePath)
             else
         {
             print("\nUnable to find shadowsocks File")
@@ -252,6 +238,7 @@ class ShapeshifterController
         
         do
         {
+            let optionsURL = URL(fileURLWithPath: shSocksFilePath)
             let shSocksOptionsData = try Data(contentsOf: optionsURL, options: .uncached)
             let rawOptions = String(data: shSocksOptionsData, encoding: String.Encoding.ascii)
             let shSocksOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")

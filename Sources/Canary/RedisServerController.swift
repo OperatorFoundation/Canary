@@ -11,32 +11,9 @@ import Auburn
 class RedisServerController
 {
     static let sharedInstance = RedisServerController()
-    
-    // FIXME: Redis version is hardcoded here
-    #if os(macOS)
-    let redisCliPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-cli"
-    let redisServerPath = "/usr/local/Cellar/redis/5.0.5/bin/redis-server"
-    let shutdownRedisServerScriptPath = "ShutdownRedisServerScriptMac.sh"
-    let launchRedisServerScriptPath = "LaunchRedisServerScriptMac.sh"
-    let checkRedisServerScriptPath = "CheckRedisServerScript.sh"
-    let killRedisServerScriptPath = "KillRedisServerScript.sh"
-    let checkRedisServerPortScriptPath = "CheckRedisServerPortScript.sh"
-    let redisConfigPath = "redis.conf"
-    #elseif os(Linux)
-    // TODO: Where is Redis installed on ubuntu?
-    let redisCliPath = "/usr/bin/redis-cli"
-    let redisServerPath = "/usr/bin/redis-server"
-    let shutdownRedisServerScriptPath = "Sources/Resources/ShutdownRedisServerScriptUbuntu.sh"
-    let launchRedisServerScriptPath = "Sources/Resources/LaunchRedisServerScriptUbuntu.sh"
-    let checkRedisServerScriptPath = "Sources/Resources/CheckRedisServerScript.sh"
-    let killRedisServerScriptPath = "Sources/Resources/KillRedisServerScript.sh"
-    let checkRedisServerPortScriptPath = "Sources/Resources/CheckRedisServerPortScript.sh"
-    let redisConfigPath = "Sources/Resources/redis.conf"
-    #endif
-    
     var redisProcess:Process!
     
-    func launchRedisServer(completion:@escaping (_ completion: ServerCheckResult) -> Void)
+    func launchRedisServer(triedShutdown: Bool = false, retryCount: Int = 0, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
         isRedisServerRunning
         {
@@ -58,24 +35,15 @@ class RedisServerController
                     case .okay( _):
                         print("\nServer port is available")
                         
-                        
-                        guard FileManager.default.fileExists(atPath: self.redisConfigPath)
+                        guard FileManager.default.fileExists(atPath: redisConfigPath)
                             else
                         {
-                            print("Unable to launch Redis server: could not find redis.conf at \(self.redisConfigPath)")
+                            print("Unable to launch Redis server: could not find redis.conf at \(redisConfigPath)")
                             completion(.failure("Unable to launch Redis server: could not find redis.conf"))
                             return
                         }
                         
-                        guard FileManager.default.fileExists(atPath: self.redisServerPath)
-                            else
-                        {
-                            print("Unable to launch Redis server: could not find redis-server.")
-                            completion(.failure("Unable to launch Redis server: could not find redis-server."))
-                            return
-                        }
-                        
-                        guard FileManager.default.fileExists(atPath: self.launchRedisServerScriptPath)
+                        guard FileManager.default.fileExists(atPath: launchRedisServerScriptPath)
                             else
                         {
                             print("Unable to launch Redis server. Could not find the script.")
@@ -86,7 +54,7 @@ class RedisServerController
                         print("\n👇👇 Running Script 👇👇:\n")
                         
                         #if os(macOS)
-                        self.runRedisScript(path: self.launchRedisServerScriptPath, arguments: [self.redisConfigPath])
+                        self.runRedisScript(path: launchRedisServerScriptPath, arguments: [redisConfigPath])
                         {
                             (hasCompleted) in
                             
@@ -108,7 +76,7 @@ class RedisServerController
                         completion(result)
                     case .corruptRedisOnPort(let pid):
                         print("\n🛑  Broken redis is already using our port. PID: \(pid)")
-                        completion(result)
+                        self.handleCorruptRedis(triedShutdown: triedShutdown, retryCount: retryCount, pid: pid, completion: completion)
                     case .failure(let failureString):
                         print("\n🛑  Failed to check server port: \(failureString ?? "")")
                         completion(result)
@@ -118,16 +86,36 @@ class RedisServerController
         }
     }
     
-    func isRedisServerRunning(completion:@escaping (_ completion:Bool) -> Void)
+    func handleCorruptRedis(triedShutdown: Bool, retryCount: Int, pid: String, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
-        guard FileManager.default.fileExists(atPath: redisCliPath)
-            else
+        if retryCount > 2
         {
-            print("\n🛑  Unable to ping Redis server. Could not find redis-cli at \(redisCliPath).")
-            completion(false)
+            completion(.failure("Maximum tries reached while trying to kill corrupt Redis on port. PID: \(pid)"))
             return
         }
         
+        if triedShutdown
+        {
+            self.killProcess(pid: pid)
+            {
+                (didKill) in
+                
+                self.launchRedisServer(triedShutdown: true, retryCount: retryCount + 1, completion: completion)
+            }
+        }
+        else
+        {
+            shutdownRedisServer
+            {
+                (success) in
+                
+                self.launchRedisServer(triedShutdown: true, retryCount: retryCount, completion: completion)
+            }
+        }
+    }
+    
+    func isRedisServerRunning(completion:@escaping (_ completion:Bool) -> Void)
+    {
         guard FileManager.default.fileExists(atPath: checkRedisServerScriptPath)
             else
         {
@@ -138,7 +126,6 @@ class RedisServerController
         
         let process = Process()
         process.launchPath = checkRedisServerScriptPath
-        process.arguments = [redisCliPath]
         let pipe = Pipe()
         process.standardOutput = pipe
         process.terminationHandler =
@@ -230,7 +217,7 @@ class RedisServerController
         process.waitUntilExit()
     }
     
-    func shutdownRedisServer()
+    func shutdownRedisServer(completion: @escaping (Bool) -> Void)
     {
         if redisProcess != nil
         {
@@ -244,23 +231,18 @@ class RedisServerController
             else
         {
             print("Unable to shutdown Redis server. Could not find the script.")
+            completion(false)
             return
         }
         
+        print("\n👇👇 Running Redis Shutdown Script 👇👇:\n")
         #if os(macOS)
-        guard FileManager.default.fileExists(atPath: redisCliPath)
-            else
-        {
-            print("Unable to launch Redis server. Could not find redis-cli.")
-            return
-        }
-        print("\n👇👇 Running Script 👇👇:\n")
-        
-        runRedisScript(path: shutdownRedisServerScriptPath, arguments: [redisCliPath])
+        runRedisScript(path: shutdownRedisServerScriptPath, arguments: nil)
         {
             (taskCompleted) in
             
             print("Server has been 🤖 TERMINATED 🤖")
+            completion(true)
         }
         #elseif os(Linux)
         runRedisScript(path: shutdownRedisServerScriptPath, arguments: nil)
@@ -268,6 +250,7 @@ class RedisServerController
             (taskCompleted) in
             
             print("Server has been 🤖 TERMINATED 🤖")
+            completion(true)
         }
         #endif  
     }
@@ -329,13 +312,7 @@ class RedisServerController
                 (task) in
                 
                 print("\nRedis Script Has Terminated.")
-                
-                //Main Thread Stuff Here If Needed
-                DispatchQueue.main.async(execute:
-                {
-                    print("\nRedis Script Has Terminated.")
-                    completion(true)
-                })
+                completion(true)
             }
             
             self.redisProcess!.launch()
@@ -346,6 +323,7 @@ class RedisServerController
     // We will be switching instead to a database represented by a completely different file.
     func saveDatabaseFile(forTransport transportName: String, completion:@escaping (_ completion:Bool) -> Void)
     {
+        print("\nSave database file called.")
         let fileManager = FileManager.default
         
         #if os(macOS)
@@ -354,19 +332,38 @@ class RedisServerController
         let rdbFilePath = "/var/lib/redis"
         #endif
         
-        let newDBName = "\(transportName)_\(Date())"
-        let destinationURL = URL(fileURLWithPath: rdbFilePath).appendingPathComponent(newDBName)
+        let currentDate = getNowAsString()
+        let newDBName = "\(transportName)_\(currentDate).rdb"
+        let outputDirectoryPath = "\(rdbFilePath)/\(outputDirectoryName)"
+        let destinationURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(newDBName)
+        let currentRDBFilePath = "\(rdbFilePath)/dump.rdb"
         
-        guard let currentFilename = Auburn.dbfilename
+        guard fileManager.fileExists(atPath: currentRDBFilePath)
         else
         {
-            print("\nWe couldn't save the Redis DB file. The filename is unknown.")
+            print("\nWe couldn't save the Redis DB file. The filename was not found at \(currentRDBFilePath)")
+            completion(false)
             return
         }
         
+        let currentRDBFileURL = URL(fileURLWithPath: currentRDBFilePath)
         
-        let currentRDBFileURL = URL(fileURLWithPath: rdbFilePath).appendingPathComponent(currentFilename)
         print("\n📂  Trying to move file from: \n\(currentRDBFileURL)\nto:\n\(destinationURL)\n")
+        
+        // Make sure our output directory exists
+        if !FileManager.default.fileExists(atPath: outputDirectoryPath)
+        {
+            do
+            {
+                try FileManager.default.createDirectory(at: URL(fileURLWithPath: outputDirectoryPath, isDirectory: true), withIntermediateDirectories: true, attributes: nil)
+            }
+            catch
+            {
+                print("Error creating output directory at \(outputDirectoryPath): \(error)")
+                return
+            }
+        }
+        
         do
         {
             if fileManager.fileExists(atPath: destinationURL.path)
@@ -380,8 +377,24 @@ class RedisServerController
         }
         catch
         {
-            print("\nError moving redis DB file from \(currentRDBFileURL) to \(destinationURL):\n\(error)")
+            print("\nError moving redis DB file from:\n\(currentRDBFileURL) to:\n\(destinationURL):\n\(error)")
+            completion(false)
+            return
         }
+        
+        completion(true)
+    }
+    
+    func getNowAsString() -> String
+    {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.formatOptions = [.withFullDate,
+                                   .withTime,
+                                   .withDashSeparatorInDate]
+        let now = formatter.string(from: Date())
+        
+        return now
     }
     
     enum ServerCheckResult

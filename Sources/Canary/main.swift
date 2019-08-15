@@ -19,13 +19,14 @@ func doTheThing(forTransports transports: [String])
 
     for transport in transports
     {
+        print("\n🍙  Starting test for \(transport) 🍙")
         let queue = OperationQueue()
         let op = BlockOperation(block:
         {
             let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
             
-            RedisServerController.sharedInstance.launchRedisServer
+            RedisServerController.sharedInstance.launchRedisServer()
             {
                 (result) in
                 
@@ -52,17 +53,26 @@ func doTheThing(forTransports transports: [String])
                     }
                     
                     AdversaryLabController.sharedInstance.stopAdversaryLab()
-                    
-                    RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
+                    print("\nStopped AdversaryLab attempting to shutdown Redis.")
+                    RedisServerController.sharedInstance.shutdownRedisServer()
                     {
-                        (didSave) in
-                        RedisServerController.sharedInstance.shutdownRedisServer()
-                        dispatchGroup.leave()
-                    })
+                        (success) in
+                        
+                        print("\nReceived callback from shutdownRedisServer attempting to save DB file.")
+                        RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
+                        {
+                            (didSave) in
+                            
+                            print("\nReturned from saveDatabaseFile.")
+                            dispatchGroup.leave()
+                        })
+                    }
                 }
             }
             
+            print("\nStarting dispatch group wait for \(transport) test...")
             dispatchGroup.wait()
+            print("\nFinished waiting for \(transport) test dispatch group. ⭐️")
         })
         
         queue.addOperations([op], waitUntilFinished: true)

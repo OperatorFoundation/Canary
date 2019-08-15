@@ -1,0 +1,383 @@
+16481:C 12 Aug 2019 15:26:23.147 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16481:C 12 Aug 2019 15:26:23.147 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16481, just started
+16481:C 12 Aug 2019 15:26:23.147 # Configuration loaded
+16482:M 12 Aug 2019 15:26:23.149 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16482
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16482:M 12 Aug 2019 15:26:23.150 # Server initialized
+16482:M 12 Aug 2019 15:26:23.150 * Ready to accept connections
+16482:M 12 Aug 2019 15:26:59.370 # User requested shutdown...
+16482:M 12 Aug 2019 15:26:59.370 * Saving the final RDB snapshot before exiting.
+16482:M 12 Aug 2019 15:26:59.371 * DB saved on disk
+16482:M 12 Aug 2019 15:26:59.372 * Removing the pid file.
+16482:M 12 Aug 2019 15:26:59.372 # Redis is now ready to exit, bye bye...
+16689:C 12 Aug 2019 15:33:29.674 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16689:C 12 Aug 2019 15:33:29.674 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16689, just started
+16689:C 12 Aug 2019 15:33:29.674 # Configuration loaded
+16690:M 12 Aug 2019 15:33:29.676 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16690
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16690:M 12 Aug 2019 15:33:29.677 # Server initialized
+16690:M 12 Aug 2019 15:33:29.677 * DB loaded from disk: 0.000 seconds
+16690:M 12 Aug 2019 15:33:29.678 * Ready to accept connections
+16690:M 12 Aug 2019 15:34:05.143 # User requested shutdown...
+16690:M 12 Aug 2019 15:34:05.144 * Saving the final RDB snapshot before exiting.
+16690:M 12 Aug 2019 15:34:05.145 * DB saved on disk
+16690:M 12 Aug 2019 15:34:05.145 * Removing the pid file.
+16690:M 12 Aug 2019 15:34:05.145 # Redis is now ready to exit, bye bye...
+16750:C 12 Aug 2019 15:35:59.871 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16750:C 12 Aug 2019 15:35:59.871 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16750, just started
+16750:C 12 Aug 2019 15:35:59.872 # Configuration loaded
+16751:M 12 Aug 2019 15:35:59.873 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16751
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16751:M 12 Aug 2019 15:35:59.874 # Server initialized
+16751:M 12 Aug 2019 15:35:59.875 * DB loaded from disk: 0.000 seconds
+16751:M 12 Aug 2019 15:35:59.875 * Ready to accept connections
+16751:M 12 Aug 2019 15:36:18.270 # User requested shutdown...
+16751:M 12 Aug 2019 15:36:18.270 * Saving the final RDB snapshot before exiting.
+16751:M 12 Aug 2019 15:36:18.271 * DB saved on disk
+16751:M 12 Aug 2019 15:36:18.271 * Removing the pid file.
+16751:M 12 Aug 2019 15:36:18.272 # Redis is now ready to exit, bye bye...
+16769:C 12 Aug 2019 15:38:19.579 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16769:C 12 Aug 2019 15:38:19.579 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16769, just started
+16769:C 12 Aug 2019 15:38:19.580 # Configuration loaded
+16770:M 12 Aug 2019 15:38:19.582 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16770
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16770:M 12 Aug 2019 15:38:19.583 # Server initialized
+16770:M 12 Aug 2019 15:38:19.583 * DB loaded from disk: 0.000 seconds
+16770:M 12 Aug 2019 15:38:19.583 * Ready to accept connections
+16770:M 12 Aug 2019 15:38:46.501 # User requested shutdown...
+16770:M 12 Aug 2019 15:38:46.502 * Saving the final RDB snapshot before exiting.
+16770:M 12 Aug 2019 15:38:46.503 * DB saved on disk
+16770:M 12 Aug 2019 15:38:46.503 * Removing the pid file.
+16770:M 12 Aug 2019 15:38:46.503 # Redis is now ready to exit, bye bye...
+16819:C 12 Aug 2019 15:38:56.830 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16819:C 12 Aug 2019 15:38:56.830 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16819, just started
+16819:C 12 Aug 2019 15:38:56.830 # Configuration loaded
+16820:M 12 Aug 2019 15:38:56.832 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16820
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16820:M 12 Aug 2019 15:38:56.832 # Server initialized
+16820:M 12 Aug 2019 15:38:56.833 * DB loaded from disk: 0.000 seconds
+16820:M 12 Aug 2019 15:38:56.833 * Ready to accept connections
+16820:M 12 Aug 2019 15:39:06.064 # User requested shutdown...
+16820:M 12 Aug 2019 15:39:06.064 * Saving the final RDB snapshot before exiting.
+16820:M 12 Aug 2019 15:39:06.065 * DB saved on disk
+16820:M 12 Aug 2019 15:39:06.065 * Removing the pid file.
+16820:M 12 Aug 2019 15:39:06.065 # Redis is now ready to exit, bye bye...
+16899:C 12 Aug 2019 15:42:26.301 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16899:C 12 Aug 2019 15:42:26.301 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16899, just started
+16899:C 12 Aug 2019 15:42:26.301 # Configuration loaded
+16900:M 12 Aug 2019 15:42:26.304 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16900
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16900:M 12 Aug 2019 15:42:26.305 # Server initialized
+16900:M 12 Aug 2019 15:42:26.306 * Ready to accept connections
+16900:M 12 Aug 2019 15:42:35.540 # User requested shutdown...
+16900:M 12 Aug 2019 15:42:35.540 * Saving the final RDB snapshot before exiting.
+16900:M 12 Aug 2019 15:42:35.541 * DB saved on disk
+16900:M 12 Aug 2019 15:42:35.541 * Removing the pid file.
+16900:M 12 Aug 2019 15:42:35.542 # Redis is now ready to exit, bye bye...
+16912:C 12 Aug 2019 15:42:35.562 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+16912:C 12 Aug 2019 15:42:35.562 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=16912, just started
+16912:C 12 Aug 2019 15:42:35.562 # Configuration loaded
+16913:M 12 Aug 2019 15:42:35.564 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 16913
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+16913:M 12 Aug 2019 15:42:35.564 # Server initialized
+16913:M 12 Aug 2019 15:42:35.565 * Ready to accept connections
+16913:M 12 Aug 2019 15:42:39.782 # User requested shutdown...
+16913:M 12 Aug 2019 15:42:39.785 * Saving the final RDB snapshot before exiting.
+16913:M 12 Aug 2019 15:42:39.786 * DB saved on disk
+16913:M 12 Aug 2019 15:42:39.786 * Removing the pid file.
+16913:M 12 Aug 2019 15:42:39.786 # Redis is now ready to exit, bye bye...
+22835:C 15 Aug 2019 13:57:17.768 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+22835:C 15 Aug 2019 13:57:17.769 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=22835, just started
+22835:C 15 Aug 2019 13:57:17.769 # Configuration loaded
+22836:M 15 Aug 2019 13:57:17.771 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 22836
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+22836:M 15 Aug 2019 13:57:17.775 # Server initialized
+22836:M 15 Aug 2019 13:57:17.775 * Ready to accept connections
+22836:M 15 Aug 2019 13:57:27.012 # User requested shutdown...
+22836:M 15 Aug 2019 13:57:27.013 * Saving the final RDB snapshot before exiting.
+22836:M 15 Aug 2019 13:57:27.013 * DB saved on disk
+22836:M 15 Aug 2019 13:57:27.013 * Removing the pid file.
+22836:M 15 Aug 2019 13:57:27.013 # Redis is now ready to exit, bye bye...
+22848:C 15 Aug 2019 13:57:27.064 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+22848:C 15 Aug 2019 13:57:27.064 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=22848, just started
+22848:C 15 Aug 2019 13:57:27.065 # Configuration loaded
+22849:M 15 Aug 2019 13:57:27.066 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 22849
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+22849:M 15 Aug 2019 13:57:27.068 # Server initialized
+22849:M 15 Aug 2019 13:57:27.068 * DB loaded from disk: 0.000 seconds
+22849:M 15 Aug 2019 13:57:27.068 * Ready to accept connections
+22849:M 15 Aug 2019 13:57:36.312 # User requested shutdown...
+22849:M 15 Aug 2019 13:57:36.312 * Saving the final RDB snapshot before exiting.
+22849:M 15 Aug 2019 13:57:36.313 * DB saved on disk
+22849:M 15 Aug 2019 13:57:36.313 * Removing the pid file.
+22849:M 15 Aug 2019 13:57:36.313 # Redis is now ready to exit, bye bye...
+22975:C 15 Aug 2019 14:09:32.070 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+22975:C 15 Aug 2019 14:09:32.071 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=22975, just started
+22975:C 15 Aug 2019 14:09:32.071 # Configuration loaded
+22976:M 15 Aug 2019 14:09:32.073 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 22976
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+22976:M 15 Aug 2019 14:09:32.075 # Server initialized
+22976:M 15 Aug 2019 14:09:32.076 * DB loaded from disk: 0.000 seconds
+22976:M 15 Aug 2019 14:09:32.076 * Ready to accept connections
+22976:M 15 Aug 2019 14:09:41.315 # User requested shutdown...
+22976:M 15 Aug 2019 14:09:41.315 * Saving the final RDB snapshot before exiting.
+22976:M 15 Aug 2019 14:09:41.316 * DB saved on disk
+22976:M 15 Aug 2019 14:09:41.316 * Removing the pid file.
+22976:M 15 Aug 2019 14:09:41.316 # Redis is now ready to exit, bye bye...
+22988:C 15 Aug 2019 14:09:41.366 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+22988:C 15 Aug 2019 14:09:41.367 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=22988, just started
+22988:C 15 Aug 2019 14:09:41.367 # Configuration loaded
+22989:M 15 Aug 2019 14:09:41.368 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 22989
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+22989:M 15 Aug 2019 14:09:41.369 # Server initialized
+22989:M 15 Aug 2019 14:09:41.369 * Ready to accept connections
+22989:M 15 Aug 2019 14:09:50.615 # User requested shutdown...
+22989:M 15 Aug 2019 14:09:50.615 * Saving the final RDB snapshot before exiting.
+22989:M 15 Aug 2019 14:09:50.616 * DB saved on disk
+22989:M 15 Aug 2019 14:09:50.616 * Removing the pid file.
+22989:M 15 Aug 2019 14:09:50.616 # Redis is now ready to exit, bye bye...
+23044:C 15 Aug 2019 14:11:04.117 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+23044:C 15 Aug 2019 14:11:04.117 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=23044, just started
+23044:C 15 Aug 2019 14:11:04.117 # Configuration loaded
+23045:M 15 Aug 2019 14:11:04.119 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 23045
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+23045:M 15 Aug 2019 14:11:04.120 # Server initialized
+23045:M 15 Aug 2019 14:11:04.120 * Ready to accept connections
+23045:M 15 Aug 2019 14:11:13.365 # User requested shutdown...
+23045:M 15 Aug 2019 14:11:13.365 * Saving the final RDB snapshot before exiting.
+23045:M 15 Aug 2019 14:11:13.365 * DB saved on disk
+23045:M 15 Aug 2019 14:11:13.366 * Removing the pid file.
+23045:M 15 Aug 2019 14:11:13.366 # Redis is now ready to exit, bye bye...
+23057:C 15 Aug 2019 14:11:13.417 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+23057:C 15 Aug 2019 14:11:13.417 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=23057, just started
+23057:C 15 Aug 2019 14:11:13.417 # Configuration loaded
+23058:M 15 Aug 2019 14:11:13.419 * Increased maximum number of open files to 10032 (it was originally set to 2560).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 5.0.5 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6380
+ |    `-._   `._    /     _.-'    |     PID: 23058
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+23058:M 15 Aug 2019 14:11:13.420 # Server initialized
+23058:M 15 Aug 2019 14:11:13.420 * Ready to accept connections
+23058:M 15 Aug 2019 14:11:22.622 # User requested shutdown...
+23058:M 15 Aug 2019 14:11:22.623 * Saving the final RDB snapshot before exiting.
+23058:M 15 Aug 2019 14:11:22.623 * DB saved on disk
+23058:M 15 Aug 2019 14:11:22.624 * Removing the pid file.
+23058:M 15 Aug 2019 14:11:22.624 # Redis is now ready to exit, bye bye...

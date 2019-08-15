@@ -10,17 +10,10 @@ import Foundation
 ///sudo bin/AdversaryLabClient capture obfs4 allow 1234
 
 class AdversaryLabController
-{
-    #if os(macOS)
-    private var adLabClientPath = "AdversaryLabClient"
-    #elseif os(Linux)
-    private var adLabClientPath = "Sources/Resources/AdversaryLabClient"
-    #endif
-    
+{    
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
     private var serverLaunchTask: Process?
-    private var adLabClientProcessName = "AdversaryLabClient"
     
     func launchAdversaryLab(forTransport transport: String)
     {
@@ -37,11 +30,11 @@ class AdversaryLabController
         }
         
         //The launchPath is the path to the executable to run.
-        clientLaunchTask!.launchPath = adLabClientPath
+        clientLaunchTask!.launchPath = adversaryLabClientPath
         clientLaunchTask!.arguments = arguments
         clientLaunchTask!.launch()
         
-        print("\n⏺  Launched AdLab at \(adLabClientPath), with arguments: \(arguments)")
+        print("\n⏺  Launched Adversary Lab at \(adversaryLabClientPath), with arguments: \(arguments)")
     }
     
     func stopAdversaryLab()
@@ -49,11 +42,13 @@ class AdversaryLabController
         if clientLaunchTask != nil
         {
             clientLaunchTask?.terminate()
+            print("\nStarting wait until exit for stopAdversaryLab.")
             clientLaunchTask?.waitUntilExit()
+            print("\nFinished wait until exit for stopAdversaryLab.")
             clientLaunchTask = nil
         }
         
-        killAll(processToKill: adLabClientProcessName)
+        killAll(processToKill: adversaryLabClientProcessName)
     }
 
 }

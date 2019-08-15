@@ -1,3 +1,3 @@
 #!/bin/sh
 
-"$1" ping
+redis-cli -p 6380 ping
