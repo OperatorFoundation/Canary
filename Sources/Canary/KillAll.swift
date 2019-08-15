@@ -19,8 +19,19 @@ func killAll(processToKill: String)
     //Arguments will pass the arguments to the executable, as though typed directly into terminal.
     killTask.arguments = [processToKill]
     
-    //Go ahead and launch the process/task
-    killTask.launch()
+    //Go ahead and run the process/task
+    
+    do
+    {
+        try killTask.run()
+    }
+    catch
+    {
+        print("\n⏹  Error running killall: \(error)")
+        return
+    }
+    
+    
     killTask.waitUntilExit()
     sleep(2)
     
@@ -29,7 +40,16 @@ func killAll(processToKill: String)
     let killAgain = Process()
     killAgain.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
     killAgain.arguments = ["-9", processToKill]
-    killAgain.launch()
+    
+    do
+    {
+        try killAgain.run()
+    }
+    catch
+    {
+        print("\n⏹  Error running killall again: \(error)")
+    }
+    
     killAgain.waitUntilExit()
     sleep(2)
 }
