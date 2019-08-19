@@ -379,12 +379,13 @@ class RedisServerController
     {
         let formatter = ISO8601DateFormatter()
         formatter.timeZone = TimeZone.current
-        formatter.formatOptions = [.withFullDate,
-                                   .withTime,
-                                   .withDashSeparatorInDate]
-        let now = formatter.string(from: Date())
+        formatter.formatOptions = [.withFullDate, .withTime, .withColonSeparatorInTime]
+        var dateString = formatter.string(from: Date())
+        dateString = dateString.replacingOccurrences(of: "-", with: "_")
+        dateString = dateString.replacingOccurrences(of: ":", with: "_")
         
-        return now
+        print("\n⏰  Now as String is: \(dateString)")
+        return dateString
     }
     
     enum ServerCheckResult

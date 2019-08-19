@@ -53,7 +53,7 @@ class TestController
         
         let currentDirectoryPath = FileManager.default.currentDirectoryPath
         let outputDirectoryPath = "\(currentDirectoryPath)/\(outputDirectoryName)"
-        let resultFilePath = "/\(outputDirectoryPath)/\(resultsFileName)"
+        let resultFilePath = "/\(outputDirectoryPath)/\(resultsFileName)_\(getNowAsString()).\(resultsExtension)"
         
         if FileManager.default.fileExists(atPath: resultFilePath)
         {
@@ -104,6 +104,19 @@ class TestController
             
             return saved
         }
+    }
+    
+    func getNowAsString() -> String
+    {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.formatOptions = [.withFullDate, .withColonSeparatorInTime]
+        var dateString = formatter.string(from: Date())
+        dateString = dateString.replacingOccurrences(of: "-", with: "_")
+        dateString = dateString.replacingOccurrences(of: ":", with: "_")
+        
+        print("\n⏰  Now as String is: \(dateString)")
+        return dateString
     }
     
 }

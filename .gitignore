@@ -77,3 +77,6 @@ Output/CanaryResults.csv
 *.rdb
 *.csv
 redislog.txt
+redislog.txt
+*.rdb
+*.csv

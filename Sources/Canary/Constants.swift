@@ -30,5 +30,6 @@ let redisConfigPath = "Sources/Resources/redis.conf"
 
 let stateDirectoryPath = "TransportState"
 
-let resultsFileName = "CanaryResults.csv"
+let resultsFileName = "CanaryResults"
+let resultsExtension = "csv"
 let outputDirectoryName = "Output"
