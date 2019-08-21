@@ -17,6 +17,7 @@ class AdversaryLabController
     
     func launchAdversaryLab(forTransport transport: String)
     {
+        print("\n🔬  Launching Adversary Lab")
         let arguments = ["capture", transport, "allow", "1234"]
         if clientLaunchTask == nil
         {

@@ -73,10 +73,7 @@ xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/xcode,swift
-Output/CanaryResults.csv
-*.rdb
-*.csv
-redislog.txt
+Output/*
 redislog.txt
 *.rdb
 *.csv

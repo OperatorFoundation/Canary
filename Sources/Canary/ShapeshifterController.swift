@@ -44,6 +44,7 @@ class ShapeshifterController
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
             launchTask!.launch()
+            sleep(1)
             return true
             //return launchTask!.isRunning
         }
@@ -110,7 +111,7 @@ class ShapeshifterController
                 
                 //Dummy data to get around meek server bug
                 processArguments.append("-target")
-                processArguments.append("127.0.0.1:123")
+                processArguments.append("127.0.0.1:1234")
             }
             else if transport == obfs4
             {
