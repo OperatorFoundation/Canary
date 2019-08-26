@@ -47,8 +47,9 @@ class ShapeshifterController
             launchTask!.arguments = arguments
             launchTask!.launch()
             sleep(1)
-            return true
-            //return launchTask!.isRunning
+            
+            print("\nlaunchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
+            return launchTask!.isRunning
         }
         else
         {
@@ -61,6 +62,7 @@ class ShapeshifterController
     func stopShapeshifterClient()
     {
         print("\nTerminating Shapeshifter launch task...")
+        
         if launchTask != nil
         {
             // FIXME: terminate() is not yet implemented for Linux

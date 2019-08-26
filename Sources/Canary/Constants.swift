@@ -9,7 +9,6 @@ import Foundation
 
 let adversaryLabClientPath = "Sources/Resources/AdversaryLabClient"
 let adversaryLabClientProcessName = "AdversaryLabClient"
-
 let shShifterResourcePath = "Sources/Resources/shapeshifter-dispatcher"
 
 let shutdownRedisServerScriptPath = "Sources/Resources/ShutdownRedisServerScript.sh"
