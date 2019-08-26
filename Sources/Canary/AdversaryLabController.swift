@@ -37,16 +37,30 @@ class AdversaryLabController
     
     func stopAdversaryLab()
     {
+        
         if clientLaunchTask != nil
         {
+            // FIXME: terminate() is not yet implemented for Linux
+            #if os(macOS)
             clientLaunchTask?.terminate()
-            print("\nStarting wait until exit for stopAdversaryLab.")
+            print("\nStarting wait until exit.")
             clientLaunchTask?.waitUntilExit()
-            print("\nFinished wait until exit for stopAdversaryLab.")
+            print("\nWait until exit finished.")
+            #else
+            killAll(processToKill: adversaryLabClientProcessName)
+            #endif
             clientLaunchTask = nil
         }
-        
-        killAll(processToKill: adversaryLabClientProcessName)
+//        if clientLaunchTask != nil
+//        {
+//            clientLaunchTask?.terminate()
+//            print("\nStarting wait until exit for stopAdversaryLab.")
+//            clientLaunchTask?.waitUntilExit()
+//            print("\nFinished wait until exit for stopAdversaryLab.")
+//            clientLaunchTask = nil
+//        }
+//
+//        killAll(processToKill: adversaryLabClientProcessName)
     }
 
 }
