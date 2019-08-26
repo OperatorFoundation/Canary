@@ -15,6 +15,7 @@ class RedisServerController
     
     func launchRedisServer(triedShutdown: Bool = false, retryCount: Int = 0, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
+        print("\n🗃  launchRedisServer called")
         isRedisServerRunning
         {
             (serverIsRunning) in
@@ -52,13 +53,20 @@ class RedisServerController
                         }
                         
                         print("\n👇👇 Running Script 👇👇:\n")
-                        
-                        self.runRedisScript(path: launchRedisServerScriptPath, arguments: [redisConfigPath])
+                        self.runLaunchRedisScript()
+                        self.isRedisServerRunning
                         {
-                            (hasCompleted) in
+                            (serverIsRunning) in
                             
-                            print("\n🚀 Launch Redis Server Script Complete 🚀")
-                            completion(.okay(nil))
+                            if serverIsRunning
+                            {
+                                completion(.okay(nil))
+                                return
+                            }
+                            else
+                            {
+                                self.launchRedisServer(triedShutdown: false, retryCount: retryCount + 1, completion: completion)
+                            }
                         }
    
                     case .otherProcessOnPort(let name):
@@ -73,6 +81,34 @@ class RedisServerController
                     }
                 })
             }
+        }
+    }
+    
+    func runLaunchRedisScript()
+    {
+        let processQueue = DispatchQueue.global(qos: .background)
+        processQueue.async
+        {
+            print("🚀🚀🚀🚀🚀🚀🚀")
+            
+            if self.redisProcess == nil
+            {
+                //Creates a new Process and assigns it to the launchTask property.
+                print("\nCreating a new launch process.")
+                self.redisProcess = Process()
+                
+            }
+            else
+            {
+                print("\nLaunch process already running. Terminating current process and creating a new one.")
+                self.redisProcess!.terminate()
+                self.redisProcess = Process()
+            }
+            
+            self.redisProcess!.executableURL = URL(fileURLWithPath: launchRedisServerScriptPath, isDirectory: false)
+
+            self.redisProcess!.arguments = [redisConfigPath]
+            self.redisProcess!.launch()
         }
     }
     
