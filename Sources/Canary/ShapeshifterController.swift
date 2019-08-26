@@ -46,9 +46,13 @@ class ShapeshifterController
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
             launchTask!.launch()
+
             sleep(1)
             
             print("\nlaunchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
+            print("Termination Status: \(launchTask!.terminationStatus)")
+            print("Termination Reason: \(launchTask!.terminationReason)")
+            
             return launchTask!.isRunning
         }
         else
