@@ -53,7 +53,7 @@ class TestController
         
         let currentDirectoryPath = FileManager.default.currentDirectoryPath
         let outputDirectoryPath = "\(currentDirectoryPath)/\(outputDirectoryName)"
-        let resultFilePath = "/\(outputDirectoryPath)/\(resultsFileName)_\(getNowAsString()).\(resultsExtension)"
+        let resultFilePath = "/\(outputDirectoryPath)/\(resultsFileName)\(getNowAsString()).\(resultsExtension)"
         
         if FileManager.default.fileExists(atPath: resultFilePath)
         {

@@ -381,8 +381,8 @@ class RedisServerController
         formatter.timeZone = TimeZone.current
         formatter.formatOptions = [.withFullDate, .withTime, .withColonSeparatorInTime]
         var dateString = formatter.string(from: Date())
-        dateString = dateString.replacingOccurrences(of: "-", with: "_")
-        dateString = dateString.replacingOccurrences(of: ":", with: "_")
+        dateString = dateString.replacingOccurrences(of: "-", with: "")
+        dateString = dateString.replacingOccurrences(of: ":", with: "")
         
         print("\n⏰  Now as String is: \(dateString)")
         return dateString
