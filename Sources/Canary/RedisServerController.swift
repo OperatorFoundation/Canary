@@ -353,26 +353,25 @@ class RedisServerController
         let fileManager = FileManager.default
         
         #if os(macOS)
-        let rdbFilePath = fileManager.currentDirectoryPath
+        let rdbFilePath = "\(fileManager.currentDirectoryPath)/dump.rdb"
         #elseif os(Linux)
-        let rdbFilePath = "/var/lib/redis"
+        let rdbFilePath = "dump.rdb"
         #endif
         
         let currentDate = getNowAsString()
         let newDBName = "\(transportName)_\(currentDate).rdb"
         let outputDirectoryPath = "\(rdbFilePath)/\(outputDirectoryName)"
         let destinationURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(newDBName)
-        let currentRDBFilePath = "\(rdbFilePath)/dump.rdb"
         
-        guard fileManager.fileExists(atPath: currentRDBFilePath)
+        guard fileManager.fileExists(atPath: rdbFilePath)
         else
         {
-            print("\nWe couldn't save the Redis DB file. The filename was not found at \(currentRDBFilePath)")
+            print("\nWe couldn't save the Redis DB file. The filename was not found at \(rdbFilePath)")
             completion(false)
             return
         }
         
-        let currentRDBFileURL = URL(fileURLWithPath: currentRDBFilePath)
+        let currentRDBFileURL = URL(fileURLWithPath: rdbFilePath)
         
         print("\n📂  Trying to move file from: \n\(currentRDBFileURL)\nto:\n\(destinationURL)\n")
         
