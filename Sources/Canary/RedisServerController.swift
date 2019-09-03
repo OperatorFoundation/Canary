@@ -351,6 +351,43 @@ class RedisServerController
     {
         print("\nSave database file called.")
         let fileManager = FileManager.default
+        let destinationURL = rdbFileURL(forTransport: transportName)
+        let workingRDBFileURL = currentRDBFileURL()
+        
+        guard fileManager.fileExists(atPath: workingRDBFileURL.path)
+            else
+        {
+            print("\nWe couldn't save the Redis DB file. A file was not found at \(workingRDBFileURL)")
+            completion(false)
+            return
+        }
+        
+        print("\n📂  Trying to move file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
+
+        do
+        {
+            if rdbFileExists(forTransport: transportName)
+            {
+                try fileManager.removeItem(at: destinationURL)
+            }
+            
+            try fileManager.moveItem(at: workingRDBFileURL, to: destinationURL)
+            
+            print("\n📂  Moved file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
+        }
+        catch
+        {
+            print("\nError moving redis DB file from:\n\(workingRDBFileURL) to:\n\(destinationURL):\n\(error)")
+            completion(false)
+            return
+        }
+        
+        completion(true)
+    }
+    
+    func rdbFileURL(forTransport transportName: String) -> URL
+    {
+        let fileManager = FileManager.default
         
         #if os(macOS)
         let rdbFilePath = "\(fileManager.currentDirectoryPath)/dump.rdb"
@@ -358,56 +395,67 @@ class RedisServerController
         let rdbFilePath = "dump.rdb"
         #endif
         
-        let currentDate = getNowAsString()
-        let newDBName = "\(transportName)_\(currentDate).rdb"
+        let transportDBFilename = "\(transportName).rdb"
         let outputDirectoryPath = "\(rdbFilePath)/\(outputDirectoryName)"
-        let destinationURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(newDBName)
-        
-        guard fileManager.fileExists(atPath: rdbFilePath)
-        else
-        {
-            print("\nWe couldn't save the Redis DB file. The filename was not found at \(rdbFilePath)")
-            completion(false)
-            return
-        }
-        
-        let currentRDBFileURL = URL(fileURLWithPath: rdbFilePath)
-        
-        print("\n📂  Trying to move file from: \n\(currentRDBFileURL)\nto:\n\(destinationURL)\n")
+        let transportDBFileURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(transportDBFilename)
         
         // Make sure our output directory exists
         if !FileManager.default.fileExists(atPath: outputDirectoryPath)
         {
+             try? FileManager.default.createDirectory(at: URL(fileURLWithPath: outputDirectoryPath, isDirectory: true), withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        return transportDBFileURL
+    }
+    
+    func currentRDBFileURL() -> URL
+    {
+        #if os(macOS)
+        let rdbFilePath = "\(FileManager.default.currentDirectoryPath)/dump.rdb"
+        #elseif os(Linux)
+        let rdbFilePath = "dump.rdb"
+        #endif
+        
+        let currentRDBFileURL = URL(fileURLWithPath: rdbFilePath)
+        
+        return currentRDBFileURL
+    }
+    
+    func rdbFileExists(forTransport transportName: String) -> Bool
+    {
+        let transportDBFileURL = rdbFileURL(forTransport: transportName)
+        
+        if FileManager.default.fileExists(atPath: transportDBFileURL.path)
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+    
+    func loadRDBFile(forTransport transportName: String)
+    {
+        if rdbFileExists(forTransport: transportName)
+        {
+            let transportDBFileURL = rdbFileURL(forTransport: transportName)
+            let workingRDBFileURL = currentRDBFileURL()
+            
+            if FileManager.default.fileExists(atPath: workingRDBFileURL.path)
+            {
+                try? FileManager.default.removeItem(at: workingRDBFileURL)
+            }
+            
             do
             {
-                try FileManager.default.createDirectory(at: URL(fileURLWithPath: outputDirectoryPath, isDirectory: true), withIntermediateDirectories: true, attributes: nil)
+                try FileManager.default.moveItem(at: transportDBFileURL, to: workingRDBFileURL)
             }
             catch
             {
-                print("Error creating output directory at \(outputDirectoryPath): \(error)")
-                return
+                print("Unable to move item at \(transportDBFileURL) to \(workingRDBFileURL)\nerror: \(error)")
             }
         }
-        
-        do
-        {
-            if fileManager.fileExists(atPath: destinationURL.path)
-            {
-                try fileManager.removeItem(at: destinationURL)
-            }
-            
-            try fileManager.moveItem(at: currentRDBFileURL, to: destinationURL)
-            
-            print("\n📂  Moved file from: \n\(currentRDBFileURL)\nto:\n\(destinationURL)\n")
-        }
-        catch
-        {
-            print("\nError moving redis DB file from:\n\(currentRDBFileURL) to:\n\(destinationURL):\n\(error)")
-            completion(false)
-            return
-        }
-        
-        completion(true)
     }
     
     func getNowAsString() -> String

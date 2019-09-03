@@ -25,7 +25,7 @@ func doTheThing(forTransports transports: [String])
         {
             let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
-            
+            RedisServerController.sharedInstance.loadRDBFile(forTransport: transport)
             RedisServerController.sharedInstance.launchRedisServer()
             {
                 (result) in

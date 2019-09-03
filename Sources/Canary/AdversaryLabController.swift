@@ -13,7 +13,8 @@ class AdversaryLabController
 {    
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
-    private var serverLaunchTask: Process?
+    //Not sure why the server launch task?
+    //private var serverLaunchTask: Process?
     
     func launchAdversaryLab(forTransport transport: String)
     {
