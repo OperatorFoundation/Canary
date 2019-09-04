@@ -58,6 +58,8 @@ func doTheThing(forTransports transports: [String])
                     
                     AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport, usingPort: transportPort)
                     
+                    sleep(5)
+                    
                     if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
                     {
                         print("\nTest result for \(transport):\n\(transportTestResult)\n")

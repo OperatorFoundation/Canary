@@ -39,7 +39,6 @@ class AdversaryLabController
     
     func stopAdversaryLab()
     {
-        
         if clientLaunchTask != nil
         {
             // FIXME: terminate() is not yet implemented for Linux
