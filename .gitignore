@@ -77,3 +77,4 @@ Output/*
 redislog.txt
 *.rdb
 *.csv
+obfs4redis.conf

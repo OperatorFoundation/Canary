@@ -54,6 +54,7 @@ class RedisServerController
                         
                         print("\n👇👇 Running Script 👇👇:\n")
                         self.runLaunchRedisScript()
+                        sleep(1)
                         self.isRedisServerRunning
                         {
                             (serverIsRunning) in
@@ -390,13 +391,12 @@ class RedisServerController
         let fileManager = FileManager.default
         
         #if os(macOS)
-        let rdbFilePath = "\(fileManager.currentDirectoryPath)/dump.rdb"
+        let outputDirectoryPath = "\(fileManager.currentDirectoryPath)/\(outputDirectoryName)"
         #elseif os(Linux)
-        let rdbFilePath = "dump.rdb"
+        let outputDirectoryPath = outputDirectoryName
         #endif
         
         let transportDBFilename = "\(transportName).rdb"
-        let outputDirectoryPath = "\(rdbFilePath)/\(outputDirectoryName)"
         let transportDBFileURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(transportDBFilename)
         
         // Make sure our output directory exists

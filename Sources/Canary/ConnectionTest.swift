@@ -38,6 +38,7 @@ class ConnectionTest
                 {
                     (maybeData, maybeResponse, maybeError) in
                     
+                    let stdin = FileHandle.standardInput
                     taskData = maybeData
                     taskError = maybeError
                     
