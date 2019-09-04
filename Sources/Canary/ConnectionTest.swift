@@ -34,7 +34,7 @@ class ConnectionTest
                 let dispatchGroup = DispatchGroup()
                 dispatchGroup.enter()
                 
-                let sessionConfig = URLSessionConfiguration.ephemeral
+                let sessionConfig = URLSessionConfiguration.default
                 sessionConfig.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
                 sessionConfig.urlCache = nil
                 let session = URLSession(configuration: sessionConfig)
