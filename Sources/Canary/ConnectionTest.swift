@@ -34,16 +34,19 @@ class ConnectionTest
                 let dispatchGroup = DispatchGroup()
                 dispatchGroup.enter()
                 
-                let testTask = URLSession.shared.dataTask(with: url, completionHandler:
+                let sessionConfig = URLSessionConfiguration.ephemeral
+                sessionConfig.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+                sessionConfig.urlCache = nil
+                let session = URLSession(configuration: sessionConfig)
+                let testTask = session.dataTask(with: url)
                 {
                     (maybeData, maybeResponse, maybeError) in
                     
-                    let stdin = FileHandle.standardInput
                     taskData = maybeData
                     taskError = maybeError
                     
                     dispatchGroup.leave()
-                })
+                }
                 
                 testTask.resume()
                 
@@ -57,6 +60,8 @@ class ConnectionTest
                 if observedData == controlData
                 {
                     print("\n💕 🐥 It works! 🐥 💕")
+                    print("Observed data = \(observedData.string)")
+                    print("Control data = \(controlData!.string)\n")
                     success = true
                 }
                 else

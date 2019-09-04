@@ -32,6 +32,8 @@ func doTheThing(forTransports transports: [String])
             continue
         }
         
+        print("\nWaiting for user to press enter...")
+        _ = readLine()
         print("\n🍙  Starting test for \(transport) 🍙")
         let queue = OperationQueue()
         let op = BlockOperation(block:
