@@ -123,7 +123,7 @@ class ShapeshifterController
                 
                 //IP and Port for our PT Server
                 processArguments.append("-target")
-                processArguments.append("\(serverIP):\(ptServerPort)")
+                processArguments.append("\(serverIP):\(obfs4ServerPort)")
             }
             else if transport == shadowsocks
             {

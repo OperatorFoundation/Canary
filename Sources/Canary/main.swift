@@ -19,6 +19,19 @@ func doTheThing(forTransports transports: [String])
 
     for transport in transports
     {
+        var transportPort: String
+        
+        switch transport
+        {
+        case shadowsocks:
+            transportPort = shsocksServerPort
+        case obfs4:
+            transportPort = obfs4ServerPort
+        default:
+            print("Trying to launch adversary lab client for \(transport) but the correct port is unknown")
+            continue
+        }
+        
         print("\n🍙  Starting test for \(transport) 🍙")
         let queue = OperationQueue()
         let op = BlockOperation(block:
@@ -41,7 +54,7 @@ func doTheThing(forTransports transports: [String])
                 case .okay(_):
                     print("\n✅  Redis successfully launched.")
                     
-                    AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+                    AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport, usingPort: transportPort)
                     
                     if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
                     {

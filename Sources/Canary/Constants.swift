@@ -17,7 +17,7 @@ let checkRedisServerScriptPath = "Sources/Resources/CheckRedisServerScript.sh"
 let killRedisServerScriptPath = "Sources/Resources/KillRedisServerScript.sh"
 let checkRedisServerPortScriptPath = "Sources/Resources/CheckRedisServerPortScript.sh"
 
-let ptServerPort = "1234"
+let obfs4ServerPort = "1234"
 let shsocksServerPort = "2345"
 //let shSocksServerIPFilePath = "Resources/shSocksServerIP"
 

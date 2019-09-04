@@ -16,10 +16,11 @@ class AdversaryLabController
     //Not sure why the server launch task?
     //private var serverLaunchTask: Process?
     
-    func launchAdversaryLab(forTransport transport: String)
+    func launchAdversaryLab(forTransport transport: String, usingPort transportPort: String)
     {
         print("\n🔬  Launching Adversary Lab")
-        let arguments = ["capture", transport, "allow", "1234"]
+        
+        let arguments = ["capture", transport, "allow", transportPort]
         if clientLaunchTask == nil
         {
             //Creates a new Process and assigns it to the launchTask property.
