@@ -10,7 +10,7 @@ import Foundation
 
 func killAll(processToKill: String)
 {
-    print("******* ☠️ KILLALL \(processToKill) CALLED ☠️ *******")
+    print("☠️ KILLALL \(processToKill) CALLED ☠️")
     
     let killTask = Process()
     let executablePath = "/usr/bin/killall"

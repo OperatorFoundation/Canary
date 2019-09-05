@@ -13,24 +13,22 @@ class ShapeshifterController
     private var launchTask: Process?
     static let sharedInstance = ShapeshifterController()
     
-    func launchShapeshifterClient(serverIP: String, transport: String) -> Bool
+    func launchShapeshifterClient(serverIP: String, transport: Transport) -> Bool
     {
         if let arguments = shapeshifterArguments(serverIP: serverIP, transport: transport)
         {
-            print("\n👀 LaunchShapeShifterDispatcher")
-            print("With serverIP: \(serverIP),  and transport:\(transport)")
-            print("Arguments: \(arguments)")
+            print("👀 LaunchShapeShifterDispatcher")
+            print("\(transport), serverIP: \(serverIP)")
+            //print("Arguments: \(arguments)")
             
             if launchTask == nil
             {
                 //Creates a new Process and assigns it to the launchTask property.
-                print("\nCreating a new launch process.")
                 launchTask = Process()
                 
             }
             else
             {
-                print("\nLaunch process already running. Terminating current process and creating a new one.")
                 launchTask!.terminate()
                 launchTask = Process()
             }
@@ -38,22 +36,21 @@ class ShapeshifterController
             guard FileManager.default.fileExists(atPath: shShifterResourcePath)
             else
             {
-                print("\nFailed to find the path for shapeshifter-dispatcher")
+                print("\n🛑  Failed to find the path for shapeshifter-dispatcher")
                 return false
             }
             
-            print("\nFound shapeshifter-dispatcher")
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
             launchTask!.launch()
             sleep(1)
-            print("\nlaunchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
+            print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
 
             return launchTask!.isRunning
         }
         else
         {
-            print("\nFailed to launch Shapeshifter Client.\nCould not create/find the transport state directory path, which is required.")
+            print("\n🛑  Failed to launch Shapeshifter Client.\nCould not create/find the transport state directory path, which is required.")
             
             return false
         }
@@ -61,16 +58,14 @@ class ShapeshifterController
     
     func stopShapeshifterClient()
     {
-        print("\nTerminating Shapeshifter launch task...")
+        print("Terminating Shapeshifter launch task...")
         
         if launchTask != nil
         {
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
             launchTask?.terminate()
-            print("\nStarting wait until exit.")
             launchTask?.waitUntilExit()
-            print("\nWait until exit finished.")
             #else
             killAllShShifter()
             #endif
@@ -80,7 +75,7 @@ class ShapeshifterController
     
     func killAllShShifter()
     {
-        print("******* ☠️ KILLALL ShShifters CALLED ☠️ *******")
+        print("☠️ KILLALL ShShifters CALLED ☠️")
         
         let killTask = Process()
         let killTaskExecutableURL = URL(fileURLWithPath: "/usr/bin/killall", isDirectory: false)
@@ -94,7 +89,7 @@ class ShapeshifterController
         killTask.waitUntilExit()
     }
     
-    func shapeshifterArguments(serverIP: String, transport: String) -> [String]?
+    func shapeshifterArguments(serverIP: String, transport: Transport) -> [String]?
     {
         if let stateDirectory = createTransportStateDirectory()
         {
@@ -109,15 +104,7 @@ class ShapeshifterController
             //Puts Dispatcher in client mode.
             processArguments.append("-client")
             
-            if transport == meek
-            {
-                options = getMeekOptions()
-                
-                //Dummy data to get around meek server bug
-                processArguments.append("-target")
-                processArguments.append("127.0.0.1:1234")
-            }
-            else if transport == obfs4
+            if transport == obfs4
             {
                 options = getObfs4Options()
                 
@@ -133,6 +120,14 @@ class ShapeshifterController
                 processArguments.append("-target")
                 processArguments.append("\(serverIP):\(shsocksServerPort)")
             }
+//            else if transport ==  meek
+//            {
+//                options = getMeekOptions()
+//                
+//                //Dummy data to get around meek server bug
+//                processArguments.append("-target")
+//                processArguments.append("127.0.0.1:1234")
+//            }
             
             if options == nil
             {
@@ -147,13 +142,13 @@ class ShapeshifterController
             {
                 processArguments.append("shadow")
             }
-            else if transport == meek
-            {
-                    processArguments.append("meeklite")
-            }
+//            else if transport == meek
+//            {
+//                    processArguments.append("meeklite")
+//            }
             else
             {
-                processArguments.append(transport)
+                processArguments.append(transport.name)
             }
             
             //This should use generic options based on selected transport
@@ -202,7 +197,7 @@ class ShapeshifterController
         }
         catch
         {
-            print("⁉️ Unable to locate the needed meek options ⁉️.")
+            print("\n⁉️ Unable to locate the needed meek options ⁉️.")
             return nil
         }
     }
@@ -212,7 +207,7 @@ class ShapeshifterController
         guard FileManager.default.fileExists(atPath: obfs4FilePath)
             else
         {
-            print("\nUnable to find obfs4 File at path: \(obfs4FilePath)")
+            print("\n🛑  Unable to find obfs4 File at path: \(obfs4FilePath)")
             return nil
         }
         
@@ -235,7 +230,7 @@ class ShapeshifterController
         guard FileManager.default.fileExists(atPath: shSocksFilePath)
             else
         {
-            print("\nUnable to find shadowsocks File")
+            print("\n🛑  Unable to find shadowsocks File")
             return nil
         }
         
@@ -249,7 +244,7 @@ class ShapeshifterController
         }
         catch
         {
-            print("⁉️ Unable to locate the needed shadowsocks options ⁉️.")
+            print("\n⁉️ Unable to locate the needed shadowsocks options ⁉️.")
             return nil
         }
     }

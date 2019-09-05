@@ -12,7 +12,7 @@ class TestController
 {
     static let sharedInstance = TestController()
     
-    func runTest(withIP serverIP: String, forTransport transport: String) -> TestResult?
+    func runTest(withIP serverIP: String, forTransport transport: Transport) -> TestResult?
     {
         var result: TestResult?
 
@@ -27,11 +27,10 @@ class TestController
         //sleep(10)
         
         ///Connection Test
-        print("\nInitializing connection test.")
         let connectionTest = ConnectionTest()
         let success = connectionTest.run()
         
-        result = TestResult.init(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
+        result = TestResult(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
         
         // Save this result to a file
         let _ = save(result: result!)
@@ -46,7 +45,7 @@ class TestController
     
     func save(result: TestResult) -> Bool
     {
-        let resultString = "\(result.testDate), \(result.serverIP), \(result.transport), \(result.success)\n"
+        let resultString = "\(result.testDate), \(result.serverIP), \(result.transport.name), \(result.success)\n"
         
         guard let resultData = resultString.data(using: .utf8)
             else { return false }
@@ -61,7 +60,7 @@ class TestController
             guard let fileHandler = FileHandle(forWritingAtPath: resultFilePath)
                 else
             {
-                print("\nError creating a file handler to write to \(resultFilePath)")
+                print("\n🛑  Error creating a file handler to write to \(resultFilePath)")
                 return false
             }
             
@@ -93,14 +92,15 @@ class TestController
                 }
                 catch
                 {
-                    print("Error creating output directory at \(outputDirectoryPath): \(error)")
+                    print("\n🛑  Error creating output directory at \(outputDirectoryPath): \(error)")
                     return false
                 }
             }
             
             // Save the new file
             let saved = FileManager.default.createFile(atPath: resultFilePath, contents: newFileData, attributes: nil)
-            print("\nAttempted to create file and save test results to file: \(resultFilePath)\nSuccess: \(saved.description)")
+            print("Test results saved? \(saved.description)")
+            //print("File path: \(resultFilePath)")
             
             return saved
         }
@@ -115,7 +115,6 @@ class TestController
         dateString = dateString.replacingOccurrences(of: "-", with: "_")
         dateString = dateString.replacingOccurrences(of: ":", with: "_")
         
-        print("\n⏰  Now as String is: \(dateString)")
         return dateString
     }
     

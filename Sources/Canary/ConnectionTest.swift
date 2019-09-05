@@ -14,7 +14,7 @@ class ConnectionTest
     
     func run() -> Bool
     {
-        print("\n📣 Running connection test...")
+        print("📣 Running connection test...")
         
         var success = false
         
@@ -29,7 +29,7 @@ class ConnectionTest
             let queue = OperationQueue()
             let op = BlockOperation(block:
             {
-                print("\nAttempting to connect to test site...")
+                print("Attempting to connect to test site...")
                 
                 let dispatchGroup = DispatchGroup()
                 dispatchGroup.enter()
@@ -59,9 +59,9 @@ class ConnectionTest
             {
                 if observedData == controlData
                 {
-                    print("\n💕 🐥 It works! 🐥 💕")
+                    print("💕 🐥 It works! 🐥 💕")
                     print("Observed data = \(observedData.string)")
-                    print("Control data = \(controlData!.string)\n")
+                    print("Control data = \(controlData!.string)")
                     success = true
                 }
                 else

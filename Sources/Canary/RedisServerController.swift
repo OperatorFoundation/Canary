@@ -15,7 +15,7 @@ class RedisServerController
     
     func launchRedisServer(triedShutdown: Bool = false, retryCount: Int = 0, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
-        print("\n🗃  launchRedisServer called")
+        print("🗃  launchRedisServer called")
         isRedisServerRunning
         {
             (serverIsRunning) in
@@ -52,7 +52,7 @@ class RedisServerController
                             return
                         }
                         
-                        print("\n👇👇 Running Script 👇👇:\n")
+                        print("👇👇 Running Script 👇👇:\n")
                         self.runLaunchRedisScript()
                         sleep(1)
                         self.isRedisServerRunning
@@ -146,7 +146,7 @@ class RedisServerController
         guard FileManager.default.fileExists(atPath: checkRedisServerScriptPath)
             else
         {
-            print("\nFailed to find the Check Redis Server Script at \(checkRedisServerScriptPath).")
+            print("\n🛑  Failed to find the Check Redis Server Script at \(checkRedisServerScriptPath).")
             completion(false)
             return
         }
@@ -167,12 +167,12 @@ class RedisServerController
             
             if output == "PONG\n"
             {
-                print("\nWe received a pong, server is already running!!")
+                print("We received a pong, server is already running!!")
                 completion(true)
             }
             else
             {
-                print("\nNo Pong, launch the server!!")
+                print("No Pong, launch the server!!")
                 completion(false)
             }
         }
@@ -185,7 +185,7 @@ class RedisServerController
         guard FileManager.default.fileExists(atPath: checkRedisServerScriptPath)
             else
         {
-            print("Unable to check the Redis server port. Could not find the script.")
+            print("\n🛑  Unable to check the Redis server port. Could not find the script.")
             completion(.failure("Unable to check the Redis server port. Could not find the script."))
             return
         }
@@ -204,12 +204,11 @@ class RedisServerController
             
             if output == ""
             {
-                print("\nOur port is empty")
                 completion(.okay(nil))
             }
             else
             {
-                print("\nReceived a response for our port with lsof: \(output ?? "no output")")
+                print("\n🛑  Received a response for our port with lsof: \(output ?? "no output")")
                 guard let responseString = output
                     else
                 {
@@ -257,12 +256,12 @@ class RedisServerController
         guard FileManager.default.fileExists(atPath: shutdownRedisServerScriptPath)
             else
         {
-            print("Unable to shutdown Redis server. Could not find the script.")
+            print("\n🛑  Unable to shutdown Redis server. Could not find the script.")
             completion(false)
             return
         }
         
-        print("\n👇👇 Running Redis Shutdown Script 👇👇:\n")
+        print("👇👇 Running Redis Shutdown Script 👇👇:\n")
         #if os(macOS)
         runRedisScript(path: shutdownRedisServerScriptPath, arguments: nil)
         {
@@ -287,7 +286,7 @@ class RedisServerController
         guard FileManager.default.fileExists(atPath: killRedisServerScriptPath)
             else
         {
-            print("Unable to kill Redis server. Could not find the script.")
+            print("\n🛑  Unable to kill Redis server. Could not find the script.")
             completion(false)
             return
         }
@@ -316,13 +315,11 @@ class RedisServerController
             if self.redisProcess == nil
             {
                 //Creates a new Process and assigns it to the launchTask property.
-                print("\nCreating a new launch process.")
                 self.redisProcess = Process()
                 
             }
             else
             {
-                print("\nLaunch process already running. Terminating current process and creating a new one.")
                 self.redisProcess!.terminate()
                 self.redisProcess = Process()
             }
@@ -338,7 +335,6 @@ class RedisServerController
             {
                 (task) in
                 
-                print("\nRedis Script Has Terminated.")
                 completion(true)
             }
             
@@ -348,37 +344,35 @@ class RedisServerController
     
     // Redis considers switching databases to be switching between numbered partitions within the same db file.
     // We will be switching instead to a database represented by a completely different file.
-    func saveDatabaseFile(forTransport transportName: String, completion:@escaping (_ completion:Bool) -> Void)
+    func saveDatabaseFile(forTransport transport: Transport, completion:@escaping (_ completion:Bool) -> Void)
     {
-        print("\nSave database file called.")
+        print("Save database file called.")
         let fileManager = FileManager.default
-        let destinationURL = rdbFileURL(forTransport: transportName)
+        let destinationURL = rdbFileURL(forTransport: transport)
         let workingRDBFileURL = currentRDBFileURL()
         
         guard fileManager.fileExists(atPath: workingRDBFileURL.path)
             else
         {
-            print("\nWe couldn't save the Redis DB file. A file was not found at \(workingRDBFileURL)")
+            print("\n🛑  We couldn't save the Redis DB file. A file was not found at \(workingRDBFileURL)")
             completion(false)
             return
         }
         
-        print("\n📂  Trying to move file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
-
         do
         {
-            if rdbFileExists(forTransport: transportName)
+            if rdbFileExists(forTransport: transport)
             {
                 try fileManager.removeItem(at: destinationURL)
             }
             
             try fileManager.moveItem(at: workingRDBFileURL, to: destinationURL)
             
-            print("\n📂  Moved file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
+            print("📂  Moved file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
         }
         catch
         {
-            print("\nError moving redis DB file from:\n\(workingRDBFileURL) to:\n\(destinationURL):\n\(error)")
+            print("📂Error moving redis DB file from:\n\(workingRDBFileURL) to:\n\(destinationURL):\n\(error)")
             completion(false)
             return
         }
@@ -386,7 +380,7 @@ class RedisServerController
         completion(true)
     }
     
-    func rdbFileURL(forTransport transportName: String) -> URL
+    func rdbFileURL(forTransport transport: Transport) -> URL
     {
         let fileManager = FileManager.default
         
@@ -396,7 +390,7 @@ class RedisServerController
         let outputDirectoryPath = outputDirectoryName
         #endif
         
-        let transportDBFilename = "\(transportName).rdb"
+        let transportDBFilename = "\(transport.name).rdb"
         let transportDBFileURL = URL(fileURLWithPath: outputDirectoryPath).appendingPathComponent(transportDBFilename)
         
         // Make sure our output directory exists
@@ -421,9 +415,9 @@ class RedisServerController
         return currentRDBFileURL
     }
     
-    func rdbFileExists(forTransport transportName: String) -> Bool
+    func rdbFileExists(forTransport transport: Transport) -> Bool
     {
-        let transportDBFileURL = rdbFileURL(forTransport: transportName)
+        let transportDBFileURL = rdbFileURL(forTransport: transport)
         
         if FileManager.default.fileExists(atPath: transportDBFileURL.path)
         {
@@ -435,11 +429,11 @@ class RedisServerController
         }
     }
     
-    func loadRDBFile(forTransport transportName: String)
+    func loadRDBFile(forTransport transport: Transport)
     {
-        if rdbFileExists(forTransport: transportName)
+        if rdbFileExists(forTransport: transport)
         {
-            let transportDBFileURL = rdbFileURL(forTransport: transportName)
+            let transportDBFileURL = rdbFileURL(forTransport: transport)
             let workingRDBFileURL = currentRDBFileURL()
             
             if FileManager.default.fileExists(atPath: workingRDBFileURL.path)
@@ -453,7 +447,7 @@ class RedisServerController
             }
             catch
             {
-                print("Unable to move item at \(transportDBFileURL) to \(workingRDBFileURL)\nerror: \(error)")
+                print("\n🛑  Unable to move item at \(transportDBFileURL) to \(workingRDBFileURL)\nerror: \(error)")
             }
         }
     }
@@ -467,7 +461,6 @@ class RedisServerController
         dateString = dateString.replacingOccurrences(of: "-", with: "")
         dateString = dateString.replacingOccurrences(of: ":", with: "")
         
-        print("\n⏰  Now as String is: \(dateString)")
         return dateString
     }
     

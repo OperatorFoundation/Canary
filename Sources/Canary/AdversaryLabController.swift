@@ -16,11 +16,11 @@ class AdversaryLabController
     //Not sure why the server launch task?
     //private var serverLaunchTask: Process?
     
-    func launchAdversaryLab(forTransport transport: String, usingPort transportPort: String)
+    func launchAdversaryLab(forTransport transport: Transport)
     {
-        print("\n🔬  Launching Adversary Lab")
+        print("🔬  Launching Adversary Lab")
         
-        let arguments = ["capture", transport, "allow", transportPort]
+        let arguments = ["capture", transport.name, "allow", transport.port]
         if clientLaunchTask == nil
         {
             //Creates a new Process and assigns it to the launchTask property.
@@ -44,9 +44,7 @@ class AdversaryLabController
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
             clientLaunchTask?.terminate()
-            print("\nStarting wait until exit.")
             clientLaunchTask?.waitUntilExit()
-            print("\nWait until exit finished.")
             #else
             killAll(processToKill: adversaryLabClientProcessName)
             #endif
