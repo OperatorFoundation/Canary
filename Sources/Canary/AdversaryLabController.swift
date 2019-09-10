@@ -18,7 +18,7 @@ class AdversaryLabController
     {
         print("🔬  Launching Adversary Lab")
         
-        let arguments = ["capture", transport.name, "allow", transport.port]
+        let arguments = [transport.port]
         if clientLaunchTask == nil
         {
             //Creates a new Process and assigns it to the launchTask property.
