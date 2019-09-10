@@ -13,8 +13,6 @@ class AdversaryLabController
 {    
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
-    //Not sure why the server launch task?
-    //private var serverLaunchTask: Process?
     
     func launchAdversaryLab(forTransport transport: Transport)
     {
@@ -37,10 +35,28 @@ class AdversaryLabController
         clientLaunchTask!.launch()
     }
     
-    func stopAdversaryLab()
+    func stopAdversaryLab(testResult: TestResult?)
     {
         if clientLaunchTask != nil
         {
+            if let result = testResult
+            {
+                // Before exiting let Adversary Lab know what kind of category this connection turned out to be based on whether or not the test was successful
+                let category: String
+                
+                switch result.success
+                {
+                case false:
+                    category = "blocked"
+                case true:
+                    category = "allowed"
+                }
+                
+                let pipe = Pipe()
+                clientLaunchTask!.standardInput = pipe
+                pipe.fileHandleForWriting.write("\(category)\n".data)
+            }
+            
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
             clientLaunchTask?.terminate()
@@ -50,16 +66,6 @@ class AdversaryLabController
             #endif
             clientLaunchTask = nil
         }
-//        if clientLaunchTask != nil
-//        {
-//            clientLaunchTask?.terminate()
-//            print("\nStarting wait until exit for stopAdversaryLab.")
-//            clientLaunchTask?.waitUntilExit()
-//            print("\nFinished wait until exit for stopAdversaryLab.")
-//            clientLaunchTask = nil
-//        }
-//
-//        killAll(processToKill: adversaryLabClientProcessName)
     }
 
 }
