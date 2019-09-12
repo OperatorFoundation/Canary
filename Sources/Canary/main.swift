@@ -50,15 +50,17 @@ func doTheThing(forTransports transports: [Transport])
                     if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
                     {
                         print("Test result for \(transport):\n\(transportTestResult)\n")
+                        sleep(20)
                         AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
                     }
                     else
                     {
                         print("\n🛑  Received a nil result when testing \(transport)")
+                        sleep(10)
                         AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     }
                     
-                    sleep(30)
+                    
                     
                     print("Stopped AdversaryLab attempting to shutdown Redis.")
                     RedisServerController.sharedInstance.shutdownRedisServer()
