@@ -50,7 +50,7 @@ func doTheThing(forTransports transports: [Transport])
                     if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
                     {
                         print("Test result for \(transport):\n\(transportTestResult)\n")
-                        sleep(20)
+                        sleep(30)
                         AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
                     }
                     else
