@@ -59,9 +59,7 @@ func doTheThing(forTransports transports: [Transport])
                         sleep(10)
                         AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     }
-                    
-                    
-                    
+                                        
                     print("Stopped AdversaryLab attempting to shutdown Redis.")
                     RedisServerController.sharedInstance.shutdownRedisServer()
                     {
