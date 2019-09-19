@@ -1,11 +1,20 @@
 import Foundation
 
+print("Our current working directory is: \(FileManager.default.currentDirectoryPath)")
+
 //Transports
 let obfs4 = Transport(name: "obfs4", port: obfs4ServerPort)
-//let meek = Transport(name: "meek", port: <#T##String#>)
 let shadowsocks = Transport(name: "shadowsocks", port: shsocksServerPort)
 let allTransports = [obfs4, shadowsocks]
+var resourcesDirectoryPath = "Sources/Resources"
 
+
+/// For each transport provided we run Redis with a transport specific rdb file,
+/// launch AdversaryLabClient to capture our test traffic, and run a connection test.
+/// When testing is complete the transport rdb is moved to a different location so as not to be overwritten ands so that the data is available for testing,
+/// and a csv file is saved with the test results.
+///
+/// - Parameter transports: The list of transports to be tested.
 func doTheThing(forTransports transports: [Transport])
 {
     guard CommandLine.argc > 1
@@ -16,9 +25,18 @@ func doTheThing(forTransports transports: [Transport])
     }
     
     let ipString = CommandLine.arguments[1]
-
+    
+    if CommandLine.argc > 2
+    {
+        resourcesDirectoryPath = CommandLine.arguments[2]
+    }
+    
+    //FileManager.default.changeCurrentDirectoryPath(resourcesDirectoryPath)
+    //print("Our current working directory is: \(FileManager.default.currentDirectoryPath)")
+    
     for transport in transports
     {
+        
         print("\nPress enter to proceed...")
         _ = readLine()
         print("🍙  Starting test for \(transport) 🍙")
@@ -59,7 +77,7 @@ func doTheThing(forTransports transports: [Transport])
                         sleep(10)
                         AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     }
-                                        
+                    
                     print("Stopped AdversaryLab attempting to shutdown Redis.")
                     RedisServerController.sharedInstance.shutdownRedisServer()
                     {

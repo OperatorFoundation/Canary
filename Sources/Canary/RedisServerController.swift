@@ -147,6 +147,7 @@ class RedisServerController
             else
         {
             print("\n🛑  Failed to find the Check Redis Server Script at \(checkRedisServerScriptPath).")
+            print("🤔  Current directory: \(FileManager.default.currentDirectoryPath)")
             completion(false)
             return
         }

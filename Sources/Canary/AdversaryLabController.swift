@@ -13,7 +13,7 @@ class AdversaryLabController
 {    
     static let sharedInstance = AdversaryLabController()
     private var clientLaunchTask: Process?
-    private let pipe = Pipe()
+    private var pipe = Pipe()
     
     func launchAdversaryLab(forTransport transport: Transport)
     {
@@ -30,10 +30,13 @@ class AdversaryLabController
         clientLaunchTask = Process()
         clientLaunchTask!.executableURL = URL(fileURLWithPath: adversaryLabClientPath, isDirectory: false)
         clientLaunchTask!.arguments = arguments
+        
+        // Refresh our pipe just in case we've already used it.
+        pipe = Pipe()
         clientLaunchTask!.standardInput = pipe
         print("🔬  Assigned standard input to pipe.")
-        clientLaunchTask!.launch()
         
+        clientLaunchTask!.launch()
     }
     
     func stopAdversaryLab(testResult: TestResult?)
@@ -50,21 +53,21 @@ class AdversaryLabController
                 switch result.success
                 {
                 case false:
-                    category = "blocked"
+                    category = "block"
                 case true:
-                    category = "allowed"
+                    category = "allow"
                 }
                 
-                print("🔬  Category to report to Adversary lab is: \(category).")
-                
-                clientLaunchTask!.terminationHandler =
+                if clientLaunchTask!.isRunning
                 {
-                    (task) in
-                    
                     self.pipe.fileHandleForWriting.write("\(category)\n".data)
                     print("🔬  Wrote \(category) to AdversaryLab.")
+                    sleep(10)
                 }
-                
+                else
+                {
+                    print("🔬  Unable to tell Adversary Lab what category our test results were because it is no longer running.")
+                }
             }
             
             
@@ -74,6 +77,8 @@ class AdversaryLabController
             clientLaunchTask?.terminate()
             clientLaunchTask?.waitUntilExit()
             #else
+            print("🔬  Waiting so AdversaryLabClient can save data.")
+            sleep(20)
             print("🔬  Calling killall on the AdversaryLab process.")
             killAll(processToKill: adversaryLabClientProcessName)
             #endif

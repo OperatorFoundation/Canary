@@ -12,6 +12,13 @@ class TestController
 {
     static let sharedInstance = TestController()
     
+    
+    /// Launches shapeshifter dispatcher with the transport, runs a connection test, and then saves the results to a csv file.
+    ///
+    /// - Parameters:
+    ///   - serverIP: A string value indicating the IPV4 address of the transport server.
+    ///   - transport: The information needed to indicate which transport we are testing.
+    /// - Returns: A TestResult value that indicates whether or not the connection test was successful. This is the same test result information that is also saved to a timestamped csv file.
     func runTest(withIP serverIP: String, forTransport transport: Transport) -> TestResult?
     {
         var result: TestResult?
@@ -43,6 +50,12 @@ class TestController
         return result
     }
     
+    
+    /// Saves the provided test results to a csv file with a filename that contains a timestamp.
+    /// If a file with this name already exists it will append the results to the end of the file.
+    ///
+    /// - Parameter result: The test result information to be saved. The type is a TestResult struct.
+    /// - Returns: A boolean value indicating whether or not the results were saved successfully.
     func save(result: TestResult) -> Bool
     {
         let resultString = "\(result.testDate), \(result.serverIP), \(result.transport.name), \(result.success)\n"

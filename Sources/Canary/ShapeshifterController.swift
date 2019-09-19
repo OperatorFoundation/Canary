@@ -151,30 +151,28 @@ class ShapeshifterController
                 processArguments.append(transport.name)
             }
             
-            //This should use generic options based on selected transport
-            //Paramaters needed by the specific transport being used
+            // This should use generic options based on selected transport
+            // Paramaters needed by the specific transport being used
             processArguments.append("-options")
             processArguments.append(options!)
             
-            //Creates a directory if it doesn't already exist for transports to save needed files
+            // Creates a directory if it doesn't already exist for transports to save needed files
             processArguments.append("-state")
             processArguments.append(stateDirectory)
             
-            /// -logLevel string
-            //Log level (ERROR/WARN/INFO/DEBUG) (default "ERROR")
+            // Log level (ERROR/WARN/INFO/DEBUG) (default "ERROR")
             processArguments.append("-logLevel")
             processArguments.append("DEBUG")
             
-            //Log to TOR_PT_STATE_LOCATION/dispatcher.log
+            // Log to TOR_PT_STATE_LOCATION/dispatcher.log
             processArguments.append("-enableLogging")
             
-            /// -ptversion string
-            //Specify the Pluggable Transport protocol version to use
-            //We are using Pluggable Transports version 2.0
+            // Specify the Pluggable Transport protocol version to use
+            // We are using Pluggable Transports version 2.0
             processArguments.append("-ptversion")
             processArguments.append("2")
             
-            //Port for shapeshifter client to listen on
+            // Port for shapeshifter client to listen on
             processArguments.append("-proxylistenaddr")
             processArguments.append("127.0.0.1:1234")
             
