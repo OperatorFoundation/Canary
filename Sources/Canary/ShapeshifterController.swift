@@ -120,6 +120,14 @@ class ShapeshifterController
                 processArguments.append("-target")
                 processArguments.append("\(serverIP):\(shsocksServerPort)")
             }
+            else if transport == replicant
+            {
+                options = getReplicantOptions()
+                
+                //IP and Port for our PT Server
+                processArguments.append("-target")
+                processArguments.append("\(serverIP):\(replicantServerPort)")
+            }
 //            else if transport ==  meek
 //            {
 //                options = getMeekOptions()
@@ -243,6 +251,32 @@ class ShapeshifterController
         catch
         {
             print("\n⁉️ Unable to locate the needed shadowsocks options ⁉️.")
+            print(error)
+            return nil
+        }
+    }
+    
+    func getReplicantOptions() -> String?
+    {
+        guard FileManager.default.fileExists(atPath: replicantFilePath)
+            else
+        {
+            print("\n🛑  Unable to find Replicant File at path: \(replicantFilePath)")
+            return nil
+        }
+        
+        do
+        {
+            let optionsURL = URL(fileURLWithPath: replicantFilePath)
+            let replicantOptionsData = try Data(contentsOf: optionsURL, options: .uncached)
+            let rawOptions = String(data: replicantOptionsData, encoding: String.Encoding.ascii)
+            let replicantOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")
+            return replicantOptions
+        }
+        catch
+        {
+            print("\n⁉️ Unable to locate the needed Replicant options ⁉️.")
+            print(error)
             return nil
         }
     }

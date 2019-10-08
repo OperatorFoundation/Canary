@@ -9,20 +9,22 @@ import Foundation
 
 class ConnectionTest
 {
-    let testWebAddress = "http://127.0.0.1:1234/"
-    let canaryString = "Yeah!\n"
+    var testWebAddress: String
+    var canaryString: String?
+    
+    init(testWebAddress: String, canaryString: String?)
+    {
+        self.testWebAddress = testWebAddress
+        self.canaryString = canaryString
+    }
     
     func run() -> Bool
     {
         print("📣 Running connection test...")
         
-        var success = false
-        
-        //Control Data
-        let controlData = canaryString.data(using: String.Encoding.utf8)
-        
         if let url = URL(string: testWebAddress)
         {
+            var taskResponse: HTTPURLResponse?
             var taskData: Data?
             var taskError: Error?
             
@@ -42,6 +44,7 @@ class ConnectionTest
                 {
                     (maybeData, maybeResponse, maybeError) in
                     
+                    taskResponse = maybeResponse as? HTTPURLResponse
                     taskData = maybeData
                     taskError = maybeError
                     
@@ -55,43 +58,54 @@ class ConnectionTest
             
             queue.addOperations([op], waitUntilFinished: true)
             
-            if let observedData = taskData
+            guard let response = taskResponse
+                else { return false}
+            
+            guard response.statusCode == 200
+                else { return false }
+            
+            print("💕 received status code 200 💕")
+            
+            //Control Data
+            if canaryString != nil
             {
-                if observedData == controlData
+                let controlData = canaryString!.data(using: String.Encoding.utf8)
+                
+                if let observedData = taskData
                 {
-                    print("💕 🐥 It works! 🐥 💕")
-                    print("Observed data = \(observedData.string)")
-                    print("Control data = \(controlData!.string)")
-                    success = true
-                }
-                else
-                {
-                    print("\n🖤  We connected but the data did not match. 🖤")
-                    
-                    if let observedString = String(data: observedData, encoding: String.Encoding.ascii)
+                    if observedData == controlData
                     {
-                        print("Here's what we got back instead: \(observedString)")
+                        print("💕 🐥 It works! 🐥 💕")
+                        print("Observed data = \(observedData.string)")
+                        print("Control data = \(controlData!.string)")
+                        return true
                     }
-                    
-                    success = false
+                    else
+                    {
+                        print("\n🖤  We connected but the data did not match. 🖤")
+                        
+                        if let observedString = String(data: observedData, encoding: String.Encoding.ascii)
+                        {
+                            print("Here's what we got back instead: \(observedString)")
+                        }
+                        
+                        return false
+                    }
                 }
             }
-            else
-            {
-                print("\nUnable to connect to test web address.")
-            }
+            
             
             if let error = taskError
             {
                 print("\nReceived an error while trying to connect to our test web address: \(error)")
             }
             
-            return success
+            return true
         }
         else
         {
             print("\nCould not resolve string to url: \(testWebAddress)")
-            return success
+            return false
         }
     }
 }

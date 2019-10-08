@@ -19,7 +19,7 @@ class TestController
     ///   - serverIP: A string value indicating the IPV4 address of the transport server.
     ///   - transport: The information needed to indicate which transport we are testing.
     /// - Returns: A TestResult value that indicates whether or not the connection test was successful. This is the same test result information that is also saved to a timestamped csv file.
-    func runTest(withIP serverIP: String, forTransport transport: Transport) -> TestResult?
+    func runTransportTest(serverIP: String, forTransport transport: Transport) -> TestResult?
     {
         var result: TestResult?
 
@@ -34,7 +34,9 @@ class TestController
         //sleep(10)
         
         ///Connection Test
-        let connectionTest = ConnectionTest()
+        let testWebAddress = "http://127.0.0.1:1234/"
+        let canaryString = "Yeah!\n"
+        let connectionTest = ConnectionTest(testWebAddress: testWebAddress, canaryString: canaryString)
         let success = connectionTest.run()
         
         result = TestResult(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
@@ -50,6 +52,27 @@ class TestController
         return result
     }
     
+    /// Tests ability to connect to a given web address without the use of transports
+    func runWebTest(serverIP: String, transport: Transport, webAddress: String) -> TestResult?
+    {
+        var result: TestResult?
+        
+        ///Connection Test
+        let connectionTest = ConnectionTest(testWebAddress: webAddress, canaryString: nil)
+        let success = connectionTest.run()
+        
+        result = TestResult(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
+        
+        // Save this result to a file
+        let _ = save(result: result!)
+        
+        ///Cleanup
+        print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
+        ShapeshifterController.sharedInstance.stopShapeshifterClient()
+        
+        sleep(5)
+        return result
+    }
     
     /// Saves the provided test results to a csv file with a filename that contains a timestamp.
     /// If a file with this name already exists it will append the results to the end of the file.
@@ -117,6 +140,88 @@ class TestController
             
             return saved
         }
+    }
+    
+    func test(transport: Transport, serverIPString: String, webAddress: String?)
+    {
+        print("\nPress enter to proceed...")
+       _ = readLine()
+       print("🍙  Starting test for \(transport) 🍙")
+       let queue = OperationQueue()
+       let op = BlockOperation(block:
+       {
+           let dispatchGroup = DispatchGroup()
+           dispatchGroup.enter()
+           RedisServerController.sharedInstance.loadRDBFile(forTransport: transport)
+           RedisServerController.sharedInstance.launchRedisServer()
+           {
+               (result) in
+               
+               switch result
+               {
+               case .corruptRedisOnPort(pid: let pid):
+                   print("\n🛑  Redis is already running on our port. PID: \(pid)")
+               case .failure(let failure):
+                   print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
+               case .otherProcessOnPort(name: let processName):
+                   print("\n🛑  Another process \(processName) is using our port.")
+               case .okay(_):
+                   print("✅  Redis successfully launched.")
+                   
+                   AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+                   
+                   sleep(5)
+
+                   if webAddress == nil
+                   {
+                        if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: transport)
+                        {
+                            print("Test result for \(transport):\n\(transportTestResult)\n")
+                            sleep(30)
+                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+                        }
+                        else
+                        {
+                            print("\n🛑  Received a nil result when testing \(transport)")
+                            sleep(10)
+                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                        }
+                   }
+                   else
+                   {
+                        if let webTestResult = self.runWebTest(serverIP: serverIPString, transport: transport, webAddress: webAddress!)
+                        {
+                            print("Test result for \(transport):\n\(webTestResult)\n")
+                            sleep(30)
+                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
+                        }
+                        else
+                        {
+                            print("\n🛑  Received a nil result when testing \(transport)")
+                            sleep(10)
+                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                        }
+                   }
+
+                   print("Stopped AdversaryLab attempting to shutdown Redis.")
+                   RedisServerController.sharedInstance.shutdownRedisServer()
+                   {
+                       (success) in
+                       
+                       RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
+                       {
+                           (didSave) in
+                           
+                           dispatchGroup.leave()
+                       })
+                   }
+               }
+           }
+           
+           dispatchGroup.wait()
+       })
+       
+       queue.addOperations([op], waitUntilFinished: true)
     }
     
     func getNowAsString() -> String

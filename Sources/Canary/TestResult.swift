@@ -10,16 +10,16 @@ import Foundation
 
 struct TestResult
 {
-    // The IP of the server we are testing
+    /// The IP of the server we are testing
     var serverIP: String
     
-    ///The date the test was run.
+    /// The date the test was run.
     var testDate: Date
     
-    ///The transport that was tested.
+    /// The transport that was tested.
     var transport: Transport
     
-    //Whether or not the test succeeded.
+    /// Whether or not the test succeeded.
     var success = false
     
 }

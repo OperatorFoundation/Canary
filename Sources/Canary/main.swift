@@ -1,14 +1,5 @@
 import Foundation
 
-print("Our current working directory is: \(FileManager.default.currentDirectoryPath)")
-
-//Transports
-let obfs4 = Transport(name: "obfs4", port: obfs4ServerPort)
-let shadowsocks = Transport(name: "shadowsocks", port: shsocksServerPort)
-let allTransports = [obfs4, shadowsocks]
-var resourcesDirectoryPath = "Sources/Resources"
-
-
 /// For each transport provided we run Redis with a transport specific rdb file,
 /// launch AdversaryLabClient to capture our test traffic, and run a connection test.
 /// When testing is complete the transport rdb is moved to a different location so as not to be overwritten ands so that the data is available for testing,
@@ -20,7 +11,7 @@ func doTheThing(forTransports transports: [Transport])
     guard CommandLine.argc > 1
     else
     {
-        print("\nServer IP:port are required for testing")
+        print("\nServer IP required for testing")
         return
     }
     
@@ -32,75 +23,19 @@ func doTheThing(forTransports transports: [Transport])
     }
     
     //FileManager.default.changeCurrentDirectoryPath(resourcesDirectoryPath)
-    //print("Our current working directory is: \(FileManager.default.currentDirectoryPath)")
     
     for transport in transports
     {
-        
-        print("\nPress enter to proceed...")
-        _ = readLine()
-        print("🍙  Starting test for \(transport) 🍙")
-        let queue = OperationQueue()
-        let op = BlockOperation(block:
-        {
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.enter()
-            RedisServerController.sharedInstance.loadRDBFile(forTransport: transport)
-            RedisServerController.sharedInstance.launchRedisServer()
-            {
-                (result) in
-                
-                switch result
-                {
-                case .corruptRedisOnPort(pid: let pid):
-                    print("\n🛑  Redis is already running on our port. PID: \(pid)")
-                case .failure(let failure):
-                    print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
-                case .otherProcessOnPort(name: let processName):
-                    print("\n🛑  Another process \(processName) is using our port.")
-                case .okay(_):
-                    print("✅  Redis successfully launched.")
-                    
-                    AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
-                    
-                    sleep(5)
-                    
-                    if let transportTestResult = TestController.sharedInstance.runTest(withIP: ipString, forTransport: transport)
-                    {
-                        print("Test result for \(transport):\n\(transportTestResult)\n")
-                        sleep(30)
-                        AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
-                    }
-                    else
-                    {
-                        print("\n🛑  Received a nil result when testing \(transport)")
-                        sleep(10)
-                        AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                    }
-                    
-                    print("Stopped AdversaryLab attempting to shutdown Redis.")
-                    RedisServerController.sharedInstance.shutdownRedisServer()
-                    {
-                        (success) in
-                        
-                        RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
-                        {
-                            (didSave) in
-                            
-                            dispatchGroup.leave()
-                        })
-                    }
-                }
-            }
-            
-            dispatchGroup.wait()
-        })
-        
-        queue.addOperations([op], waitUntilFinished: true)
+        TestController.sharedInstance.test(transport: transport, serverIPString: ipString, webAddress: nil)
+    }
+    
+    for webAddress in testWebAddresses
+    {
+        TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
     }
 }
 
-doTheThing(forTransports:[obfs4, shadowsocks])
+doTheThing(forTransports:allTransports)
 ShapeshifterController.sharedInstance.killAllShShifter()
 
 signal(SIGINT)
