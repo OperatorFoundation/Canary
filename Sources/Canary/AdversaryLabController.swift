@@ -42,6 +42,7 @@ class AdversaryLabController
     func stopAdversaryLab(testResult: TestResult?)
     {
         print("🔬  Stop AdversaryLab called.")
+        sleep(10)
         if clientLaunchTask != nil
         {
             print("🔬  AdversaryLab process isn't nil.")
