@@ -104,65 +104,39 @@ class ShapeshifterController
             //Puts Dispatcher in client mode.
             processArguments.append("-client")
             
-            if transport == obfs4
+            switch transport
             {
+            case obfs4:
                 options = getObfs4Options()
-                
-                //IP and Port for our PT Server
-                processArguments.append("-target")
-                processArguments.append("\(serverIP):\(obfs4ServerPort)")
-            }
-            else if transport == shadowsocks
-            {
+            case shadowsocks:
                 options = getShadowSocksOptions()
-                
-                //Use Shadowsocks port
-                processArguments.append("-target")
-                processArguments.append("\(serverIP):\(shsocksServerPort)")
-            }
-            else if transport == replicant
-            {
+            case replicant:
                 options = getReplicantOptions()
-                
-                //IP and Port for our PT Server
-                processArguments.append("-target")
-                processArguments.append("\(serverIP):\(replicantServerPort)")
+            case meek:
+                options = getMeekOptions()
+            default:
+                options = nil
             }
-//            else if transport ==  meek
-//            {
-//                options = getMeekOptions()
-//                
-//                //Dummy data to get around meek server bug
-//                processArguments.append("-target")
-//                processArguments.append("127.0.0.1:1234")
-//            }
-            
-            if options == nil
-            {
-                //Something's wrong, let's get out of here.
-                return nil
-            }
+
+            //IP and Port for our PT Server
+            processArguments.append("-target")
+            processArguments.append("\(serverIP):\(transport.port)")
             
             //Here is our list of transports (more than one would launch multiple proxies)
             processArguments.append("-transports")
+            processArguments.append(transport.name)
             
-            if transport == shadowsocks
+            // All transports other than obfs2 require options to be provided
+            if transport != obfs2
             {
-                processArguments.append("shadow")
+                guard options != nil
+                    else { return nil }
+                
+                // This should use generic options based on selected transport
+                // Paramaters needed by the specific transport being used
+                processArguments.append("-options")
+                processArguments.append(options!)
             }
-//            else if transport == meek
-//            {
-//                    processArguments.append("meeklite")
-//            }
-            else
-            {
-                processArguments.append(transport.name)
-            }
-            
-            // This should use generic options based on selected transport
-            // Paramaters needed by the specific transport being used
-            processArguments.append("-options")
-            processArguments.append(options!)
             
             // Creates a directory if it doesn't already exist for transports to save needed files
             processArguments.append("-state")

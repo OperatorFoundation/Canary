@@ -79,7 +79,7 @@ class AdversaryLabController
             clientLaunchTask?.waitUntilExit()
             #else
             print("🔬  Waiting so AdversaryLabClient can save data.")
-            sleep(20)
+            sleep(30)
             print("🔬  Calling killall on the AdversaryLab process.")
             killAll(processToKill: adversaryLabClientProcessName)
             #endif

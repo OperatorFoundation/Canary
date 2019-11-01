@@ -59,10 +59,18 @@ class ConnectionTest
             queue.addOperations([op], waitUntilFinished: true)
             
             guard let response = taskResponse
-                else { return false}
+                else
+            {
+                print("🚫 We did not receive a response 🚫")
+                    return false
+            }
             
             guard response.statusCode == 200
-                else { return false }
+                else
+            {
+                print("🚫 We received a response \(response) with status code \(response.statusCode) 🚫")
+                    return false
+            }
             
             print("💕 received status code 200 💕")
             
