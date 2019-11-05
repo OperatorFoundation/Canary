@@ -350,7 +350,7 @@ class RedisServerController
         print("Save database file called.")
         let fileManager = FileManager.default
         let destinationURL = rdbFileURL(forTransport: transport)
-        let workingRDBFileURL = currentRDBFileURL()
+        let workingRDBFileURL = URL(fileURLWithPath: "./dump.rdb", isDirectory: false) //currentRDBFileURL()
         
         guard fileManager.fileExists(atPath: workingRDBFileURL.path)
             else
