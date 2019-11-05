@@ -80,3 +80,6 @@ redislog.txt
 obfs4redis.conf
 redislog.txt
 redislog.txt
+*.conf
+Sources/Resources/AdversaryLabClient
+Sources/Resources/shapeshifter-dispatcher
