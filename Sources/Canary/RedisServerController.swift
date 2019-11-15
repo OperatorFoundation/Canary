@@ -168,7 +168,6 @@ class RedisServerController
             
             if output == "PONG\n"
             {
-                print("We received a pong, server is already running!!")
                 completion(true)
             }
             else
@@ -343,44 +342,6 @@ class RedisServerController
         }
     }
     
-    // Redis considers switching databases to be switching between numbered partitions within the same db file.
-    // We will be switching instead to a database represented by a completely different file.
-    func saveDatabaseFile(forTransport transport: Transport, completion:@escaping (_ completion:Bool) -> Void)
-    {
-        print("Save database file called.")
-        let fileManager = FileManager.default
-        let destinationURL = rdbFileURL(forTransport: transport)
-        let workingRDBFileURL = URL(fileURLWithPath: "./dump.rdb", isDirectory: false) //currentRDBFileURL()
-        
-        guard fileManager.fileExists(atPath: workingRDBFileURL.path)
-            else
-        {
-            print("\n🛑  We couldn't save the Redis DB file. A file was not found at \(workingRDBFileURL)")
-            completion(false)
-            return
-        }
-        
-        do
-        {
-            if rdbFileExists(forTransport: transport)
-            {
-                try fileManager.removeItem(at: destinationURL)
-            }
-            
-            try fileManager.moveItem(at: workingRDBFileURL, to: destinationURL)
-            
-            print("📂  Moved file from: \n\(workingRDBFileURL)\nto:\n\(destinationURL)\n")
-        }
-        catch
-        {
-            print("📂Error moving redis DB file from:\n\(workingRDBFileURL) to:\n\(destinationURL):\n\(error)")
-            completion(false)
-            return
-        }
-        
-        completion(true)
-    }
-    
     func rdbFileURL(forTransport transport: Transport) -> URL
     {
         let fileManager = FileManager.default
@@ -416,39 +377,48 @@ class RedisServerController
         return currentRDBFileURL
     }
     
-    func rdbFileExists(forTransport transport: Transport) -> Bool
-    {
-        let transportDBFileURL = rdbFileURL(forTransport: transport)
-        
-        if FileManager.default.fileExists(atPath: transportDBFileURL.path)
-        {
-            return true
-        }
-        else
-        {
-            return false
-        }
-    }
+//    func rdbFileExists(forTransport transport: Transport) -> Bool
+//    {
+//        let transportDBFileURL = rdbFileURL(forTransport: transport)
+//
+//        if FileManager.default.fileExists(atPath: transportDBFileURL.path)
+//        {
+//            return true
+//        }
+//        else
+//        {
+//            return false
+//        }
+//    }
     
-    func loadRDBFile(forTransport transport: Transport)
+    func loadRDBFileAndRelaunch(forTransport transport: Transport, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
-        if rdbFileExists(forTransport: transport)
-        {
-            let transportDBFileURL = rdbFileURL(forTransport: transport)
-            let workingRDBFileURL = currentRDBFileURL()
+        launchRedisServer
+        { (serverLaunchResult) in
             
-            if FileManager.default.fileExists(atPath: workingRDBFileURL.path)
+            switch serverLaunchResult
             {
-                try? FileManager.default.removeItem(at: workingRDBFileURL)
-            }
-            
-            do
-            {
-                try FileManager.default.moveItem(at: transportDBFileURL, to: workingRDBFileURL)
-            }
-            catch
-            {
-                print("\n🛑  Unable to move item at \(transportDBFileURL) to \(workingRDBFileURL)\nerror: \(error)")
+            case .okay(_):
+                Auburn.dbfilename = "\(transport.name).rdb"
+                Auburn.shutdownRedis()
+                self.launchRedisServer
+                { (serverLaunchResult) in
+                
+                    switch serverLaunchResult
+                    {
+                    case .okay(_):
+                        Auburn.restartRedis()
+                        completion(serverLaunchResult)
+                    default:
+                        print("/nUnable to load correct transport file, failed to launch Redis.")
+                        completion(serverLaunchResult)
+                        return
+                    }
+                }
+            default:
+                print("/nUnable to load correct transport file, failed to launch Redis.")
+                completion(serverLaunchResult)
+                return
             }
         }
     }

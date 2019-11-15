@@ -136,6 +136,8 @@ class ShapeshifterController
                 // Paramaters needed by the specific transport being used
                 processArguments.append("-options")
                 processArguments.append(options!)
+                
+                print("\nWe have options for this transport: \(options!)\n")
             }
             
             // Creates a directory if it doesn't already exist for transports to save needed files

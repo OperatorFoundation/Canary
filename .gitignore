@@ -83,3 +83,4 @@ redislog.txt
 *.conf
 Sources/Resources/AdversaryLabClient
 Sources/Resources/shapeshifter-dispatcher
+*.conf

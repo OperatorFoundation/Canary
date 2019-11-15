@@ -150,11 +150,10 @@ class TestController
        let queue = OperationQueue()
        let op = BlockOperation(block:
        {
-           let dispatchGroup = DispatchGroup()
-           dispatchGroup.enter()
-           RedisServerController.sharedInstance.loadRDBFile(forTransport: transport)
-           RedisServerController.sharedInstance.launchRedisServer()
-           {
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            RedisServerController.sharedInstance.loadRDBFileAndRelaunch(forTransport: transport)
+            {
                (result) in
                
                switch result
@@ -206,14 +205,9 @@ class TestController
                    print("Stopped AdversaryLab attempting to shutdown Redis.")
                    RedisServerController.sharedInstance.shutdownRedisServer()
                    {
-                       (success) in
+                        (success) in
                        
-                       RedisServerController.sharedInstance.saveDatabaseFile(forTransport: transport, completion:
-                       {
-                           (didSave) in
-                           
-                           dispatchGroup.leave()
-                       })
+                        dispatchGroup.leave()
                    }
                }
            }
