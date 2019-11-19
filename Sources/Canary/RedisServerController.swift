@@ -16,72 +16,63 @@ class RedisServerController
     func launchRedisServer(triedShutdown: Bool = false, retryCount: Int = 0, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
         print("🗃  launchRedisServer called")
-        isRedisServerRunning
-        {
-            (serverIsRunning) in
             
-            if serverIsRunning
+        if Auburn.redisIsRunning()
+        {
+            completion(.okay(nil))
+            return
+        }
+        else
+        {
+            self.checkServerPortIsAvailable(completion:
             {
-                completion(.okay(nil))
-                return
-            }
-            else
-            {
-                self.checkServerPortIsAvailable(completion:
+                (result) in
+                
+                switch result
                 {
-                    (result) in
+                case .okay( _):
+                    print("\nServer port is available")
                     
-                    switch result
+                    guard FileManager.default.fileExists(atPath: redisConfigPath)
+                        else
                     {
-                    case .okay( _):
-                        print("\nServer port is available")
-                        
-                        guard FileManager.default.fileExists(atPath: redisConfigPath)
-                            else
-                        {
-                            print("Unable to launch Redis server: could not find redis.conf at \(redisConfigPath)")
-                            completion(.failure("Unable to launch Redis server: could not find redis.conf"))
-                            return
-                        }
-                        
-                        guard FileManager.default.fileExists(atPath: launchRedisServerScriptPath)
-                            else
-                        {
-                            print("Unable to launch Redis server. Could not find the script.")
-                            completion(.failure("Unable to launch Redis server. Could not find the script."))
-                            return
-                        }
-                        
-                        print("👇👇 Running Script 👇👇:\n")
-                        self.runLaunchRedisScript()
-                        sleep(1)
-                        self.isRedisServerRunning
-                        {
-                            (serverIsRunning) in
-                            
-                            if serverIsRunning
-                            {
-                                completion(.okay(nil))
-                                return
-                            }
-                            else
-                            {
-                                self.launchRedisServer(triedShutdown: false, retryCount: retryCount + 1, completion: completion)
-                            }
-                        }
-   
-                    case .otherProcessOnPort(let name):
-                        print("\n🛑  Another process is using our port. Process name: \(name)")
-                        completion(result)
-                    case .corruptRedisOnPort(let pid):
-                        print("\n🛑  Broken redis is already using our port. PID: \(pid)")
-                        self.handleCorruptRedis(triedShutdown: triedShutdown, retryCount: retryCount, pid: pid, completion: completion)
-                    case .failure(let failureString):
-                        print("\n🛑  Failed to check server port: \(failureString ?? "")")
-                        completion(result)
+                        print("Unable to launch Redis server: could not find redis.conf at \(redisConfigPath)")
+                        completion(.failure("Unable to launch Redis server: could not find redis.conf"))
+                        return
                     }
-                })
-            }
+                    
+                    guard FileManager.default.fileExists(atPath: launchRedisServerScriptPath)
+                        else
+                    {
+                        print("Unable to launch Redis server. Could not find the script.")
+                        completion(.failure("Unable to launch Redis server. Could not find the script."))
+                        return
+                    }
+                    
+                    print("👇👇 Running Script 👇👇:\n")
+                    self.runLaunchRedisScript()
+                    sleep(1)
+                    if Auburn.redisIsRunning()
+                    {
+                        completion(.okay(nil))
+                        return
+                    }
+                    else
+                    {
+                        self.launchRedisServer(triedShutdown: false, retryCount: retryCount + 1, completion: completion)
+                    }
+
+                case .otherProcessOnPort(let name):
+                    print("\n🛑  Another process is using our port. Process name: \(name)")
+                    completion(result)
+                case .corruptRedisOnPort(let pid):
+                    print("\n🛑  Broken redis is already using our port. PID: \(pid)")
+                    self.handleCorruptRedis(triedShutdown: triedShutdown, retryCount: retryCount, pid: pid, completion: completion)
+                case .failure(let failureString):
+                    print("\n🛑  Failed to check server port: \(failureString ?? "")")
+                    completion(result)
+                }
+            })
         }
     }
     
@@ -139,45 +130,6 @@ class RedisServerController
                 self.launchRedisServer(triedShutdown: true, retryCount: retryCount, completion: completion)
             }
         }
-    }
-    
-    func isRedisServerRunning(completion:@escaping (_ completion:Bool) -> Void)
-    {
-        guard FileManager.default.fileExists(atPath: checkRedisServerScriptPath)
-            else
-        {
-            print("\n🛑  Failed to find the Check Redis Server Script at \(checkRedisServerScriptPath).")
-            print("🤔  Current directory: \(FileManager.default.currentDirectoryPath)")
-            completion(false)
-            return
-        }
-        
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: checkRedisServerScriptPath, isDirectory: false)
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.terminationHandler =
-        {
-            (task) in
-            
-            // Get the data
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            
-            print(output ?? "no output")
-            
-            if output == "PONG\n"
-            {
-                completion(true)
-            }
-            else
-            {
-                print("No Pong, launch the server!!")
-                completion(false)
-            }
-        }
-        process.waitUntilExit()
-        process.launch()
     }
     
     func checkServerPortIsAvailable(completion:@escaping (_ completion: ServerCheckResult) -> Void)
