@@ -21,11 +21,10 @@ func doTheThing(forTransports transports: [Transport])
     {
         resourcesDirectoryPath = CommandLine.arguments[2]
     }
-    
-    //FileManager.default.changeCurrentDirectoryPath(resourcesDirectoryPath)
-    
+        
     for transport in transports
     {
+        print("\n 🧪 Starting test for \(transport)")
         TestController.sharedInstance.test(transport: transport, serverIPString: ipString, webAddress: nil)
     }
     
@@ -48,6 +47,5 @@ signal(SIGINT)
     ShapeshifterController.sharedInstance.stopShapeshifterClient()
     //AdversaryLabController.sharedInstance.stopAdversaryLabServer()
     
-    //TODO: Write a Report
     exit(0)
 }

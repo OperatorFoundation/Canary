@@ -29,6 +29,7 @@ let meekServerPort = "443"
 
 let meekOptionsPath = "\(resourcesDirectoryPath)/Configs/meek.json"
 let obfs4FilePath = "\(resourcesDirectoryPath)/Configs/obfs4.json"
+let obfs4iatFilePath = "\(resourcesDirectoryPath)/Configs/obfs4iatMode.json"
 let shSocksFilePath = "\(resourcesDirectoryPath)/Configs/shadowsocks.json"
 let replicantFilePath = "\(resourcesDirectoryPath)/Configs/replicant.json"
 
@@ -37,12 +38,13 @@ let redisConfigPath = "\(resourcesDirectoryPath)/redis.conf"
 //Transports
 let obfs2 = Transport(name: "obfs2", port: obfs2ServerPort)
 let obfs4 = Transport(name: "obfs4", port: obfs4ServerPort)
+let obfs4iatMode = Transport(name: "obfs4iatMode", port: obfs4ServerPort)
 let shadowsocks = Transport(name: "shadow", port: shsocksServerPort)
-let replicant = Transport(name: "replicant", port: replicantServerPort)
+let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
 let webTest = Transport(name: "webTest", port: "443")
-let allTransports = [obfs2, meek, obfs4, shadowsocks]
+let allTransports = [obfs4iatMode, shadowsocks, obfs4, replicant, obfs2, meek]
 let testWebAddresses = ["https://swift.org"]
 
 let stateDirectoryPath = "TransportState"

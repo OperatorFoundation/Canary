@@ -107,7 +107,10 @@ class ShapeshifterController
             switch transport
             {
             case obfs4:
-                options = getObfs4Options()
+                options = getObfs4Options(iatMode: false)
+            case obfs4iatMode:
+                print("/nGetting arguments for obfs4 with iat mode.")
+                options = getObfs4Options(iatMode: true)
             case shadowsocks:
                 options = getShadowSocksOptions()
             case replicant:
@@ -123,8 +126,17 @@ class ShapeshifterController
             processArguments.append("\(serverIP):\(transport.port)")
             
             //Here is our list of transports (more than one would launch multiple proxies)
+            let transportName: String
+            if transport == obfs4iatMode
+            {
+                transportName = obfs4.name
+            }
+            else
+            {
+                transportName = transport.name
+            }
             processArguments.append("-transports")
-            processArguments.append(transport.name)
+            processArguments.append(transportName)
             
             // All transports other than obfs2 require options to be provided
             if transport != obfs2
@@ -184,27 +196,54 @@ class ShapeshifterController
         }
     }
     
-    func getObfs4Options() -> String?
+    func getObfs4Options(iatMode: Bool) -> String?
     {
-        guard FileManager.default.fileExists(atPath: obfs4FilePath)
-            else
+        let obfs4OptionsData: Data
+        
+        if iatMode
         {
-            print("\n🛑  Unable to find obfs4 File at path: \(obfs4FilePath)")
-            return nil
+            guard FileManager.default.fileExists(atPath: obfs4iatFilePath)
+                else
+            {
+                print("\n🛑  Unable to find obfs4 File at path: \(obfs4iatFilePath)")
+                return nil
+            }
+            
+            do
+            {
+                obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4iatFilePath, isDirectory: false), options: .uncached)
+            }
+            catch
+            {
+                print("\n⁉️ Unable to locate the needed obfs4 options ⁉️.")
+                return nil
+            }
+        }
+        else
+        {
+            guard FileManager.default.fileExists(atPath: obfs4FilePath)
+                else
+            {
+                print("\n🛑  Unable to find obfs4 File at path: \(obfs4FilePath)")
+                return nil
+            }
+            
+            do
+            {
+                obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4FilePath, isDirectory: false), options: .uncached)
+            }
+            catch
+            {
+                print("\n⁉️ Unable to locate the needed obfs4 options ⁉️.")
+                return nil
+            }
         }
         
-        do
-        {
-            let obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4FilePath, isDirectory: false), options: .uncached)
-            let rawOptions = String(data: obfs4OptionsData, encoding: String.Encoding.ascii)
-            let obfs4Options = rawOptions?.replacingOccurrences(of: "\n", with: "")
-            return obfs4Options
-        }
-        catch
-        {
-            print("\n⁉️ Unable to locate the needed obfs4 options ⁉️.")
-            return nil
-        }
+        let rawOptions = String(data: obfs4OptionsData, encoding: String.Encoding.ascii)
+        let obfs4Options = rawOptions?.replacingOccurrences(of: "\n", with: "")
+        return obfs4Options
+        
+        
     }
     
     func getShadowSocksOptions() -> String?
