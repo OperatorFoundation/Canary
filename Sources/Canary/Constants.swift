@@ -18,6 +18,7 @@ let launchRedisServerScriptPath = "\(resourcesDirectoryPath)/LaunchRedisServerSc
 let checkRedisServerScriptPath = "\(resourcesDirectoryPath)/CheckRedisServerScript.sh"
 let killRedisServerScriptPath = "\(resourcesDirectoryPath)/KillRedisServerScript.sh"
 let checkRedisServerPortScriptPath = "\(resourcesDirectoryPath)/CheckRedisServerPortScript.sh"
+let changeRDBFilenameScriptPath = "\(resourcesDirectoryPath)/ChangeDBFilename.sh"
 
 let obfs2ServerPort = "4567"
 let obfs4ServerPort = "1234"

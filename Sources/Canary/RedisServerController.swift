@@ -6,7 +6,10 @@
 //
 
 import Foundation
+
+#if os(macOS)
 import Auburn
+#endif
 
 class RedisServerController
 {
@@ -403,26 +406,55 @@ class RedisServerController
             switch serverLaunchResult
             {
             case .okay(_):
-                Auburn.dbfilename = "\(transport.name).rdb"
-                Auburn.shutdownRedis()
-                self.launchRedisServer
-                { (serverLaunchResult) in
-                
-                    switch serverLaunchResult
-                    {
-                    case .okay(_):
-                        Auburn.restartRedis()
-                        completion(serverLaunchResult)
-                    default:
-                        print("/nUnable to load correct transport file, failed to launch Redis.")
-                        completion(serverLaunchResult)
-                        return
-                    }
-                }
+                #if os(macOS)
+                self.macLoadRDBFile(for: transport, completion: completion)
+                #elseif os(Linux)
+                self.ubuntuLoadRDBFile(for: transport, completion: completion)
+                #endif
             default:
                 print("/nUnable to load correct transport file, failed to launch Redis.")
                 completion(serverLaunchResult)
                 return
+            }
+        }
+    }
+    
+    func macLoadRDBFile(for transport: Transport, completion:@escaping (_ completion: ServerCheckResult) -> Void)
+    {
+        Auburn.dbfilename = "\(transport.name).rdb"
+        Auburn.shutdownRedis()
+        self.launchRedisServer
+        { (serverLaunchResult) in
+        
+            switch serverLaunchResult
+            {
+            case .okay(_):
+                Auburn.restartRedis()
+                completion(serverLaunchResult)
+            default:
+                print("/nUnable to load correct transport file, failed to launch Redis.")
+                completion(serverLaunchResult)
+                return
+            }
+        }
+    }
+    
+    func ubuntuLoadRDBFile(for transport: Transport, completion:@escaping (_ completion: ServerCheckResult) -> Void)
+    {
+        runRedisScript(path: changeRDBFilenameScriptPath, arguments: ["\(transport.name).rdb"])
+        { (_) in
+            self.launchRedisServer
+            { (serverLaunchResult) in
+            
+                switch serverLaunchResult
+                {
+                case .okay(_):
+                    completion(serverLaunchResult)
+                default:
+                    print("/nUnable to load correct transport file, failed to launch Redis.")
+                    completion(serverLaunchResult)
+                    return
+                }
             }
         }
     }
