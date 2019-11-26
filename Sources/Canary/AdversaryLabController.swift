@@ -61,7 +61,9 @@ class AdversaryLabController
                 
                 if clientLaunchTask!.isRunning
                 {
-                    self.pipe.fileHandleForWriting.write("\(category)\n".data)
+                    let categoryString = "\(category)\n"
+                    let categoryData = categoryString.data
+                    self.pipe.fileHandleForWriting.write(categoryData)
                     print("🔬  Wrote \(category) to AdversaryLab.")
                     sleep(10)
                 }
