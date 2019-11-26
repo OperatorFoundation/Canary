@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Datable
 ///sudo bin/AdversaryLabClient capture obfs4 allow 1234
 
 class AdversaryLabController
