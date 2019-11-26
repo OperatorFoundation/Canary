@@ -19,7 +19,7 @@ class ShapeshifterController
         {
             print("👀 LaunchShapeShifterDispatcher")
             print("\(transport), serverIP: \(serverIP)")
-            //print("Arguments: \(arguments)")
+            print("Arguments: \n\(arguments)\n")
             
             if launchTask == nil
             {
