@@ -33,7 +33,11 @@ let obfs4iatFilePath = "\(resourcesDirectoryPath)/Configs/obfs4iatMode.json"
 let shSocksFilePath = "\(resourcesDirectoryPath)/Configs/shadowsocks.json"
 let replicantFilePath = "\(resourcesDirectoryPath)/Configs/replicant.json"
 
+#if os(macOS)
 let redisConfigPath = "\(resourcesDirectoryPath)/redis.conf"
+#elseif os(Linux)
+let redisConfigPath = "\(resourcesDirectoryPath)/redisUbuntu.conf"
+#endif
 
 //Transports
 let obfs2 = Transport(name: "obfs2", port: obfs2ServerPort)
