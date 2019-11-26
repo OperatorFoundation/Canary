@@ -24,7 +24,7 @@ let package = Package(
 let package = Package(
     name: "Canary",
     dependencies: [
-        .package(url: "https://https://github.com/OperatorFoundation/Datable", from: "1.1.1")
+        .package(url: "https://github.com/OperatorFoundation/Datable", from: "1.1.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
