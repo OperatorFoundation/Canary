@@ -421,6 +421,7 @@ class RedisServerController
     
     func macLoadRDBFile(for transport: Transport, completion:@escaping (_ completion: ServerCheckResult) -> Void)
     {
+        #if os(macOS)
         Auburn.dbfilename = "\(transport.name).rdb"
         Auburn.shutdownRedis()
         self.launchRedisServer
@@ -437,6 +438,9 @@ class RedisServerController
                 return
             }
         }
+        #else
+        completion(ServerCheckResult.corruptRedisOnPort(pid: nil))
+        #endif
     }
     
     func ubuntuLoadRDBFile(for transport: Transport, completion:@escaping (_ completion: ServerCheckResult) -> Void)
