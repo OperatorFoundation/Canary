@@ -439,7 +439,7 @@ class RedisServerController
             }
         }
         #else
-        completion(ServerCheckResult.corruptRedisOnPort(pid: nil))
+        completion(ServerCheckResult.failure(nil))
         #endif
     }
     
