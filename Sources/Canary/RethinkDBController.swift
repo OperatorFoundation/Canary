@@ -10,7 +10,12 @@ import Foundation
 struct RethinkDBController
 {
     static let sharedInstance = RethinkDBController()
+    
+    #if os(macOS)
     let rethinkdb = "/usr/local/bin/rethinkdb"
+    #else
+    let rethinkdb = "/usr/bin/rethinkdb"
+    #endif
     
     func launchRethinkDB()
     {
