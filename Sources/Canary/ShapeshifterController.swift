@@ -109,12 +109,9 @@ class ShapeshifterController
             case obfs4:
                 options = getObfs4Options(iatMode: false)
             case obfs4iatMode:
-                print("/nGetting arguments for obfs4 with iat mode.")
                 options = getObfs4Options(iatMode: true)
             case shadowsocks:
                 options = getShadowSocksOptions()
-            case replicant:
-                options = getReplicantOptions()
             case meek:
                 options = getMeekOptions()
             default:
@@ -141,15 +138,24 @@ class ShapeshifterController
             // All transports other than obfs2 require options to be provided
             if transport != obfs2
             {
-                guard options != nil
-                    else { return nil }
-                
-                // This should use generic options based on selected transport
-                // Paramaters needed by the specific transport being used
-                processArguments.append("-options")
-                processArguments.append(options!)
-                
-                print("\nWe have options for this transport: \(options!)\n")
+                if transport == replicant
+                {
+                    processArguments.append("-options")
+                    // FIXME: This is pointing to a file on our test server
+                    processArguments.append("{}")
+                }
+                else
+                {
+                    guard options != nil
+                        else { return nil }
+                    
+                    // This should use generic options based on selected transport
+                    // Paramaters needed by the specific transport being used
+                    processArguments.append("-options")
+                    processArguments.append(options!)
+                    
+                    print("\nWe have options for this transport: \(options!)\n")
+                }
             }
             
             // Creates a directory if it doesn't already exist for transports to save needed files

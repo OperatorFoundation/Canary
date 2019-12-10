@@ -13,13 +13,6 @@ let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClient"
 let adversaryLabClientProcessName = "AdversaryLabClient"
 let shShifterResourcePath = "\(resourcesDirectoryPath)/shapeshifter-dispatcher"
 
-let shutdownRedisServerScriptPath = "\(resourcesDirectoryPath)/ShutdownRedisServerScript.sh"
-let launchRedisServerScriptPath = "\(resourcesDirectoryPath)/LaunchRedisServerScript.sh"
-let checkRedisServerScriptPath = "\(resourcesDirectoryPath)/CheckRedisServerScript.sh"
-let killRedisServerScriptPath = "\(resourcesDirectoryPath)/KillRedisServerScript.sh"
-let checkRedisServerPortScriptPath = "\(resourcesDirectoryPath)/CheckRedisServerPortScript.sh"
-let changeRDBFilenameScriptPath = "\(resourcesDirectoryPath)/ChangeDBFilename.sh"
-
 let obfs2ServerPort = "4567"
 let obfs4ServerPort = "1234"
 let shsocksServerPort = "2345"
@@ -33,12 +26,6 @@ let obfs4FilePath = "\(resourcesDirectoryPath)/Configs/obfs4.json"
 let obfs4iatFilePath = "\(resourcesDirectoryPath)/Configs/obfs4iatMode.json"
 let shSocksFilePath = "\(resourcesDirectoryPath)/Configs/shadowsocks.json"
 let replicantFilePath = "\(resourcesDirectoryPath)/Configs/replicant.json"
-
-#if os(macOS)
-let redisConfigPath = "\(resourcesDirectoryPath)/redis.conf"
-#elseif os(Linux)
-let redisConfigPath = "\(resourcesDirectoryPath)/redisUbuntu.conf"
-#endif
 
 //Transports
 let obfs2 = Transport(name: "obfs2", port: obfs2ServerPort)

@@ -1,6 +1,5 @@
 import Foundation
 
-/// For each transport provided we run Redis with a transport specific rdb file,
 /// launch AdversaryLabClient to capture our test traffic, and run a connection test.
 /// When testing is complete the transport rdb is moved to a different location so as not to be overwritten ands so that the data is available for testing,
 /// and a csv file is saved with the test results.
@@ -22,6 +21,8 @@ func doTheThing(forTransports transports: [Transport])
         resourcesDirectoryPath = CommandLine.arguments[2]
     }
         
+    RethinkDBController.sharedInstance.launchRethinkDB()
+    
     for transport in transports
     {
         print("\n 🧪 Starting test for \(transport)")
@@ -32,6 +33,8 @@ func doTheThing(forTransports transports: [Transport])
     {
         TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
     }
+    
+    RethinkDBController.sharedInstance.dumpDB(filename: nil)
 }
 
 doTheThing(forTransports:allTransports)

@@ -8,7 +8,6 @@
 
 import Foundation
 import Datable
-///sudo bin/AdversaryLabClient capture obfs4 allow 1234
 
 class AdversaryLabController
 {    
@@ -20,7 +19,17 @@ class AdversaryLabController
     {
         print("🔬  Launching Adversary Lab.")
         
-        let arguments = [transport.port]
+        let transportName: String
+        if transport == obfs4iatMode
+        {
+            transportName = obfs4.name
+        }
+        else
+        {
+            transportName = transport.name
+        }
+        
+        let arguments = [transportName, transport.port]
         
         if clientLaunchTask != nil
         {
@@ -79,7 +88,7 @@ class AdversaryLabController
             #if os(macOS)
             print("🔬  Calling terminate on the AdversaryLab process.")
             clientLaunchTask?.terminate()
-            clientLaunchTask?.waitUntilExit()
+            //clientLaunchTask?.waitUntilExit()
             #else
             print("🔬  Waiting so AdversaryLabClient can save data.")
             sleep(30)

@@ -1,0 +1,33 @@
+2019-12-06T22:11:26.755888000 0.028727s notice: Recursively removing directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data/tmp
+2019-12-06T22:11:26.756877000 0.029723s notice: Initializing directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-06T22:11:26.756965000 0.029804s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/mafalda/Documents/Operator/Canary/rethinkdb_data' did not already exist or is empty.)
+2019-12-06T22:11:26.756998000 0.029836s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-06T22:11:26.762810000 0.035650s notice: Running on Darwin 19.0.0 x86_64
+2019-12-06T22:11:26.762848000 0.035687s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-06T22:11:26.860937000 0.133777s info: Automatically using cache size of 2284 MB
+2019-12-06T22:11:26.861615000 0.134454s error: TCP socket creation failed for port 29015: Address already in use.
+2019-12-06T23:16:14.217666000 0.039918s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-06T23:16:14.226649000 0.048895s notice: Running on Darwin 19.0.0 x86_64
+2019-12-06T23:16:14.226725000 0.048970s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-06T23:16:14.268132000 0.090378s info: Automatically using cache size of 1290 MB
+2019-12-06T23:16:14.268884000 0.091129s error: TCP socket creation failed for port 29015: Address already in use.
+2019-12-09T17:17:03.978973000 0.029417s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-09T17:17:03.984469000 0.034907s notice: Running on Darwin 19.0.0 x86_64
+2019-12-09T17:17:03.984508000 0.034947s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-09T17:17:04.024852000 0.075291s info: Automatically using cache size of 960 MB
+2019-12-09T17:17:04.025637000 0.076076s error: TCP socket creation failed for port 29015: Address already in use.
+2019-12-09T17:23:15.116740000 0.022318s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-09T17:23:15.122090000 0.027664s notice: Running on Darwin 19.0.0 x86_64
+2019-12-09T17:23:15.122145000 0.027719s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-09T17:23:15.156937000 0.062511s info: Automatically using cache size of 1067 MB
+2019-12-09T17:23:15.157693000 0.063267s error: TCP socket creation failed for port 29015: Address already in use.
+2019-12-09T18:29:15.935919000 0.051830s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-09T18:29:15.947445000 0.063352s notice: Running on Darwin 19.0.0 x86_64
+2019-12-09T18:29:15.947497000 0.063403s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-09T18:29:15.983223000 0.099129s info: Automatically using cache size of 776 MB
+2019-12-09T18:29:15.983789000 0.099695s error: TCP socket creation failed for port 29015: Address already in use.
+2019-12-09T20:22:17.904953000 0.025657s notice: Running rethinkdb 2.3.6 (CLANG 11.0.0 (clang-1100.0.33.8))...
+2019-12-09T20:22:17.914375000 0.035071s notice: Running on Darwin 19.0.0 x86_64
+2019-12-09T20:22:17.914430000 0.035125s notice: Loading data from directory /Users/mafalda/Documents/Operator/Canary/rethinkdb_data
+2019-12-09T20:22:17.948206000 0.068901s info: Automatically using cache size of 1063 MB
+2019-12-09T20:22:17.948822000 0.069517s error: TCP socket creation failed for port 29015: Address already in use.

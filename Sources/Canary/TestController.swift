@@ -108,7 +108,6 @@ class TestController
         else
         {
             // Make a new csv file for our test results
-            
             // The first row should be our labels
             let labelRow = "TestDate, ServerIP, Transport, Success\n"
             guard let labelData = labelRow.data(using: .utf8)
@@ -150,65 +149,43 @@ class TestController
        {
             let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
-            RedisServerController.sharedInstance.loadRDBFileAndRelaunch(forTransport: transport)
+            AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+            sleep(5)
+            
+            if webAddress == nil
             {
-               (result) in
-               
-               switch result
-               {
-               case .corruptRedisOnPort(pid: let pid):
-                   print("\n🛑  Redis is already running on our port. PID: \(pid)")
-               case .failure(let failure):
-                   print("\n🛑  Failed to Launch Redis: \(failure ?? "no error given")")
-               case .otherProcessOnPort(name: let processName):
-                   print("\n🛑  Another process \(processName) is using our port.")
-               case .okay(_):
-                   print("✅  Redis successfully launched.")
-                   
-                   AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
-                   
-                   sleep(5)
-
-                   if webAddress == nil
-                   {
-                        if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: transport)
-                        {
-                            print("Test result for \(transport):\n\(transportTestResult)\n")
-                            sleep(30)
-                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
-                        }
-                        else
-                        {
-                            print("\n🛑  Received a nil result when testing \(transport)")
-                            sleep(10)
-                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                        }
-                   }
-                   else
-                   {
-                        if let webTestResult = self.runWebTest(serverIP: serverIPString, transport: transport, webAddress: webAddress!)
-                        {
-                            print("Test result for \(transport):\n\(webTestResult)\n")
-                            sleep(30)
-                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
-                        }
-                        else
-                        {
-                            print("\n🛑  Received a nil result when testing \(transport)")
-                            sleep(10)
-                            AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                        }
-                   }
-
-                   print("Stopped AdversaryLab attempting to shutdown Redis.")
-                   RedisServerController.sharedInstance.shutdownRedisServer()
-                   {
-                        (success) in
-                       
-                        dispatchGroup.leave()
-                   }
-               }
-           }
+                if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: transport)
+                {
+                    print("Test result for \(transport):\n\(transportTestResult)\n")
+                    sleep(30)
+                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+                    dispatchGroup.leave()
+                }
+                else
+                {
+                    print("\n🛑  Received a nil result when testing \(transport)")
+                    sleep(10)
+                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                    dispatchGroup.leave()
+                }
+            }
+            else
+            {
+                if let webTestResult = self.runWebTest(serverIP: serverIPString, transport: transport, webAddress: webAddress!)
+                {
+                    print("Test result for \(transport):\n\(webTestResult)\n")
+                    sleep(30)
+                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
+                    dispatchGroup.leave()
+                }
+                else
+                {
+                    print("\n🛑  Received a nil result when testing \(transport)")
+                    sleep(10)
+                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                    dispatchGroup.leave()
+                }
+            }
            
            dispatchGroup.wait()
        })
