@@ -86,3 +86,4 @@ Sources/Resources/shapeshifter-dispatcher
 *.conf
 rethinkdb_data/metadata
 rethinkdb_data/log_file
+rethinkdb_dump*
