@@ -114,6 +114,8 @@ class ShapeshifterController
                 options = getShadowSocksOptions()
             case meek:
                 options = getMeekOptions()
+            case replicant:
+                options = getReplicantOptions()
             default:
                 options = nil
             }
@@ -138,24 +140,13 @@ class ShapeshifterController
             // All transports other than obfs2 require options to be provided
             if transport != obfs2
             {
-                if transport == replicant
-                {
-                    processArguments.append("-options")
-                    // FIXME: This is pointing to a file on our test server
-                    processArguments.append("{}")
-                }
-                else
-                {
-                    guard options != nil
-                        else { return nil }
-                    
-                    // This should use generic options based on selected transport
-                    // Paramaters needed by the specific transport being used
-                    processArguments.append("-options")
-                    processArguments.append(options!)
-                    
-                    print("\nWe have options for this transport: \(options!)\n")
-                }
+                guard options != nil
+                    else { return nil }
+                
+                // This should use generic options based on selected transport
+                // Paramaters needed by the specific transport being used
+                processArguments.append("-options")
+                processArguments.append(options!)
             }
             
             // Creates a directory if it doesn't already exist for transports to save needed files

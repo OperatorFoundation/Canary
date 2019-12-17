@@ -36,7 +36,7 @@ let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
 let webTest = Transport(name: "webTest", port: "443")
-let allTransports = [obfs4iatMode, shadowsocks, obfs4, replicant, obfs2, meek]
+let allTransports = [replicant, obfs4iatMode, shadowsocks, obfs4, obfs2, meek]
 let testWebAddresses = ["https://swift.org"]
 
 let stateDirectoryPath = "TransportState"
