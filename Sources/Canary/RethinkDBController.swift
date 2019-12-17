@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rethink
 
 struct RethinkDBController
 {
@@ -19,9 +20,13 @@ struct RethinkDBController
     
     func launchRethinkDB()
     {
-        let launchTask = Process()
-        launchTask.executableURL = URL(fileURLWithPath: rethinkdb, isDirectory: false)
-        launchTask.launch()
+        R.connect(URL(string: "rethinkdb://localhost:28015")!) { (connectEError, _) in
+            
+            if let rethinkError = connectEError
+            {
+                print("Error connecting to the rethink database: \(rethinkError)")
+            }
+        }
     }
     
     func dumpDB(filename: String?)
