@@ -20,6 +20,7 @@ struct RethinkDBController
     
     func launchRethinkDB()
     {
+        #if os(macOS)
         R.connect(URL(string: "rethinkdb://localhost:28015")!) { (connectEError, _) in
             
             if let rethinkError = connectEError
@@ -27,6 +28,11 @@ struct RethinkDBController
                 print("Error connecting to the rethink database: \(rethinkError)")
             }
         }
+        #else
+        let launchTask = Process()
+        launchTask.executableURL = URL(fileURLWithPath: rethinkdb, isDirectory: false)
+        launchTask.launch()
+        #endif
     }
     
     func dumpDB(filename: String?)
