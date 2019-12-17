@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if os(macOS)
 import Rethink
+#endif
 
 struct RethinkDBController
 {
