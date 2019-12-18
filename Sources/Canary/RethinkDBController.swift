@@ -14,7 +14,12 @@ struct RethinkDBController
 {
     static let sharedInstance = RethinkDBController()
     
+    #if os(macOS)
     let rethinkdb = "/usr/local/bin/rethinkdb"
+    #else
+    let rethinkdb = "/usr/bin/rethinkdb"
+    #endif
+    
     let python3 = "/usr/bin/python3"
     
     func launchRethinkDB()
