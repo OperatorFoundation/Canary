@@ -14,11 +14,8 @@ struct RethinkDBController
 {
     static let sharedInstance = RethinkDBController()
     
-    #if os(macOS)
     let rethinkdb = "/usr/local/bin/rethinkdb"
-    #else
-    let rethinkdb = "/usr/bin/rethinkdb"
-    #endif
+    let python3 = "/usr/bin/python3"
     
     func launchRethinkDB()
     {
@@ -39,11 +36,38 @@ struct RethinkDBController
     
     func dumpDB(filename: String?)
     {
+        #if os(macOS)
+        macOSDumpDB(filename: filename)
+        #else
+        linuxDumpDB(filename: filename)
+        #endif
+    }
+    
+    func macOSDumpDB(filename: String?)
+    {
         let dumpTask = Process()
         dumpTask.executableURL = URL(fileURLWithPath: rethinkdb, isDirectory: false)
         
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
         var arguments = ["dump"]
+        if filename != nil
+        {
+            arguments.append("-f")
+            arguments.append("\(filename!).tar.gz")
+        }
+        dumpTask.arguments = arguments
+        
+        //Go ahead and run the process/task
+        dumpTask.launch()
+    }
+    
+    func linuxDumpDB(filename: String?)
+    {
+        let dumpTask = Process()
+        dumpTask.executableURL = URL(fileURLWithPath: python3, isDirectory: false)
+        
+        //Arguments will pass the arguments to the executable, as though typed directly into terminal.
+        var arguments = [ "-m", "rethinkdb", "dump"]
         if filename != nil
         {
             arguments.append("-f")
