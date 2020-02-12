@@ -25,7 +25,7 @@ let meekOptionsPath = "\(resourcesDirectoryPath)/Configs/meek.json"
 let obfs4FilePath = "\(resourcesDirectoryPath)/Configs/obfs4.json"
 let obfs4iatFilePath = "\(resourcesDirectoryPath)/Configs/obfs4iatMode.json"
 let shSocksFilePath = "\(resourcesDirectoryPath)/Configs/shadowsocks.json"
-let replicantFilePath = "\(resourcesDirectoryPath)/Configs/replicant.json"
+let replicantFilePath = "\(resourcesDirectoryPath)/Configs/ReplicantClientConfig.json"
 
 //Transports
 let obfs2 = Transport(name: "obfs2", port: obfs2ServerPort)

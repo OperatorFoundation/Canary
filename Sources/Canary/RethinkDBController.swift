@@ -25,9 +25,9 @@ struct RethinkDBController
     func launchRethinkDB()
     {
         #if os(macOS)
-        R.connect(URL(string: "rethinkdb://localhost:28015")!) { (connectEError, _) in
+        R.connect(URL(string: "rethinkdb://localhost:28015")!) { (connectError, _) in
             
-            if let rethinkError = connectEError
+            if let rethinkError = connectError
             {
                 print("Error connecting to the rethink database: \(rethinkError)")
             }

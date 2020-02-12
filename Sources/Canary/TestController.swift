@@ -141,8 +141,8 @@ class TestController
     
     func test(transport: Transport, serverIPString: String, webAddress: String?)
     {
-        print("\nPress enter to proceed...")
-       _ = readLine()
+//        print("\nPress enter to proceed...")
+//       _ = readLine()
        print("🍙  Starting test for \(transport) 🍙")
        let queue = OperationQueue()
        let op = BlockOperation(block:
