@@ -25,7 +25,7 @@ func doTheThing(forTransports transports: [Transport])
     
     for transport in transports
     {
-        print("\n 🧪 Starting test for \(transport)")
+        print("\n 🧪 Starting test for \(transport.name)")
         TestController.sharedInstance.test(transport: transport, serverIPString: ipString, webAddress: nil)
     }
     

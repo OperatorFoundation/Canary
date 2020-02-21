@@ -37,7 +37,16 @@ let meek = Transport(name: "meeklite", port: meekServerPort)
 
 let webTest = Transport(name: "webTest", port: "443")
 let allTransports = [replicant, obfs4iatMode, shadowsocks, obfs4, obfs2, meek]
-let testWebAddresses = ["https://swift.org"]
+let testWebAddresses = ["https://www.reddit.com/",
+                        "https://twitter.com/home",
+                        "https://www.facebook.com/",
+                        "https://www.youtube.com/",
+                        "https://www.netflix.com/",
+                        "https://www.spotify.com/",
+                        "https://www.instagram.com/",
+                        "https://www.hulu.com/",
+                        "https://www.cnn.com/",
+                        "https://www.wikipedia.org/"]
 
 let stateDirectoryPath = "TransportState"
 

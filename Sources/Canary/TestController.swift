@@ -143,7 +143,6 @@ class TestController
     {
 //        print("\nPress enter to proceed...")
 //       _ = readLine()
-       print("🍙  Starting test for \(transport) 🍙")
        let queue = OperationQueue()
        let op = BlockOperation(block:
        {
@@ -156,14 +155,14 @@ class TestController
             {
                 if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: transport)
                 {
-                    print("Test result for \(transport):\n\(transportTestResult)\n")
-                    sleep(30)
+                    //print("Test result for \(transport.name):\n\(transportTestResult)\n")
+                    sleep(20)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
                     dispatchGroup.leave()
                 }
                 else
                 {
-                    print("\n🛑  Received a nil result when testing \(transport)")
+                    print("\n🛑  Received a nil result when testing \(transport.name)")
                     sleep(10)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     dispatchGroup.leave()
@@ -173,14 +172,14 @@ class TestController
             {
                 if let webTestResult = self.runWebTest(serverIP: serverIPString, transport: transport, webAddress: webAddress!)
                 {
-                    print("Test result for \(transport):\n\(webTestResult)\n")
-                    sleep(30)
+                    //print("Test result for \(transport.name):\n\(webTestResult)\n")
+                    sleep(20)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
                     dispatchGroup.leave()
                 }
                 else
                 {
-                    print("\n🛑  Received a nil result when testing \(transport)")
+                    print("\n🛑  Received a nil result when testing \(transport.name)")
                     sleep(10)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     dispatchGroup.leave()
