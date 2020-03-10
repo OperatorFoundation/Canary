@@ -51,7 +51,6 @@ class ShapeshifterController
         else
         {
             print("\n🛑  Failed to launch Shapeshifter Client.\nCould not create/find the transport state directory path, which is required.")
-            
             return false
         }
     }
