@@ -19,7 +19,15 @@ class AdversaryLabController
     {
         print("🔬  Launching Adversary Lab.")
         
+        guard FileManager.default.fileExists(atPath: adversaryLabClientPath)
+        else
+        {
+            print("\n🛑  Failed to find the path for adversary lab at \(adversaryLabClientPath)")
+            return
+        }
+        
         let transportName: String
+        
         if transport == obfs4iatMode
         {
             transportName = obfs4.name

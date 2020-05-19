@@ -40,11 +40,15 @@ class ShapeshifterController
                 return false
             }
             
-            launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
+            let exeURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
+            print("Executable URL: \(exeURL.absoluteString)")
+            
+            print("Is it usable? \(try? exeURL.checkResourceIsReachable())")
+            launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
             print("Resource Path: \(shShifterResourcePath)")
             launchTask!.launch()
-            sleep(1)
+            sleep(3)
             print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
 
             return launchTask!.isRunning
