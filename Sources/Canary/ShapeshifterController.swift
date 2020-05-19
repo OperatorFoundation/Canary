@@ -49,6 +49,7 @@ class ShapeshifterController
             print("Resource Path: \(shShifterResourcePath)")
             
             do {
+                print("Trying to run dispatcher...")
                 try launchTask!.run()
             } catch let error {
                 print("Failed to run dispatcher: \(error)")
