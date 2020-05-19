@@ -19,8 +19,6 @@ class ShapeshifterController
         {
             print("👀 launchShapeShifterDispatcher called. Transport: \(transport.name)")
             
-            //print("Arguments: \n\(arguments)\n")
-            
             if launchTask == nil
             {
                 //Creates a new Process and assigns it to the launchTask property.
@@ -43,20 +41,24 @@ class ShapeshifterController
             let exeURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             print("Executable URL: \(exeURL.absoluteString)")
             
-            print("Is it usable? \(try? exeURL.checkResourceIsReachable())")
+            print("Is it usable? \(String(describing: try? exeURL.checkResourceIsReachable()))")
             launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
             print("Resource Path: \(shShifterResourcePath)")
+            print("Arguments: \n\(arguments)\n")
             
-            do {
+            do
+            {
                 print("Trying to run dispatcher...")
                 try launchTask!.run()
-            } catch let error {
+            }
+            catch let error
+            {
                 print("Failed to run dispatcher: \(error)")
                 return false
             }
             
-            //launch()
+            print("Sleeping...")
             sleep(3)
             print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
 
