@@ -10,7 +10,7 @@ import Foundation
 #if os(macOS)
 var resourcesDirectoryPath = "Sources/Resources"
 #else
-var resourcesDirectoryPath = "\(FileManager.default.homeDirectoryForCurrentUser.absoluteString)/Canary/Sources/Resources"
+var resourcesDirectoryPath = "/home/mafalda/Canary/Sources/Resources"
 #endif
 
 let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClient"
