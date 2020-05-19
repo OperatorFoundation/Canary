@@ -17,9 +17,9 @@ class ShapeshifterController
     {
         if let arguments = shapeshifterArguments(serverIP: serverIP, transport: transport)
         {
-            print("👀 LaunchShapeShifterDispatcher")
-            print("\(transport.name)")
-           //print("Arguments: \n\(arguments)\n")
+            print("👀 launchShapeShifterDispatcher called. Transport: \(transport.name)")
+            
+            //print("Arguments: \n\(arguments)\n")
             
             if launchTask == nil
             {
@@ -42,6 +42,7 @@ class ShapeshifterController
             
             launchTask!.executableURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.arguments = arguments
+            print("Resource Path: \(shShifterResourcePath)")
             launchTask!.launch()
             sleep(1)
             print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
