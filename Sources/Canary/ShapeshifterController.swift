@@ -46,6 +46,7 @@ class ShapeshifterController
             launchTask!.arguments = arguments
             print("Resource Path: \(shShifterResourcePath)")
             print("Arguments: \n\(arguments)\n")
+            print(arguments.joined(separator: " "))
             
             do
             {
@@ -130,7 +131,7 @@ class ShapeshifterController
             case meek:
                 options = getMeekOptions()
             case replicant:
-                options = getReplicantOptions()
+                options = replicantFilePath
             default:
                 options = nil
             }
@@ -158,10 +159,26 @@ class ShapeshifterController
                 guard options != nil
                     else { return nil }
                 
-                // This should use generic options based on selected transport
-                // Paramaters needed by the specific transport being used
-                processArguments.append("-options")
-                processArguments.append(options!)
+                
+                if transport == replicant
+                {
+                    guard FileManager.default.fileExists(atPath: replicantFilePath)
+                        else
+                    {
+                        print("\n🛑  Unable to find Replicant File at path: \(replicantFilePath)")
+                        return nil
+                    }
+                    
+                    processArguments.append("-optionsFile")
+                    processArguments.append(options!)
+                }
+                else
+                {
+                    // This should use generic options based on selected transport
+                    // Parameters needed by the specific transport being used
+                    processArguments.append("-options")
+                    processArguments.append(options!)
+                }
             }
             
             // Creates a directory if it doesn't already exist for transports to save needed files
@@ -278,31 +295,6 @@ class ShapeshifterController
         catch
         {
             print("\n⁉️ Unable to locate the needed shadowsocks options ⁉️.")
-            print(error)
-            return nil
-        }
-    }
-    
-    func getReplicantOptions() -> String?
-    {
-        guard FileManager.default.fileExists(atPath: replicantFilePath)
-            else
-        {
-            print("\n🛑  Unable to find Replicant File at path: \(replicantFilePath)")
-            return nil
-        }
-        
-        do
-        {
-            let optionsURL = URL(fileURLWithPath: replicantFilePath)
-            let replicantOptionsData = try Data(contentsOf: optionsURL, options: .uncached)
-            let rawOptions = String(data: replicantOptionsData, encoding: String.Encoding.ascii)
-            let replicantOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")
-            return replicantOptions
-        }
-        catch
-        {
-            print("\n⁉️ Unable to locate the needed Replicant options ⁉️.")
             print(error)
             return nil
         }

@@ -8,7 +8,7 @@
 import Foundation
 
 #if os(macOS)
-var resourcesDirectoryPath = "Sources/Resources"
+var resourcesDirectoryPath = "/Users/mafalda/Documents/Operator/Canary/Sources/Resources"
 #else
 var resourcesDirectoryPath = "/home/mafalda/Canary/Sources/Resources"
 #endif
