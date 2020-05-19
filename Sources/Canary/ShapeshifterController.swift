@@ -47,7 +47,15 @@ class ShapeshifterController
             launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
             print("Resource Path: \(shShifterResourcePath)")
-            launchTask!.launch()
+            
+            do {
+                try launchTask!.run()
+            } catch let error {
+                print("Failed to run dispatcher: \(error)")
+                return false
+            }
+            
+            //launch()
             sleep(3)
             print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
 
