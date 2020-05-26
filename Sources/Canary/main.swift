@@ -29,10 +29,10 @@ func doTheThing(forTransports transports: [Transport])
         TestController.sharedInstance.test(transport: transport, serverIPString: ipString, webAddress: nil)
     }
     
-//    for webAddress in testWebAddresses
-//    {
-//        TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
-//    }
+    for webAddress in testWebAddresses
+    {
+        TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
+    }
     
     RethinkDBController.sharedInstance.dumpDB(filename: nil)
 }
