@@ -40,12 +40,10 @@ let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
 let webTest = Transport(name: "webTest", port: "443")
-let allTransports = [replicant, obfs4iatMode, shadowsocks, obfs4, obfs2]
+let allTransports = [replicant, shadowsocks, obfs4]
 //meek
 let testWebAddresses = ["https://www.youtube.com/",
-                        "https://www.netflix.com/",
                         "https://www.instagram.com/",
-                        "https://www.hulu.com/",
                         "https://www.cnn.com/",
                         "https://www.wikipedia.org/"]
 
