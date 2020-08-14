@@ -1,3 +1,25 @@
+//  MIT License
+//
+//  Copyright (c) 2020 Operator Foundation
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import Foundation
 
 /// launch AdversaryLabClient to capture our test traffic, and run a connection test.
@@ -20,9 +42,7 @@ func doTheThing(forTransports transports: [Transport])
     {
         resourcesDirectoryPath = CommandLine.arguments[2]
     }
-        
-    RethinkDBController.sharedInstance.launchRethinkDB()
-    
+            
     for transport in transports
     {
         print("\n 🧪 Starting test for \(transport.name)")
@@ -34,7 +54,9 @@ func doTheThing(forTransports transports: [Transport])
         TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
     }
     
-    RethinkDBController.sharedInstance.dumpDB(filename: nil)
+    // TODO: Zip up the adversary_data directory created by AdversaryLabClient.
+    // This directory contains our test results.
+    zipResults()
 }
 
 doTheThing(forTransports:allTransports)

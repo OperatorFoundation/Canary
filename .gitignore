@@ -73,6 +73,7 @@ xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/xcode,swift
+
 Output/*
 redislog.txt
 *.rdb
@@ -87,3 +88,5 @@ Sources/Resources/shapeshifter-dispatcher
 rethinkdb_data/metadata
 rethinkdb_data/log_file
 rethinkdb_dump*
+*.song
+*.zip

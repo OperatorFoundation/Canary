@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/OperatorFoundation/Datable",
         "state": {
           "branch": null,
-          "revision": "eccbedd3c89007691034b951a1fc0780e54701ea",
-          "version": "1.1.1"
+          "revision": "1c23f2b72d0d0cf4386fad05f8a5db4b91e8d304",
+          "version": "3.0.2"
         }
       },
       {
-        "package": "Rethink",
-        "repositoryURL": "https://github.com/OperatorFoundation/rethink-swift",
+        "package": "ZIPFoundation",
+        "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {
           "branch": null,
-          "revision": "f8a2e7c7aa424066b8cc8b4aedd73edf180ef3d8",
-          "version": "1.1.0"
+          "revision": "ec32d62d412578542c0ffb7a6ce34d3e64b43b94",
+          "version": "0.9.11"
         }
       }
     ]

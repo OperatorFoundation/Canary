@@ -1,8 +1,8 @@
 //
-//  KillAll.swift
-//  transport-canary
+//  ResultsController.swift
+//  Canary
 //
-//  Created by Adelita Schule on 7/10/17.
+//  Created by Mafalda on 7/27/20.
 //  MIT License
 //
 //  Copyright (c) 2020 Operator Foundation
@@ -26,29 +26,25 @@
 // SOFTWARE.
 
 import Foundation
+import ZIPFoundation
 
-func killAll(processToKill: String)
+func zipResults()
 {
-    print("☠️ KILLALL \(processToKill) CALLED ☠️")
+    let fileManager = FileManager()
+    let currentWorkingPath = fileManager.currentDirectoryPath
+    var sourceURL = URL(fileURLWithPath: currentWorkingPath)
+    sourceURL.appendPathComponent("adversary_data")
     
-    let killTask = Process()
-    let executablePath = "/usr/bin/killall"
-    
-    killTask.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
-    //Arguments will pass the arguments to the executable, as though typed directly into terminal.
-    killTask.arguments = [processToKill]
-    
-    //Go ahead and run the process/task
-    killTask.launch()
-    killTask.waitUntilExit()
-    sleep(2)
-    
-    //Do it again, maybe it doesn't want to die.
-    
-    let killAgain = Process()
-    killAgain.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
-    killAgain.arguments = ["-9", processToKill]
-    killAgain.launch()
-    killAgain.waitUntilExit()
-    sleep(2)
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
+    let zipName = "adversary_data_\(formatter.string(from: Date())).zip"
+    var destinationURL = URL(fileURLWithPath: currentWorkingPath)
+    destinationURL.appendPathComponent(zipName)
+    do {
+        try fileManager.zipItem(at: sourceURL, to: destinationURL)
+        print("🍩🍩 Saved zip: \(destinationURL)")
+    } catch {
+        print("🚨 Creation of ZIP archive failed with error:\(error) 🚨")
+        return
+    }
 }
