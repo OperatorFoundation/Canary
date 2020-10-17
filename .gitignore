@@ -3,15 +3,12 @@
 /Packages
 /*.xcodeproj
 
-/Sources/Resources/Configs
 serverIP
 shSocksServerIP
 ca.crt
 Wdc.key
 *dispatcher.log
 *auth.up
-*.json
-
 
 # Created by https://www.gitignore.io/api/xcode,swift
 # Edit at https://www.gitignore.io/?templates=xcode,swift
@@ -78,10 +75,8 @@ Output/*
 redislog.txt
 *.rdb
 *.csv
-obfs4redis.conf
 redislog.txt
 redislog.txt
-*.conf
 Sources/Resources/AdversaryLabClient
 Sources/Resources/shapeshifter-dispatcher
 *.conf
@@ -90,3 +85,8 @@ rethinkdb_data/log_file
 rethinkdb_dump*
 *.song
 *.zip
+Sources/Resources/Configs/shadowsocks.json
+Sources/Resources/Configs/ReplicantClientConfig.json
+Sources/Resources/Configs/obfs4iatMode.json
+Sources/Resources/Configs/obfs4.json
+Sources/Resources/Configs/meek.json

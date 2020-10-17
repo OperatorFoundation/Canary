@@ -33,7 +33,7 @@ var resourcesDirectoryPath = "/Users/mafalda/Documents/Operator/Canary/Sources/R
 var resourcesDirectoryPath = "/home/mafalda/Canary/Sources/Resources"
 #endif
 
-let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClient"
+let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClientSwift"
 let adversaryLabClientProcessName = "AdversaryLabClient"
 let shShifterResourcePath = "\(resourcesDirectoryPath)/shapeshifter-dispatcher"
 
