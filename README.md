@@ -43,7 +43,7 @@ git clone https://github.com/OperatorFoundation/AdversaryLabClientSwift.git
 cd AdversaryLabClientSwift
 swift package update
 swift build -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.15"
-cp .build/x86_64-apple-macosx/debug/AdversaryLabClientSwift ../Canary/Sources/Resources/AdversaryLabClient
+cp .build/x86_64-apple-macosx/debug/AdversaryLabClientSwift ../Canary/Sources/Resources/AdversaryLabClientSwift
 ```
 
 
