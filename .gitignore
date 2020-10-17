@@ -77,8 +77,6 @@ redislog.txt
 *.csv
 redislog.txt
 redislog.txt
-Sources/Resources/AdversaryLabClient
-Sources/Resources/shapeshifter-dispatcher
 *.conf
 rethinkdb_data/metadata
 rethinkdb_data/log_file
