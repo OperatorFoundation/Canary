@@ -25,12 +25,15 @@ swift build -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.15"
 
 ```
 
-Make the Resources directory for the required binaries, and a Configs directory for your transport config files. Don't forget to add your configs to this directory. Operator does not currently provide transport configs for you.
+Don't forget to add your configs to the Sources/Resources/Configs directory. Operator does not currently provide transport configs for you.
 
-```
-mkdir Sources/Resources
-mkdir Sources/Resources/Configs
-```
+Config file names should be as follows: 
+
+meek.json 
+obfs4.json
+shadowsocks.json
+ReplicantClientConfig.json
+
 
 Clone and build AdversaryLabClientSwift. Then copy the binary into the Canary/Sources/Resources directory.
 
