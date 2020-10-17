@@ -29,10 +29,10 @@ Don't forget to add your configs to the Sources/Resources/Configs directory. Ope
 
 Config file names should be as follows: 
 
-meek.json 
-obfs4.json
-shadowsocks.json
-ReplicantClientConfig.json
+- meek.json 
+- obfs4.json
+- shadowsocks.json
+- ReplicantClientConfig.json
 
 
 Clone and build AdversaryLabClientSwift. Then copy the binary into the Canary/Sources/Resources directory.
