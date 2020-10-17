@@ -29,10 +29,10 @@ Don't forget to add your configs to the Sources/Resources/Configs directory. Ope
 
 Config file names should be as follows: 
 
-meek.json 
-obfs4.json
-shadowsocks.json
-ReplicantClientConfig.json
+- meek.json 
+- obfs4.json
+- shadowsocks.json
+- ReplicantClientConfig.json
 
 
 Clone and build AdversaryLabClientSwift. Then copy the binary into the Canary/Sources/Resources directory.
@@ -43,7 +43,7 @@ git clone https://github.com/OperatorFoundation/AdversaryLabClientSwift.git
 cd AdversaryLabClientSwift
 swift package update
 swift build -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.15"
-cp .build/x86_64-apple-macosx/debug/AdversaryLabClientSwift ../Canary/Sources/Resources/AdversaryLabClient
+cp .build/x86_64-apple-macosx/debug/AdversaryLabClientSwift ../Canary/Sources/Resources/AdversaryLabClientSwift
 ```
 
 
