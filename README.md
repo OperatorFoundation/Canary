@@ -9,7 +9,7 @@
 
 ### Prerequisites
 
-Swift 5.0, included in Xcode 11
+Swift 5.2, included in Xcode 11
 Go 1.14 or higher
 
 ### Installing
