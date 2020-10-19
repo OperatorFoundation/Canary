@@ -27,11 +27,9 @@
 
 import Foundation
 
-#if os(macOS)
-var resourcesDirectoryPath = "/Users/mafalda/Documents/Operator/Canary/Sources/Resources"
-#else
-var resourcesDirectoryPath = "/home/mafalda/Canary/Sources/Resources"
-#endif
+/// Yes, this one's a var.
+/// Note: this directory will not work when running in Xcode, as we populate this using currentDirectoryPath which points to derived data.
+var resourcesDirectoryPath = "/Sources/Resources"
 
 let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClientSwift"
 let adversaryLabClientProcessName = "AdversaryLabClient"
@@ -60,9 +58,8 @@ let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
 let webTest = Transport(name: "webTest", port: "443")
-let allTransports = [replicant, obfs4, shadowsocks, webTest]
+let allTransports = [replicant, obfs4, shadowsocks, meek]
 
-//let testWebAddresses = [String]()
 let testWebAddresses = ["https://www.youtube.com/",
                         "https://www.instagram.com/",
                         "https://www.cnn.com/",

@@ -22,13 +22,25 @@
 
 import Foundation
 
+doTheThing(forTransports:allTransports)
+ShapeshifterController.sharedInstance.killAllShShifter()
+
+func getResourcesDirectory() {
+    let currentDirectoryPath = FileManager.default.currentDirectoryPath
+    resourcesDirectoryPath = "\(currentDirectoryPath)/Sources/Resources"
+    
+    print("-----------> Resources directory path: \(resourcesDirectoryPath)")
+}
+
 /// launch AdversaryLabClient to capture our test traffic, and run a connection test.
-/// When testing is complete the transport rdb is moved to a different location so as not to be overwritten ands so that the data is available for testing,
-/// and a csv file is saved with the test results.
+///  a csv file and song data (zipped) are saved with the test results.
 ///
 /// - Parameter transports: The list of transports to be tested.
 func doTheThing(forTransports transports: [Transport])
 {
+    getResourcesDirectory()
+    
+    
     guard CommandLine.argc > 1
     else
     {
@@ -54,13 +66,9 @@ func doTheThing(forTransports transports: [Transport])
         TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
     }
     
-    // TODO: Zip up the adversary_data directory created by AdversaryLabClient.
     // This directory contains our test results.
     zipResults()
 }
-
-doTheThing(forTransports:allTransports)
-ShapeshifterController.sharedInstance.killAllShShifter()
 
 signal(SIGINT)
 {
