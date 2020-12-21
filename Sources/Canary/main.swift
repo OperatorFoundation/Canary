@@ -20,65 +20,79 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import ArgumentParser
 import Foundation
 
-doTheThing(forTransports:allTransports)
-ShapeshifterController.sharedInstance.killAllShShifter()
-
-func getResourcesDirectory() {
-    let currentDirectoryPath = FileManager.default.currentDirectoryPath
-    resourcesDirectoryPath = "\(currentDirectoryPath)/Sources/Resources"
-    
-    print("-----------> Resources directory path: \(resourcesDirectoryPath)")
-}
-
-/// launch AdversaryLabClient to capture our test traffic, and run a connection test.
-///  a csv file and song data (zipped) are saved with the test results.
-///
-/// - Parameter transports: The list of transports to be tested.
-func doTheThing(forTransports transports: [Transport])
+struct CanaryTest: ParsableCommand
 {
-    getResourcesDirectory()
+    @Argument(help: "IP address for the transport server.")
+    var serverIP: String
     
+    @Argument(help: "Optionally set the path to the directory where Canary's required resources can be found. It is recommended that you only use this if the default directory does not work for you.")
+    var resourceDirPath: String?
     
-    guard CommandLine.argc > 1
-    else
+    @Option(help:"Set how many times you would like Canary to run its tests.")
+    var runs: Int = 1
+    
+    func validate() throws
     {
-        print("\nServer IP required for testing")
-        return
+        guard runs >= 1 && runs <= 10
+        else
+        {
+            throw ValidationError("'<runs>' must be at least 1 and no more than 10.")
+        }
     }
     
-    let ipString = CommandLine.arguments[1]
-    
-    if CommandLine.argc > 2
+    /// launch AdversaryLabClient to capture our test traffic, and run a connection test.
+    ///  a csv file and song data (zipped) are saved with the test results.
+    func run()
     {
-        resourcesDirectoryPath = CommandLine.arguments[2]
-    }
+        if let rPath = resourceDirPath
+        {
+            resourcesDirectoryPath = rPath
+        }
+        
+        for i in 1...runs
+        {
+            print("\n***************************\nRunning test batch \(i) of \(runs)\n***************************")
             
-    for transport in transports
-    {
-        print("\n 🧪 Starting test for \(transport.name)")
-        TestController.sharedInstance.test(transport: transport, serverIPString: ipString, webAddress: nil)
+            for transport in allTransports
+            {
+                print("\n 🧪 Starting test for \(transport.name) 🧪\n")
+                TestController.sharedInstance.test(name: transport.name, serverIPString: serverIP, port: transport.port, webAddress: nil)
+            }
+            
+            for webTest in allWebTests
+            {
+                print("\n 🧪 Starting web test for \(webTest.website) 🧪\n")
+                TestController.sharedInstance.test(name: webTest.name, serverIPString: serverIP, port: webTest.port, webAddress: webTest.website)
+            }
+            
+            // This directory contains our test results.
+            zipResults()
+        }
+        
+        ShapeshifterController.sharedInstance.killAllShShifter()
     }
-    
-    for webAddress in testWebAddresses
-    {
-        TestController.sharedInstance.test(transport: webTest, serverIPString: ipString, webAddress: webAddress)
-    }
-    
-    // This directory contains our test results.
-    zipResults()
 }
+
+CanaryTest.main()
+
+////doTheThing(forTransports:allTransports)
+//ShapeshifterController.sharedInstance.killAllShShifter()
+//
 
 signal(SIGINT)
 {
     (theSignal) in
-    
+
     print("Force exited the testing!! 😮")
-    
+
     //Cleanup
     ShapeshifterController.sharedInstance.stopShapeshifterClient()
     //AdversaryLabController.sharedInstance.stopAdversaryLabServer()
-    
+
     exit(0)
 }
+
+

@@ -44,7 +44,7 @@ class ConnectionTest
     
     func run() -> Bool
     {
-        print("📣 Running connection test...")
+        print("📣 Running connection test.")
         
         if let url = URL(string: testWebAddress)
         {
@@ -70,13 +70,20 @@ class ConnectionTest
                     taskData = maybeData
                     taskError = maybeError
                     
-                    print("Connection test response: \(String(describing: taskResponse?.statusCode))")
-                    print("Connection test data: \(taskData.debugDescription)")
+                    if (taskResponse != nil)
+                    {
+                        print("Connection test response: \(taskResponse!.statusCode)")
+                    }
+                    
+                    if taskData != nil
+                    {
+                        print("Connection test data: \(taskData!.count) bytes")
+                    }
+                    
                     dispatchGroup.leave()
                 }
                 
                 testTask.resume()
-                
                 dispatchGroup.wait()
             })
             

@@ -29,7 +29,7 @@ import Foundation
 
 /// Yes, this one's a var.
 /// Note: this directory will not work when running in Xcode, as we populate this using currentDirectoryPath which points to derived data.
-var resourcesDirectoryPath = "/Sources/Resources"
+var resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
 
 let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClientSwift"
 let adversaryLabClientProcessName = "AdversaryLabClient"
@@ -57,17 +57,16 @@ let shadowsocks = Transport(name: "shadow", port: shsocksServerPort)
 let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
-let webTest = Transport(name: "webTest", port: "443")
-let allTransports = [replicant, obfs4, shadowsocks, meek]
+// Web Tests
+let facebook = WebTest(website: "https://www.facebook.com/", name: "facebook", port: "443")
+let cnn = WebTest(website: "https://www.cnn.com/", name: "cnn", port: "443")
+let wikipedia = WebTest(website: "https://www.wikipedia.org/", name: "wikipedia", port: "443")
+let ymedio = WebTest(website: "https://www.14ymedio.com", name: "14ymedio", port: "443")
+let cubanet = WebTest(website: "https://www.cubanet.org", name: "cubanet", port: "443")
+let diario = WebTest(website: "https://diariodecuba.com", name: "diariodecuba", port: "443")
 
-let testWebAddresses = ["https://www.youtube.com/",
-                        "https://www.instagram.com/",
-                        "https://www.cnn.com/",
-                        "https://www.wikipedia.org/"]
-
-// "https://www.facebook.com/",
-//"https://www.reddit.com/",
-//"https://twitter.com/home",
+let allTransports = [replicant, obfs4, shadowsocks]
+let allWebTests = [facebook, cnn, wikipedia, ymedio, cubanet, diario]
 
 let stateDirectoryPath = "TransportState"
 

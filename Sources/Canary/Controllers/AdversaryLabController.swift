@@ -34,7 +34,7 @@ class AdversaryLabController
     private var clientLaunchTask: Process?
     private var pipe = Pipe()
     
-    func launchAdversaryLab(forTransport transport: Transport)
+    func launchAdversaryLab(forTransport name: String, port: String)
     {
         print("🔬  Launching Adversary Lab.")
         
@@ -45,18 +45,7 @@ class AdversaryLabController
             return
         }
         
-        let transportName: String
-        
-        if transport == obfs4iatMode
-        {
-            transportName = obfs4.name
-        }
-        else
-        {
-            transportName = transport.name
-        }
-        
-        let arguments = [transportName, transport.port]
+        let arguments = [name, port]
         
         if clientLaunchTask != nil
         {

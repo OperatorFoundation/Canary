@@ -9,6 +9,7 @@ let package = Package(
     platforms: [.macOS(.v10_15)],
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/Datable", from: "3.0.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11")
     ],
     targets: [
@@ -16,7 +17,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Canary",
-            dependencies: ["Datable", "ZIPFoundation"]),
+            dependencies: ["Datable",
+                           "ZIPFoundation",
+                           .product(name: "ArgumentParser", package: "swift-argument-parser")]),
         .testTarget(
             name: "CanaryTests",
             dependencies: ["Canary"]),
@@ -27,6 +30,7 @@ let package = Package(
     name: "Canary",
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/Datable", from: "1.1.1"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11")
     ],
     targets: [
@@ -34,7 +38,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Canary",
-            dependencies: ["Datable", "ZIPFoundation"]),
+            dependencies: ["Datable",
+                           "ZIPFoundation",
+                           .product(name: "ArgumentParser", package: "swift-argument-parser")]),
         .testTarget(
             name: "CanaryTests",
             dependencies: ["Canary"]),

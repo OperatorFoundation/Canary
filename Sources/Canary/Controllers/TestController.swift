@@ -56,10 +56,10 @@ class TestController
         let connectionTest = ConnectionTest(testWebAddress: testWebAddress, canaryString: canaryString)
         let success = connectionTest.run()
         
-        result = TestResult(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
+        result = TestResult(serverIP: serverIP, testDate: Date(), name: transport.name, success: success)
         
         // Save this result to a file
-        let _ = save(result: result!)
+        let _ = save(result: result!, testName: transport.name)
         
         ///Cleanup
         print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
@@ -70,7 +70,7 @@ class TestController
     }
     
     /// Tests ability to connect to a given web address without the use of transports
-    func runWebTest(serverIP: String, transport: Transport, webAddress: String) -> TestResult?
+    func runWebTest(serverIP: String, port: String, name: String, webAddress: String) -> TestResult?
     {
         var result: TestResult?
         
@@ -78,10 +78,10 @@ class TestController
         let connectionTest = ConnectionTest(testWebAddress: webAddress, canaryString: nil)
         let success = connectionTest.run()
         
-        result = TestResult(serverIP: serverIP, testDate: Date(), transport: transport, success: success)
+        result = TestResult(serverIP: serverIP, testDate: Date(), name: name, success: success)
         
         // Save this result to a file
-        let _ = save(result: result!)
+        let _ = save(result: result!, testName: webAddress)
         
         ///Cleanup
         print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
@@ -96,9 +96,9 @@ class TestController
     ///
     /// - Parameter result: The test result information to be saved. The type is a TestResult struct.
     /// - Returns: A boolean value indicating whether or not the results were saved successfully.
-    func save(result: TestResult) -> Bool
+    func save(result: TestResult, testName: String) -> Bool
     {
-        let resultString = "\(result.testDate), \(result.serverIP), \(result.transport.name), \(result.success)\n"
+        let resultString = "\(result.testDate), \(result.serverIP), \(testName), \(result.success)\n"
         
         guard let resultData = resultString.data(using: .utf8)
             else { return false }
@@ -158,21 +158,19 @@ class TestController
         }
     }
     
-    func test(transport: Transport, serverIPString: String, webAddress: String?)
+    func test(name: String, serverIPString: String, port: String, webAddress: String?)
     {
-//        print("\nPress enter to proceed...")
-//       _ = readLine()
        let queue = OperationQueue()
        let op = BlockOperation(block:
        {
             let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
-            AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: transport)
+        AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: name, port: port)
             sleep(5)
             
             if webAddress == nil
             {
-                if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: transport)
+                if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
                 {
                     //print("Test result for \(transport.name):\n\(transportTestResult)\n")
                     sleep(20)
@@ -181,7 +179,7 @@ class TestController
                 }
                 else
                 {
-                    print("\n🛑  Received a nil result when testing \(transport.name)")
+                    print("\n🛑  Received a nil result when testing \(name)")
                     sleep(10)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     dispatchGroup.leave()
@@ -189,17 +187,17 @@ class TestController
             }
             else
             {
-                if let webTestResult = self.runWebTest(serverIP: serverIPString, transport: transport, webAddress: webAddress!)
+                if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
                 {
                     //print("Test result for \(transport.name):\n\(webTestResult)\n")
-                    sleep(20)
+                    sleep(10)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
                     dispatchGroup.leave()
                 }
                 else
                 {
-                    print("\n🛑  Received a nil result when testing \(transport.name)")
-                    sleep(10)
+                    print("\n🛑  Received a nil result when testing \(name)")
+                    sleep(5)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     dispatchGroup.leave()
                 }

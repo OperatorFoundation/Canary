@@ -88,3 +88,4 @@ Sources/Resources/Configs/ReplicantClientConfig.json
 Sources/Resources/Configs/obfs4iatMode.json
 Sources/Resources/Configs/obfs4.json
 Sources/Resources/Configs/meek.json
+*.xcworkspacedata

@@ -36,7 +36,7 @@ struct TestResult
     var testDate: Date
     
     /// The transport that was tested.
-    var transport: Transport
+    var name: String
     
     /// Whether or not the test succeeded.
     var success = false
