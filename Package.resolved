@@ -2,6 +2,33 @@
   "object": {
     "pins": [
       {
+        "package": "AdversaryLabClientSwift",
+        "repositoryURL": "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
+        "state": {
+          "branch": null,
+          "revision": "43a3b7eb98c285c4ad194b4a9bf2c8b0f1e28fd1",
+          "version": "0.0.9"
+        }
+      },
+      {
+        "package": "Bits",
+        "repositoryURL": "https://github.com/OperatorFoundation/Bits.git",
+        "state": {
+          "branch": null,
+          "revision": "e53451b5858a8a2d72f51d3ca22761643adf64d3",
+          "version": "1.0.6"
+        }
+      },
+      {
+        "package": "Socket",
+        "repositoryURL": "https://github.com/OperatorFoundation/BlueSocket",
+        "state": {
+          "branch": null,
+          "revision": "90212ea8b66787c2d51d03527a04748ba6ee7679",
+          "version": "1.1.0"
+        }
+      },
+      {
         "package": "Datable",
         "repositoryURL": "https://github.com/OperatorFoundation/Datable",
         "state": {
@@ -11,12 +38,75 @@
         }
       },
       {
+        "package": "InternetProtocols",
+        "repositoryURL": "https://github.com/OperatorFoundation/InternetProtocols.git",
+        "state": {
+          "branch": null,
+          "revision": "8bd874cec7172fc441cf639108787725957e82c0",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "NetworkLinux",
+        "repositoryURL": "https://github.com/OperatorFoundation/NetworkLinux",
+        "state": {
+          "branch": null,
+          "revision": "cd6e552b4ce421a79cffce265c7496e8d7933f37",
+          "version": "0.2.4"
+        }
+      },
+      {
+        "package": "Song",
+        "repositoryURL": "https://github.com/OperatorFoundation/Song.git",
+        "state": {
+          "branch": null,
+          "revision": "f43f984b91b2e993a8d50c8b581c4526aa0707ea",
+          "version": "0.1.1"
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
           "revision": "92646c0cdbaca076c8d3d0207891785b3379cbff",
           "version": "0.3.1"
+        }
+      },
+      {
+        "package": "swift-ast",
+        "repositoryURL": "https://github.com/yanagiba/swift-ast",
+        "state": {
+          "branch": null,
+          "revision": "e8507d78b32dbd33ea5ea975bbbc82b7613870a1",
+          "version": "0.19.9"
+        }
+      },
+      {
+        "package": "SwiftHexTools",
+        "repositoryURL": "https://github.com/OperatorFoundation/SwiftHexTools",
+        "state": {
+          "branch": null,
+          "revision": "4ce4a4f66eea05c900d447af8c07ecaac720716c",
+          "version": "1.2.2"
+        }
+      },
+      {
+        "package": "SwiftPCAP",
+        "repositoryURL": "https://github.com/OperatorFoundation/SwiftPCAP.git",
+        "state": {
+          "branch": null,
+          "revision": "4ac0911d2f3d5611baa9c8a4ba56e4841c90ebb4",
+          "version": "1.1.8"
+        }
+      },
+      {
+        "package": "SwiftQueue",
+        "repositoryURL": "https://github.com/OperatorFoundation/SwiftQueue.git",
+        "state": {
+          "branch": null,
+          "revision": "0e5979acbb104516a427bb2bb09debc50ca100b4",
+          "version": "0.0.3"
         }
       },
       {

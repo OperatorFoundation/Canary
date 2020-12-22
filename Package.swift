@@ -10,7 +10,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/Datable", from: "3.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11")
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11"),
+        .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift", from: "0.0.9"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -19,7 +20,9 @@ let package = Package(
             name: "Canary",
             dependencies: ["Datable",
                            "ZIPFoundation",
-                           .product(name: "ArgumentParser", package: "swift-argument-parser")]),
+                           .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                           .product(name: "AdversaryLabClientCore", package: "AdversaryLabClientSwift")
+            ]),
         .testTarget(
             name: "CanaryTests",
             dependencies: ["Canary"]),
