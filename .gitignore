@@ -89,3 +89,6 @@ Sources/Resources/Configs/obfs4iatMode.json
 Sources/Resources/Configs/obfs4.json
 Sources/Resources/Configs/meek.json
 *.xcworkspacedata
+Canary.pkg
+Canary.entitlements
+.swiftpm/xcode/xcshareddata/xcschemes/Canary.xcscheme

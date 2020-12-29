@@ -209,7 +209,7 @@ class ShapeshifterController
             
             // Specify the Pluggable Transport protocol version to use
             // We are using Pluggable Transports version 2.0
-            processArguments.append("-version")
+            processArguments.append("-ptversion")
             processArguments.append("2.1")
             
             // Port for shapeshifter client to listen on

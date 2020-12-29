@@ -27,6 +27,7 @@
 
 import Foundation
 import Datable
+import AdversaryLabClientCore
 
 class AdversaryLabController
 {    
