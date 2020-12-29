@@ -73,14 +73,11 @@ struct CanaryTest: ParsableCommand
         }
         
         ShapeshifterController.sharedInstance.killAllShShifter()
+        print("\nCanary tests are complete.\n")
     }
 }
 
 CanaryTest.main()
-
-////doTheThing(forTransports:allTransports)
-//ShapeshifterController.sharedInstance.killAllShShifter()
-//
 
 signal(SIGINT)
 {

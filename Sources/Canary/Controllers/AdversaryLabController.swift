@@ -49,7 +49,6 @@ class AdversaryLabController
         
         if clientLaunchTask != nil
         {
-            print("🔬  AdversaryLab process isn't nil.")
             clientLaunchTask!.terminate()
         }
 
@@ -60,18 +59,14 @@ class AdversaryLabController
         // Refresh our pipe just in case we've already used it.
         pipe = Pipe()
         clientLaunchTask!.standardInput = pipe
-        print("🔬  Assigned standard input to pipe.")
-        
         clientLaunchTask!.launch()
     }
     
     func stopAdversaryLab(testResult: TestResult?)
     {
-        print("🔬  Stop AdversaryLab called.")
         sleep(10)
         if clientLaunchTask != nil
         {
-            print("🔬  AdversaryLab process isn't nil.")
             if let result = testResult
             {
                 // Before exiting let Adversary Lab know what kind of category this connection turned out to be based on whether or not the test was successful
@@ -102,13 +97,11 @@ class AdversaryLabController
             
             // FIXME: terminate() is not yet implemented for Linux
             #if os(macOS)
-            print("🔬  Calling terminate on the AdversaryLab process.")
             clientLaunchTask?.terminate()
             //clientLaunchTask?.waitUntilExit()
             #else
             print("🔬  Waiting so AdversaryLabClient can save data.")
-            sleep(15)
-            print("🔬  Calling killall on the AdversaryLab process.")
+            sleep(10)
             killAll(processToKill: adversaryLabClientProcessName)
             #endif
             clientLaunchTask = nil

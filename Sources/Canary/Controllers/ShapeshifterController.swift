@@ -105,9 +105,7 @@ class ShapeshifterController
     }
     
     func killAllShShifter()
-    {
-        print("☠️ KILLALL ShShifters CALLED ☠️")
-        
+    {        
         let killTask = Process()
         let killTaskExecutableURL = URL(fileURLWithPath: "/usr/bin/killall", isDirectory: false)
         killTask.executableURL = killTaskExecutableURL

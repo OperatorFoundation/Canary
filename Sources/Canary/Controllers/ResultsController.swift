@@ -30,10 +30,16 @@ import ZIPFoundation
 
 func zipResults()
 {
-    let fileManager = FileManager()
-    let currentWorkingPath = fileManager.currentDirectoryPath
+    let currentWorkingPath = FileManager.default.currentDirectoryPath
     var sourceURL = URL(fileURLWithPath: currentWorkingPath)
     sourceURL.appendPathComponent("adversary_data")
+    
+    guard FileManager.default.fileExists(atPath: sourceURL.path)
+    else
+    {
+        print("\nWe were unable to save any results as no packets were captured.")
+        return
+    }
     
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
@@ -41,7 +47,7 @@ func zipResults()
     var destinationURL = URL(fileURLWithPath: currentWorkingPath)
     destinationURL.appendPathComponent(zipName)
     do {
-        try fileManager.zipItem(at: sourceURL, to: destinationURL)
+        try FileManager.default.zipItem(at: sourceURL, to: destinationURL)
         print("🍩🍩 Saved zip: \(destinationURL)")
     } catch {
         print("🚨 Creation of ZIP archive failed with error:\(error) 🚨")

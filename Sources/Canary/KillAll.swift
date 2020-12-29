@@ -28,15 +28,16 @@
 import Foundation
 
 func killAll(processToKill: String)
-{
-    print("☠️ KILLALL \(processToKill) CALLED ☠️")
-    
+{   let stdOut = Pipe()
+    let stdError = Pipe()
     let killTask = Process()
     let executablePath = "/usr/bin/killall"
     
     killTask.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
     //Arguments will pass the arguments to the executable, as though typed directly into terminal.
     killTask.arguments = [processToKill]
+    killTask.standardOutput = stdOut
+    killTask.standardError = stdError
     
     //Go ahead and run the process/task
     killTask.launch()
@@ -48,6 +49,8 @@ func killAll(processToKill: String)
     let killAgain = Process()
     killAgain.executableURL = URL(fileURLWithPath: executablePath, isDirectory: false)
     killAgain.arguments = ["-9", processToKill]
+    killAgain.standardOutput = stdOut
+    killAgain.standardError = stdError
     killAgain.launch()
     killAgain.waitUntilExit()
     sleep(2)
