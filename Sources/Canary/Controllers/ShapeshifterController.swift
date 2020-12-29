@@ -77,7 +77,11 @@ class ShapeshifterController
             }
             
             sleep(2)
-            print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
+            
+            if !launchTask!.isRunning
+            {
+                print("\n🛑 shapeshifter-dispatcher failed to launch.")
+            }
 
             return launchTask!.isRunning
         }
