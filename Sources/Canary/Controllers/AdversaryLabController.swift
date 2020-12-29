@@ -59,6 +59,8 @@ class AdversaryLabController
         // Refresh our pipe just in case we've already used it.
         pipe = Pipe()
         clientLaunchTask!.standardInput = pipe
+        clientLaunchTask!.standardOutput = Pipe()
+        clientLaunchTask!.standardError = Pipe()
         clientLaunchTask!.launch()
     }
     
