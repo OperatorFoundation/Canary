@@ -68,7 +68,6 @@ class ShapeshifterController
             
             do
             {
-                print("Trying to run dispatcher...")
                 try launchTask!.run()
             }
             catch let error
@@ -77,8 +76,7 @@ class ShapeshifterController
                 return false
             }
             
-            print("Sleeping...")
-            sleep(3)
+            sleep(2)
             print("shapeshifter-dispatcher launchTask.isRunning 🏃🏻‍♀️🏃‍♂️ = \(launchTask!.isRunning)")
 
             return launchTask!.isRunning
@@ -91,9 +89,7 @@ class ShapeshifterController
     }
     
     func stopShapeshifterClient()
-    {
-        print("Terminating Shapeshifter launch task...")
-        
+    {        
         if launchTask != nil
         {
             // FIXME: terminate() is not yet implemented for Linux

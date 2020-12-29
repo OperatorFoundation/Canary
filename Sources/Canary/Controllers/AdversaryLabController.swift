@@ -66,7 +66,7 @@ class AdversaryLabController
     
     func stopAdversaryLab(testResult: TestResult?)
     {
-        sleep(10)
+        sleep(5)
         if clientLaunchTask != nil
         {
             if let result = testResult
@@ -88,7 +88,7 @@ class AdversaryLabController
                     let categoryData = categoryString.data
                     self.pipe.fileHandleForWriting.write(categoryData)
                     print("🔬  Wrote \(category) to AdversaryLab.")
-                    sleep(10)
+                    sleep(5)
                 }
                 else
                 {
@@ -103,7 +103,7 @@ class AdversaryLabController
             //clientLaunchTask?.waitUntilExit()
             #else
             print("🔬  Waiting so AdversaryLabClient can save data.")
-            sleep(10)
+            sleep(5)
             killAll(processToKill: adversaryLabClientProcessName)
             #endif
             clientLaunchTask = nil

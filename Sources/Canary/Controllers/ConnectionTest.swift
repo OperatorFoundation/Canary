@@ -105,8 +105,6 @@ class ConnectionTest
                     if observedData == controlData
                     {
                         print("💕 🐥 It works! 🐥 💕")
-                        print("Observed data = \(observedData.string)")
-                        print("Control data = \(controlData!.string)")
                         return true
                     }
                     else

@@ -62,10 +62,10 @@ class TestController
         let _ = save(result: result!, testName: transport.name)
         
         ///Cleanup
-        print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
+        print("🛁  🛁  🛁  🛁  Cleaning up after test! 🛁  🛁  🛁  🛁")
         ShapeshifterController.sharedInstance.stopShapeshifterClient()
         
-        sleep(5)
+        sleep(2)
         return result
     }
     
@@ -84,10 +84,10 @@ class TestController
         let _ = save(result: result!, testName: webAddress)
         
         ///Cleanup
-        print("🛁  🛁  🛁  🛁  Cleanup! 🛁  🛁  🛁  🛁")
+        print("🛁  🛁  🛁  🛁  Cleaning up after web test! 🛁  🛁  🛁  🛁")
         ShapeshifterController.sharedInstance.stopShapeshifterClient()
         
-        sleep(5)
+        sleep(2)
         return result
     }
     
@@ -172,15 +172,14 @@ class TestController
             {
                 if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
                 {
-                    //print("Test result for \(transport.name):\n\(transportTestResult)\n")
-                    sleep(20)
+                    sleep(5)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
                     dispatchGroup.leave()
                 }
                 else
                 {
                     print("\n🛑  Received a nil result when testing \(name)")
-                    sleep(10)
+                    sleep(5)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
                     dispatchGroup.leave()
                 }
@@ -190,7 +189,7 @@ class TestController
                 if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
                 {
                     //print("Test result for \(transport.name):\n\(webTestResult)\n")
-                    sleep(10)
+                    sleep(5)
                     AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
                     dispatchGroup.leave()
                 }
