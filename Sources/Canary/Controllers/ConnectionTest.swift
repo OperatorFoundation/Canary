@@ -70,16 +70,6 @@ class ConnectionTest
                     taskData = maybeData
                     taskError = maybeError
                     
-                    if (taskResponse != nil)
-                    {
-                        print("Connection test response: \(taskResponse!.statusCode)")
-                    }
-                    
-                    if taskData != nil
-                    {
-                        print("Connection test data: \(taskData!.count) bytes")
-                    }
-                    
                     dispatchGroup.leave()
                 }
                 

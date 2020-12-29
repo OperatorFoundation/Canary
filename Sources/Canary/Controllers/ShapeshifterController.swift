@@ -60,6 +60,9 @@ class ShapeshifterController
             let exeURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
             launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
+            launchTask!.standardOutput = Pipe()
+            launchTask!.standardError = Pipe()
+            
             print("Arguments:")
             print(arguments.joined(separator: " "))
             
@@ -112,6 +115,10 @@ class ShapeshifterController
         
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
         killTask.arguments = [shShifterResourcePath]
+        
+        // Silence this process
+        killTask.standardOutput = Pipe()
+        killTask.standardError = Pipe()
         
         //Go ahead and run the process/task
         killTask.launch()
