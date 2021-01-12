@@ -34,7 +34,7 @@ struct BuildForLinux: ParsableCommand
     {
         // Download and build Canary on the remote server
         // Run Package Canary to zip the needed resources
-        let result = Bootstrap.bootstrap(username: "root", host: serverIP, source: "https://github.com/OperatorFoundation/Canary", branch: "main", target: "PackageCanary")
+        let result = Bootstrap.bootstrap(username: "root", host: serverIP, source: "https://github.com/OperatorFoundation/Canary", branch: "main", target: "PackageCanary", packages: ["libpcap"])
         
         if result
         {
