@@ -62,8 +62,8 @@ let facebook = WebTest(website: "https://www.facebook.com/", name: "facebook", p
 let cnn = WebTest(website: "https://www.cnn.com/", name: "cnn", port: "443")
 let wikipedia = WebTest(website: "https://www.wikipedia.org/", name: "wikipedia", port: "443")
 let ymedio = WebTest(website: "https://www.14ymedio.com", name: "14ymedio", port: "443")
-let cubanet = WebTest(website: "https://www.cubanet.org", name: "cubanet", port: "443")
-let diario = WebTest(website: "https://diariodecuba.com", name: "diariodecuba", port: "443")
+let cubanet = WebTest(website: "https://www.cubanet.org", name: "cnet", port: "443")
+let diario = WebTest(website: "https://diariodecuba.com", name: "diario", port: "443")
 
 let allTransports = [replicant, obfs4, shadowsocks]
 let allWebTests = [facebook, cnn, wikipedia, ymedio, cubanet, diario]

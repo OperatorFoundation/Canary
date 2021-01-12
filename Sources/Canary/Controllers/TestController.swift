@@ -160,52 +160,87 @@ class TestController
     
     func test(name: String, serverIPString: String, port: String, webAddress: String?)
     {
-       let queue = OperationQueue()
-       let op = BlockOperation(block:
-       {
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.enter()
-        AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: name, port: port)
-            sleep(5)
-            
-            if webAddress == nil
+        AdversaryLabController.sharedInstance.launchAdversaryLab(transportName: name, port: port)
+        
+        if webAddress == nil
+        {
+            if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
             {
-                if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
-                {
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
-                    dispatchGroup.leave()
-                }
-                else
-                {
-                    print("\n🛑  Received a nil result when testing \(name)")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                    dispatchGroup.leave()
-                }
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+                //dispatchGroup.leave()
             }
             else
             {
-                if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
-                {
-                    //print("Test result for \(transport.name):\n\(webTestResult)\n")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
-                    dispatchGroup.leave()
-                }
-                else
-                {
-                    print("\n🛑  Received a nil result when testing \(name)")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                    dispatchGroup.leave()
-                }
+                print("\n🛑  Received a nil result when testing \(name)")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                //dispatchGroup.leave()
             }
-           
-           dispatchGroup.wait()
-       })
-       
-       queue.addOperations([op], waitUntilFinished: true)
+        }
+        else
+        {
+            if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
+            {
+                //print("Test result for \(transport.name):\n\(webTestResult)\n")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
+                //dispatchGroup.leave()
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name)")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                //dispatchGroup.leave()
+            }
+        }
+        
+        sleep(2)
+        
+        if webAddress == nil
+        {
+            if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
+            {
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+                //dispatchGroup.leave()
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name)")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                //dispatchGroup.leave()
+            }
+        }
+        else
+        {
+            if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
+            {
+                //print("Test result for \(transport.name):\n\(webTestResult)\n")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
+                //dispatchGroup.leave()
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name)")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                //dispatchGroup.leave()
+            }
+        }
+//        let queue = OperationQueue()
+//        let op = BlockOperation(block:
+//        {
+//            let dispatchGroup = DispatchGroup()
+//            dispatchGroup.enter()
+//
+//            dispatchGroup.wait()
+//        })
+//
+//        queue.addOperations([op], waitUntilFinished: true)
     }
     
     func getNowAsString() -> String
