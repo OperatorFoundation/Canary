@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/Datable",
-                 from: "3.0.0"),
+                 from: "3.0.3"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
@@ -53,7 +53,7 @@ let package = Package(
 let package = Package(
     name: "Canary",
     dependencies: [
-        .package(url: "https://github.com/OperatorFoundation/Datable", from: "1.1.1"),
+        .package(url: "https://github.com/OperatorFoundation/Datable", from: "3.0.3"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift", from: "0.1.7"),
