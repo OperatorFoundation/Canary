@@ -71,6 +71,8 @@ let package = Package(
                                     package: "swift-argument-parser"),
                            .product(name: "AdversaryLabClientCore",
                                     package: "AdversaryLabClientSwift")]),
+        .target(name: "PackageCanary",
+                dependencies: ["Gardener"]),
         .testTarget(
             name: "CanaryTests",
             dependencies: ["Canary"]),
