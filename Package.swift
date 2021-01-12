@@ -22,7 +22,7 @@ let package = Package(
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
                  from: "0.1.7"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
-                 from: "0.0.11")
+                 from: "0.0.12")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -57,7 +57,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.11"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift", from: "0.1.7"),
-        .package(url: "https://github.com/OperatorFoundation/Gardener.git", from: "0.0.11")
+        .package(url: "https://github.com/OperatorFoundation/Gardener.git", from: "0.0.12")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
