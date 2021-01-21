@@ -20,7 +20,7 @@ let destinationShapeshifterPath = "Canary/Sources/Resources/shapeshifter-dispatc
 
 let destinationResourcesPath = "Canary/Sources/Resources"
 
-let sourceConfigsPath = "Sources/Resources/Configs"
+//let sourceConfigsPath = "Configs"
 let destinationConfigsPath = "Canary/Sources/Resources/Configs"
 
 let canaryZipName = "Canary.zip"
@@ -72,10 +72,10 @@ func main()
     // Copy config files into the configs directory
     for config in configs
     {
-        guard File.copy(sourcePath: "\(sourceConfigsPath)/\(config)", destinationPath: "\(destinationConfigsPath)/\(config)")
+        guard File.copy(sourcePath: config, destinationPath: "\(destinationConfigsPath)/\(config)")
         else
         {
-            print("Failed to copy config from \(sourceConfigsPath)/\(config) to \(destinationConfigsPath)/\(config)")
+            print("Failed to copy config from \(config) to \(destinationConfigsPath)/\(config)")
             return
         }
     }
