@@ -65,7 +65,7 @@ func main()
     guard File.copy(sourcePath: sourceCanaryBinaryPath, destinationPath: destinationCanaryBinaryPath)
     else
     {
-        print("Failed to copy Canart binary from \(sourceCanaryBinaryPath) to \(destinationCanaryBinaryPath)")
+        print("Failed to copy Canary binary from \(sourceCanaryBinaryPath) to \(destinationCanaryBinaryPath)")
         return
     }
     

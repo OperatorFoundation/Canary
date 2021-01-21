@@ -63,7 +63,8 @@ struct BuildForLinux: ParsableCommand
             print("Canary successfully built.")
             
             // Download the zip file from the remote server
-            guard let _ = scp.download(remotePath: "Canary/Canary.zip", localPath: "Canary.zip")
+            let canaryDestination = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/Canary.zip")
+            guard let _ = scp.download(remotePath: "Canary/Canary.zip", localPath: canaryDestination.path)
             else
             {
                 print("SCP Failed to copy the Canary zip file from the remote server.")
