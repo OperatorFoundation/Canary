@@ -28,11 +28,11 @@ let canaryZipName = "Canary.zip"
 func main()
 {
     // Install libpcap
-    guard let Apt.install("libpcap-dev")
+    guard let _ = Apt.install("libpcap-dev")
     else
     {
         print("Failed to install libpcap.")
-        return false
+        return
     }
     
     guard buildDispatcher()
