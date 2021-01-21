@@ -27,6 +27,14 @@ let canaryZipName = "Canary.zip"
 
 func main()
 {
+    // Install libpcap
+    guard let Apt.install("libpcap-dev")
+    else
+    {
+        print("Failed to install libpcap.")
+        return false
+    }
+    
     guard buildDispatcher()
     else
     {
