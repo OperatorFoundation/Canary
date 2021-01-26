@@ -68,7 +68,12 @@ class ShapeshifterController
             
             do
             {
+                print("1) Launching shapeshifter.")
+                sleep(10)
                 try launchTask!.run()
+                sleep(10)
+                print("2) Launched shapeshifter.")
+                sleep(10)
             }
             catch let error
             {
