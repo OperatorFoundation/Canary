@@ -114,7 +114,7 @@ class ShapeshifterController
         killTask.executableURL = killTaskExecutableURL
         
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
-        killTask.arguments = [shShifterResourcePath]
+        killTask.arguments = ["shapeshifter-dispatcher"]
         
         // Silence this process
         killTask.standardOutput = Pipe()
