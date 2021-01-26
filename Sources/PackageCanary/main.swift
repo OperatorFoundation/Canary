@@ -70,6 +70,14 @@ func main()
         return
     }
     
+    let swift = Swift()
+    guard let _ = swift.build()
+    else
+    {
+        print("Failed to build Canary.")
+        return
+    }
+    
     guard File.copy(sourcePath: sourceCanaryBinaryPath, destinationPath: destinationCanaryBinaryPath)
     else
     {
