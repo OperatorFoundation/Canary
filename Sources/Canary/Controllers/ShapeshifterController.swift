@@ -82,8 +82,7 @@ class ShapeshifterController
             {
                 print("\n🛑 shapeshifter-dispatcher failed to launch.")
             }
-
-            print("🧩 Launched shapeshifter-dispatcher. 🧩")
+            
             return launchTask!.isRunning
         }
         else

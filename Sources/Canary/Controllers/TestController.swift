@@ -49,6 +49,8 @@ class TestController
             print("\n❗️ Failed to launch Shapeshifter Client for \(transport) with serverIP: \(serverIP)")
             return nil
         }
+        
+        print("🧩 Launched shapeshifter-dispatcher for \(transport). 🧩")
                 
         ///Connection Test
         let testWebAddress = "http://127.0.0.1:1234/"
