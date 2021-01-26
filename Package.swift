@@ -13,16 +13,16 @@ let package = Package(
         .executable(name: "PackageCanary", targets:["PackageCanary"])
     ],
     dependencies: [
-        .package(url: "https://github.com/OperatorFoundation/Datable",
-                 from: "3.0.3"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
+        .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
+                 from: "0.1.10"),
+        .package(url: "https://github.com/OperatorFoundation/Datable",
+                 from: "3.0.3"),
+        .package(url: "https://github.com/OperatorFoundation/Gardener.git",
+                 from: "0.0.32"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
                  from: "0.9.11"),
-        .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.9"),
-        .package(url: "https://github.com/OperatorFoundation/Gardener.git",
-                 from: "0.0.32")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -60,7 +60,7 @@ let package = Package(
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
                  from: "0.9.11"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.9"),
+                 from: "0.1.10"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
                  from: "0.0.32")
     ],

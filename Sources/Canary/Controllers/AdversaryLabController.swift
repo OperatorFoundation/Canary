@@ -33,8 +33,6 @@ import Datable
 class AdversaryLabController
 {    
     static let sharedInstance = AdversaryLabController()
-    
-    private let adversaryLabQueue = DispatchQueue(label: "AdversaryLabController")
     private var adversaryLabClient: AdversaryLabClient?
         
     func launchAdversaryLab(transportName: String, port: String)
@@ -42,9 +40,7 @@ class AdversaryLabController
         adversaryLabClient = AdversaryLabClientCore.AdversaryLabClient(transport: transportName, port: UInt16(string: port), allowBlock: nil)
         
         print("🔬  Launching Adversary Lab.")
-        adversaryLabQueue.async {
-            self.adversaryLabClient?.startRecording()
-        }
+        adversaryLabClient?.startRecording()
     }
     
     func stopAdversaryLab(testResult: TestResult?)
@@ -61,14 +57,10 @@ class AdversaryLabController
             }
             
             // Before exiting let Adversary Lab know what kind of category this connection turned out to be based on whether or not the test was successful
-            
             adversaryLabClient?.stopRecording(result.success)
-            adversaryLabClient?.saveCaptured()
-            
         }
         
         print("🔬  Finished save captured")
-        
     }
 
 }
