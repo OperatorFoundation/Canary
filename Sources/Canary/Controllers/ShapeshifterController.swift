@@ -108,7 +108,8 @@ class ShapeshifterController
     }
     
     func killAllShShifter()
-    {        
+    {
+        print("🧩 Stopping shapeshifter. 🧩")
         let killTask = Process()
         let killTaskExecutableURL = URL(fileURLWithPath: "/usr/bin/killall", isDirectory: false)
         killTask.executableURL = killTaskExecutableURL
@@ -117,8 +118,8 @@ class ShapeshifterController
         killTask.arguments = ["shapeshifter-dispatcher"]
         
         // Silence this process
-        killTask.standardOutput = Pipe()
-        killTask.standardError = Pipe()
+//        killTask.standardOutput = Pipe()
+//        killTask.standardError = Pipe()
         
         //Go ahead and run the process/task
         killTask.launch()
