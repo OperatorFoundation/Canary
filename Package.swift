@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.12"),
+                 from: "0.1.13"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
@@ -60,7 +60,7 @@ let package = Package(
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
                  from: "0.9.11"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.12"),
+                 from: "0.1.13"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
                  from: "0.0.32")
     ],
