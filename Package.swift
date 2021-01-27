@@ -73,9 +73,9 @@ let package = Package(
                            "Gardener",
                            "ZIPFoundation",
                            .product(name: "AdversaryLabClientCore",
-                                    package: "AdversaryLabClientSwift")]),
+                                    package: "AdversaryLabClientSwift"),
                            .product(name: "ArgumentParser",
-                                    package: "swift-argument-parser"),
+                                    package: "swift-argument-parser"),]),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),
         .testTarget(
