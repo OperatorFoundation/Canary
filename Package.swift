@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.14"),
+                 from: "0.1.15"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
@@ -30,12 +30,12 @@ let package = Package(
         .target(
             name: "Canary",
             dependencies: ["Datable",
-                           "ZIPFoundation",
                            "Gardener",
+                           "ZIPFoundation",
+                           .product(name: "AdversaryLabClientCore",
+                                    package: "AdversaryLabClientSwift"),
                            .product(name: "ArgumentParser",
                                     package: "swift-argument-parser"),
-                           .product(name: "AdversaryLabClientCore",
-                                    package: "AdversaryLabClientSwift")
             ]),
         .target(name: "BuildForLinux",
                 dependencies: ["Gardener",
@@ -53,16 +53,16 @@ let package = Package(
 let package = Package(
     name: "Canary",
     dependencies: [
-        .package(url: "https://github.com/OperatorFoundation/Datable",
-                 from: "3.0.3"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git",
-                 from: "0.9.11"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.13"),
+                 from: "0.1.15"),
+        .package(url: "https://github.com/OperatorFoundation/Datable",
+                 from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
-                 from: "0.0.32")
+                 from: "0.0.32"),
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git",
+                 from: "0.9.11")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -70,12 +70,12 @@ let package = Package(
         .target(
             name: "Canary",
             dependencies: ["Datable",
-                           "ZIPFoundation",
                            "Gardener",
-                           .product(name: "ArgumentParser",
-                                    package: "swift-argument-parser"),
+                           "ZIPFoundation",
                            .product(name: "AdversaryLabClientCore",
                                     package: "AdversaryLabClientSwift")]),
+                           .product(name: "ArgumentParser",
+                                    package: "swift-argument-parser"),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),
         .testTarget(
