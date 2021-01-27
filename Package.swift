@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.13"),
+                 from: "0.1.14"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
