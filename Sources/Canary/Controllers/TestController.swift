@@ -26,11 +26,46 @@
 // SOFTWARE.
 
 import Foundation
+import Logging
+
+import Chord
 
 class TestController
 {
     static let sharedInstance = TestController()
+    let log = Logger(label: "TransportLogger")
     
+    init()
+    {
+        LoggingSystem.bootstrap(StreamLogHandler.standardError)
+    }
+    
+    func runSwiftTransportTest(serverIP: String, forTransport transport: Transport) -> TestResult?
+    {
+        var result: TestResult?
+        let transportController = TransportController(transport: transport, serverIP: serverIP, log: log)
+        
+        guard let connection = Synchronizer.sync(transportController.startTransport)
+        else { return nil }
+        
+        print("🧩 Launched \(transport). 🧩")
+                
+        ///Connection Test
+        let connectionTest = TransportConnectionTest(transportConnection: connection, canaryString: canaryString)
+        let success = connectionTest.run()
+        
+        result = TestResult(serverIP: serverIP, testDate: Date(), name: transport.name, success: success)
+        
+        // Save this result to a file
+        let _ = save(result: result!, testName: transport.name)
+        
+        ///Cleanup
+        print("🛁  🛁  🛁  🛁  Cleaning up after test! 🛁  🛁  🛁  🛁")
+        ShapeshifterController.sharedInstance.stopShapeshifterClient()
+        
+        sleep(2)
+        return result
+    }
     
     /// Launches shapeshifter dispatcher with the transport, runs a connection test, and then saves the results to a csv file.
     ///
@@ -42,7 +77,7 @@ class TestController
     {
         var result: TestResult?
 
-        ///ShapeShifter
+        ///Shapeshifter
         guard ShapeshifterController.sharedInstance.launchShapeshifterClient(serverIP: serverIP, transport: transport) == true
         else
         {
@@ -166,6 +201,21 @@ class TestController
         
         if webAddress == nil
         {
+            #if os(macOS)
+            
+            print("***Running transport test using Swift!***")
+            if let transportTestResult = self.runSwiftTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
+            {
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name) transport.")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+            }
+            #else
             if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
             {
                 sleep(5)
@@ -177,6 +227,7 @@ class TestController
                 sleep(5)
                 AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
             }
+            #endif
         }
         else
         {

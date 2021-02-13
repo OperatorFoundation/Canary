@@ -31,29 +31,29 @@ import Foundation
 /// Note: this directory will not work when running in Xcode, as we populate this using currentDirectoryPath which points to derived data.
 var resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
 
-let adversaryLabClientPath = "\(resourcesDirectoryPath)/AdversaryLabClientSwift"
 let adversaryLabClientProcessName = "AdversaryLabClient"
-let shShifterResourcePath = "\(resourcesDirectoryPath)/shapeshifter-dispatcher"
+let shShifterResourcePath = "shapeshifter-dispatcher"
 
 let obfs2ServerPort = "4567"
 let obfs4ServerPort = "1234"
-let shsocksServerPort = "2345"
+let shsocksServerPort: UInt16 = 2345
 let replicantServerPort = "3456"
 let meekServerPort = "443"
 
-//let shSocksServerIPFilePath = "Resources/shSocksServerIP"
+let httpRequestString = "GET / HTTP/1.0\r\n\r\n"
+let canaryString = "Yeah!\n"
 
-let meekOptionsPath = "\(resourcesDirectoryPath)/Configs/meek.json"
-let obfs4FilePath = "\(resourcesDirectoryPath)/Configs/obfs4.json"
-let obfs4iatFilePath = "\(resourcesDirectoryPath)/Configs/obfs4iatMode.json"
-let shSocksFilePath = "\(resourcesDirectoryPath)/Configs/shadowsocks.json"
-let replicantFilePath = "\(resourcesDirectoryPath)/Configs/ReplicantClientConfig.json"
+let meekOptionsPath = "Configs/meek.json"
+let obfs4FilePath = "Configs/obfs4.json"
+let obfs4iatFilePath = "Configs/obfs4iatMode.json"
+let shSocksFilePath = "Configs/shadowsocks.json"
+let replicantFilePath = "Configs/ReplicantClientConfig.json"
 
 //Transports
 let obfs2 = Transport(name: "obfs2", port: obfs2ServerPort)
 let obfs4 = Transport(name: "obfs4", port: obfs4ServerPort)
 let obfs4iatMode = Transport(name: "obfs4iatMode", port: obfs4ServerPort)
-let shadowsocks = Transport(name: "shadow", port: shsocksServerPort)
+let shadowsocks = Transport(name: "shadow", port: "\(shsocksServerPort)")
 let replicant = Transport(name: "Replicant", port: replicantServerPort)
 let meek = Transport(name: "meeklite", port: meekServerPort)
 
@@ -65,7 +65,7 @@ let ymedio = WebTest(website: "https://www.14ymedio.com", name: "14ymedio", port
 let cnet = WebTest(website: "https://www.cubanet.org", name: "cnet", port: "443")
 let diario = WebTest(website: "https://diariodecuba.com", name: "diario", port: "443")
 
-let allTransports = [replicant, obfs4, shadowsocks]
+let allTransports = [shadowsocks, obfs4, replicant]
 let allWebTests = [facebook, cnn, wikipedia, ymedio, cnet, diario]
 
 let stateDirectoryPath = "TransportState"

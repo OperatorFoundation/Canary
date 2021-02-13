@@ -50,14 +50,14 @@ class ShapeshifterController
                 launchTask = Process()
             }
             
-            guard FileManager.default.fileExists(atPath: shShifterResourcePath)
+            guard FileManager.default.fileExists(atPath: "\(resourcesDirectoryPath)/\(shShifterResourcePath)")
             else
             {
                 print("\n🛑  Failed to find the path for shapeshifter-dispatcher")
                 return false
             }
             
-            let exeURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
+            let exeURL = URL(fileURLWithPath: "\(resourcesDirectoryPath)/\(shShifterResourcePath)", isDirectory: false)
             launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
             launchTask!.standardOutput = Pipe()

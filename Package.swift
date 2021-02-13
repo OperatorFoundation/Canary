@@ -13,29 +13,34 @@ let package = Package(
         .executable(name: "PackageCanary", targets:["PackageCanary"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git",
-                 from: "0.3.1"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
                  from: "0.1.15"),
+        .package(url: "https://github.com/OperatorFoundation/Chord.git",
+                 from: "0.0.10"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
                  from: "0.0.32"),
+        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.11"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git",
+                 from: "0.3.1"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
-                 from: "0.9.11"),
+                 from: "0.9.11")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Canary",
-            dependencies: ["Datable",
+            dependencies: ["Chord",
+                           "Datable",
                            "Gardener",
                            "ZIPFoundation",
-                           .product(name: "AdversaryLabClientCore",
-                                    package: "AdversaryLabClientSwift"),
-                           .product(name: "ArgumentParser",
-                                    package: "swift-argument-parser"),
+                           .product(name: "AdversaryLabClientCore", package: "AdversaryLabClientSwift"),
+                           .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                           .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
+                           .product(name: "Shadow", package: "Shapeshifter-Swift-Transports"),
+                           .product(name: "Wisp", package: "Shapeshifter-Swift-Transports")
             ]),
         .target(name: "BuildForLinux",
                 dependencies: ["Gardener",
@@ -53,15 +58,17 @@ let package = Package(
 let package = Package(
     name: "Canary",
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git",
-                 from: "0.3.1"),
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
                  from: "0.1.15"),
+        .package(url: "https://github.com/OperatorFoundation/Chord.git",
+                 from: "0.0.10"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
                  from: "3.0.3"),
-        .package(url: "https://github.com/OperatorFoundation/Gardener.git",
+        .package(url: "https://github.com/OperatorFoundation/Gardener",
                  from: "0.0.32"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git",
+        .package(url: "https://github.com/apple/swift-argument-parser.git",
+                 from: "0.3.1"),
+        .package(url: "https://github.com/weichsel/ZIPFoundation",
                  from: "0.9.11")
     ],
     targets: [
@@ -69,7 +76,8 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Canary",
-            dependencies: ["Datable",
+            dependencies: ["Chord",
+                           "Datable",
                            "Gardener",
                            "ZIPFoundation",
                            .product(name: "AdversaryLabClientCore",
