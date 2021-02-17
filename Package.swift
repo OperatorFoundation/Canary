@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.15"),
+                 from: "0.1.16"),
         .package(url: "https://github.com/OperatorFoundation/Chord.git",
                  from: "0.0.10"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
@@ -59,7 +59,7 @@ let package = Package(
     name: "Canary",
     dependencies: [
         .package(url: "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
-                 from: "0.1.15"),
+                 from: "0.1.16"),
         .package(url: "https://github.com/OperatorFoundation/Chord.git",
                  from: "0.0.10"),
         .package(url: "https://github.com/OperatorFoundation/Datable",
