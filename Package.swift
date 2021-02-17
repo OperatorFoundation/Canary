@@ -90,8 +90,7 @@ let package = Package(
                                     package: "AdversaryLabClientSwift"),
                            .product(name: "ArgumentParser",
                                     package: "swift-argument-parser"),
-                           .product(name: "Logging", package: "swift-log"),
-                           .product(name: "Shadow", package: "Shapeshifter-Swift-Transports")
+                           .product(name: "Logging", package: "swift-log")
             ]),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),
