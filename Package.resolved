@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/OperatorFoundation/AdversaryLabClientSwift",
         "state": {
           "branch": null,
-          "revision": "43a3b7eb98c285c4ad194b4a9bf2c8b0f1e28fd1",
-          "version": "0.0.9"
+          "revision": "af0aca870275df85d1bb00f792d9b6840f7e0047",
+          "version": "0.1.1"
         }
       },
       {
@@ -56,12 +56,39 @@
         }
       },
       {
+        "package": "PacketCaptureBPF",
+        "repositoryURL": "https://github.com/OperatorFoundation/PacketCaptureBPF.git",
+        "state": {
+          "branch": null,
+          "revision": "27b467b13e9b4b9894c46ddd0909f071127886b0",
+          "version": "0.0.1"
+        }
+      },
+      {
+        "package": "PacketCaptureLibpcap",
+        "repositoryURL": "https://github.com/OperatorFoundation/PacketCaptureLibpcap.git",
+        "state": {
+          "branch": null,
+          "revision": "b07a554cfbb70bc7f339d3a2ea3b8ca726100d18",
+          "version": "0.0.5"
+        }
+      },
+      {
+        "package": "PacketStream",
+        "repositoryURL": "https://github.com/OperatorFoundation/PacketStream.git",
+        "state": {
+          "branch": null,
+          "revision": "7a2fccc603cbc773db5e97fcd276ec75c7d380b2",
+          "version": "0.0.1"
+        }
+      },
+      {
         "package": "Song",
         "repositoryURL": "https://github.com/OperatorFoundation/Song.git",
         "state": {
           "branch": null,
-          "revision": "f43f984b91b2e993a8d50c8b581c4526aa0707ea",
-          "version": "0.1.1"
+          "revision": "11f0f95a24bd4c73df4507ba50929424488e2355",
+          "version": "0.1.3"
         }
       },
       {
@@ -96,8 +123,8 @@
         "repositoryURL": "https://github.com/OperatorFoundation/SwiftPCAP.git",
         "state": {
           "branch": null,
-          "revision": "4ac0911d2f3d5611baa9c8a4ba56e4841c90ebb4",
-          "version": "1.1.8"
+          "revision": "6bc1a1f6418cfade2cc67651ee891f2bfd42f28d",
+          "version": "1.1.10"
         }
       },
       {
