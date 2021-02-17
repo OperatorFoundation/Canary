@@ -33,6 +33,7 @@ import Chord
 class TestController
 {
     static let sharedInstance = TestController()
+    
     let log = Logger(label: "TransportLogger")
     
     init()
