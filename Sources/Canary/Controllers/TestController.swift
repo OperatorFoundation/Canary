@@ -26,11 +26,46 @@
 // SOFTWARE.
 
 import Foundation
+import Logging
+
+import Chord
 
 class TestController
 {
     static let sharedInstance = TestController()
+    let log = Logger(label: "TransportLogger")
     
+    init()
+    {
+        LoggingSystem.bootstrap(StreamLogHandler.standardError)
+    }
+    
+    func runSwiftTransportTest(serverIP: String, forTransport transport: Transport) -> TestResult?
+    {
+        var result: TestResult?
+        let transportController = TransportController(transport: transport, serverIP: serverIP, log: log)
+        
+        guard let connection = Synchronizer.sync(transportController.startTransport)
+        else { return nil }
+        
+        print("🧩 Launched \(transport). 🧩")
+                
+        ///Connection Test
+        let connectionTest = TransportConnectionTest(transportConnection: connection, canaryString: canaryString)
+        let success = connectionTest.run()
+        
+        result = TestResult(serverIP: serverIP, testDate: Date(), name: transport.name, success: success)
+        
+        // Save this result to a file
+        let _ = save(result: result!, testName: transport.name)
+        
+        ///Cleanup
+        print("🛁  🛁  🛁  🛁  Cleaning up after test! 🛁  🛁  🛁  🛁")
+        ShapeshifterController.sharedInstance.stopShapeshifterClient()
+        
+        sleep(2)
+        return result
+    }
     
     /// Launches shapeshifter dispatcher with the transport, runs a connection test, and then saves the results to a csv file.
     ///
@@ -42,13 +77,15 @@ class TestController
     {
         var result: TestResult?
 
-        ///ShapeShifter
+        ///Shapeshifter
         guard ShapeshifterController.sharedInstance.launchShapeshifterClient(serverIP: serverIP, transport: transport) == true
         else
         {
             print("\n❗️ Failed to launch Shapeshifter Client for \(transport) with serverIP: \(serverIP)")
             return nil
         }
+        
+        print("🧩 Launched shapeshifter-dispatcher for \(transport). 🧩")
                 
         ///Connection Test
         let testWebAddress = "http://127.0.0.1:1234/"
@@ -160,52 +197,57 @@ class TestController
     
     func test(name: String, serverIPString: String, port: String, webAddress: String?)
     {
-       let queue = OperationQueue()
-       let op = BlockOperation(block:
-       {
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.enter()
-        AdversaryLabController.sharedInstance.launchAdversaryLab(forTransport: name, port: port)
-            sleep(5)
+        AdversaryLabController.sharedInstance.launchAdversaryLab(transportName: name, port: port)
+        
+        if webAddress == nil
+        {
+            #if os(macOS)
             
-            if webAddress == nil
+            print("***Running transport test using Swift!***")
+            if let transportTestResult = self.runSwiftTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
             {
-                if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
-                {
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
-                    dispatchGroup.leave()
-                }
-                else
-                {
-                    print("\n🛑  Received a nil result when testing \(name)")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                    dispatchGroup.leave()
-                }
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
             }
             else
             {
-                if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
-                {
-                    //print("Test result for \(transport.name):\n\(webTestResult)\n")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
-                    dispatchGroup.leave()
-                }
-                else
-                {
-                    print("\n🛑  Received a nil result when testing \(name)")
-                    sleep(5)
-                    AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
-                    dispatchGroup.leave()
-                }
+                print("\n🛑  Received a nil result when testing \(name) transport.")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
             }
-           
-           dispatchGroup.wait()
-       })
-       
-       queue.addOperations([op], waitUntilFinished: true)
+            #else
+            if let transportTestResult = self.runTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
+            {
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: transportTestResult)
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name) transport.")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+            }
+            #endif
+        }
+        else
+        {
+            if let webTestResult = self.runWebTest(serverIP: serverIPString, port: port, name: name, webAddress: webAddress!)
+            {
+                //print("Test result for \(transport.name):\n\(webTestResult)\n")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: webTestResult)
+                //dispatchGroup.leave()
+            }
+            else
+            {
+                print("\n🛑  Received a nil result when testing \(name) web address.")
+                sleep(5)
+                AdversaryLabController.sharedInstance.stopAdversaryLab(testResult: nil)
+                //dispatchGroup.leave()
+            }
+        }
+        
+        sleep(1)
     }
     
     func getNowAsString() -> String

@@ -26,87 +26,41 @@
 // SOFTWARE.
 
 import Foundation
+
+import AdversaryLabClientCore
 import Datable
 
 class AdversaryLabController
 {    
     static let sharedInstance = AdversaryLabController()
-    private var clientLaunchTask: Process?
-    private var pipe = Pipe()
-    
-    func launchAdversaryLab(forTransport name: String, port: String)
+    private var adversaryLabClient: AdversaryLabClient?
+        
+    func launchAdversaryLab(transportName: String, port: String)
     {
+        adversaryLabClient = AdversaryLabClientCore.AdversaryLabClient(transport: transportName, port: UInt16(string: port), allowBlock: nil)
+        
         print("🔬  Launching Adversary Lab.")
-        
-        guard FileManager.default.fileExists(atPath: adversaryLabClientPath)
-        else
-        {
-            print("\n🛑  Failed to find the path for adversary lab at \(adversaryLabClientPath)")
-            return
-        }
-        
-        let arguments = [name, port]
-        
-        if clientLaunchTask != nil
-        {
-            clientLaunchTask!.terminate()
-        }
-
-        clientLaunchTask = Process()
-        clientLaunchTask!.executableURL = URL(fileURLWithPath: adversaryLabClientPath, isDirectory: false)
-        clientLaunchTask!.arguments = arguments
-        
-        // Refresh our pipe just in case we've already used it.
-        pipe = Pipe()
-        clientLaunchTask!.standardInput = pipe
-        clientLaunchTask!.standardOutput = Pipe()
-        clientLaunchTask!.standardError = Pipe()
-        clientLaunchTask!.launch()
+        adversaryLabClient?.startRecording()
     }
     
     func stopAdversaryLab(testResult: TestResult?)
     {
-        sleep(5)
-        if clientLaunchTask != nil
+        if let result = testResult
         {
-            if let result = testResult
+            print("🔬  Stopping Adversary Lab.")
+            
+            guard adversaryLabClient != nil
+            else
             {
-                // Before exiting let Adversary Lab know what kind of category this connection turned out to be based on whether or not the test was successful
-                let category: String
-                
-                switch result.success
-                {
-                case false:
-                    category = "block"
-                case true:
-                    category = "allow"
-                }
-                
-                if clientLaunchTask!.isRunning
-                {
-                    let categoryString = "\(category)\n"
-                    let categoryData = categoryString.data
-                    self.pipe.fileHandleForWriting.write(categoryData)
-                    sleep(5)
-                }
-                else
-                {
-                    print("🔬  Unable to tell Adversary Lab what category our test results were because it is no longer running.")
-                }
+                print("🔬  Attempted to stop adversary lab when it is not running.")
+                return
             }
             
-            
-            // FIXME: terminate() is not yet implemented for Linux
-            #if os(macOS)
-            clientLaunchTask?.terminate()
-            //clientLaunchTask?.waitUntilExit()
-            #else
-            print("🔬  Waiting so AdversaryLabClient can save data.")
-            sleep(5)
-            killAll(processToKill: adversaryLabClientProcessName)
-            #endif
-            clientLaunchTask = nil
+            // Before exiting let Adversary Lab know what kind of category this connection turned out to be based on whether or not the test was successful
+            adversaryLabClient?.stopRecording(result.success)
         }
+        
+        print("🔬  Finished save captured")
     }
 
 }

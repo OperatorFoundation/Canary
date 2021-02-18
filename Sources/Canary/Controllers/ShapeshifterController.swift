@@ -50,14 +50,14 @@ class ShapeshifterController
                 launchTask = Process()
             }
             
-            guard FileManager.default.fileExists(atPath: shShifterResourcePath)
+            guard FileManager.default.fileExists(atPath: "\(resourcesDirectoryPath)/\(shShifterResourcePath)")
             else
             {
                 print("\n🛑  Failed to find the path for shapeshifter-dispatcher")
                 return false
             }
             
-            let exeURL = URL(fileURLWithPath: shShifterResourcePath, isDirectory: false)
+            let exeURL = URL(fileURLWithPath: "\(resourcesDirectoryPath)/\(shShifterResourcePath)", isDirectory: false)
             launchTask!.executableURL = exeURL
             launchTask!.arguments = arguments
             launchTask!.standardOutput = Pipe()
@@ -82,7 +82,7 @@ class ShapeshifterController
             {
                 print("\n🛑 shapeshifter-dispatcher failed to launch.")
             }
-
+            
             return launchTask!.isRunning
         }
         else
@@ -108,17 +108,18 @@ class ShapeshifterController
     }
     
     func killAllShShifter()
-    {        
+    {
+        print("🧩 Stopping shapeshifter. 🧩")
         let killTask = Process()
         let killTaskExecutableURL = URL(fileURLWithPath: "/usr/bin/killall", isDirectory: false)
         killTask.executableURL = killTaskExecutableURL
         
         //Arguments will pass the arguments to the executable, as though typed directly into terminal.
-        killTask.arguments = [shShifterResourcePath]
+        killTask.arguments = ["shapeshifter-dispatcher"]
         
         // Silence this process
-        killTask.standardOutput = Pipe()
-        killTask.standardError = Pipe()
+//        killTask.standardOutput = Pipe()
+//        killTask.standardError = Pipe()
         
         //Go ahead and run the process/task
         killTask.launch()
@@ -129,7 +130,7 @@ class ShapeshifterController
     {
         if let stateDirectory = createTransportStateDirectory()
         {
-            var options: String?
+            var maybeOptions: String?
 
             //List of arguments for Process/Task
             var processArguments: [String] = []
@@ -143,17 +144,17 @@ class ShapeshifterController
             switch transport
             {
             case obfs4:
-                options = getObfs4Options(iatMode: false)
+                maybeOptions = obfs4FilePath
             case obfs4iatMode:
-                options = getObfs4Options(iatMode: true)
+                maybeOptions = obfs4iatFilePath
             case shadowsocks:
-                options = getShadowSocksOptions()
+                maybeOptions = shSocksFilePath
             case meek:
-                options = getMeekOptions()
+                maybeOptions = meekOptionsPath
             case replicant:
-                options = replicantFilePath
+                maybeOptions = replicantFilePath
             default:
-                options = nil
+                maybeOptions = nil
             }
 
             //IP and Port for our PT Server
@@ -176,29 +177,20 @@ class ShapeshifterController
             // All transports other than obfs2 require options to be provided
             if transport != obfs2
             {
-                guard options != nil
-                    else { return nil }
+                guard let options = maybeOptions
+                    else {
+                    print("Unable to complete shapeshifter arguments, the config file for \(transport) was not found.")
+                    return nil }
                 
+                guard FileManager.default.fileExists(atPath: options)
+                    else
+                {
+                    print("\n🛑  Unable to find Config File at path: \(options)")
+                    return nil
+                }
                 
-                if transport == replicant
-                {
-                    guard FileManager.default.fileExists(atPath: replicantFilePath)
-                        else
-                    {
-                        print("\n🛑  Unable to find Replicant File at path: \(replicantFilePath)")
-                        return nil
-                    }
-                    
-                    processArguments.append("-optionsFile")
-                    processArguments.append(options!)
-                }
-                else
-                {
-                    // This should use generic options based on selected transport
-                    // Parameters needed by the specific transport being used
-                    processArguments.append("-options")
-                    processArguments.append(options!)
-                }
+                processArguments.append("-optionsFile")
+                processArguments.append(options)
             }
             
             // Creates a directory if it doesn't already exist for transports to save needed files
@@ -225,97 +217,6 @@ class ShapeshifterController
         }
         else
         {
-            return nil
-        }
-    }
-    
-    func getMeekOptions() -> String?
-    {
-        do
-        {
-            let meekOptionsData = try Data(contentsOf: URL(fileURLWithPath: meekOptionsPath, isDirectory: false), options: .uncached)
-            let rawOptions = String(data: meekOptionsData, encoding: String.Encoding.ascii)
-            let meekOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")
-            return meekOptions
-        }
-        catch
-        {
-            print("\n⁉️ Unable to locate the needed meek options ⁉️.")
-            return nil
-        }
-    }
-    
-    func getObfs4Options(iatMode: Bool) -> String?
-    {
-        let obfs4OptionsData: Data
-        
-        if iatMode
-        {
-            guard FileManager.default.fileExists(atPath: obfs4iatFilePath)
-                else
-            {
-                print("\n🛑  Unable to find obfs4 File at path: \(obfs4iatFilePath)")
-                return nil
-            }
-            
-            do
-            {
-                obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4iatFilePath, isDirectory: false), options: .uncached)
-            }
-            catch
-            {
-                print("\n⁉️ Unable to locate the needed obfs4 options ⁉️.")
-                return nil
-            }
-        }
-        else
-        {
-            guard FileManager.default.fileExists(atPath: obfs4FilePath)
-                else
-            {
-                print("\n🛑  Unable to find obfs4 File at path: \(obfs4FilePath)")
-                return nil
-            }
-            
-            do
-            {
-                obfs4OptionsData = try Data(contentsOf: URL(fileURLWithPath: obfs4FilePath, isDirectory: false), options: .uncached)
-            }
-            catch
-            {
-                print("\n⁉️ Unable to locate the needed obfs4 options ⁉️.")
-                return nil
-            }
-        }
-        
-        let rawOptions = String(data: obfs4OptionsData, encoding: String.Encoding.ascii)
-        let obfs4Options = rawOptions?.replacingOccurrences(of: "\n", with: "")
-        return obfs4Options
-        
-        
-    }
-    
-    func getShadowSocksOptions() -> String?
-    {
-        guard FileManager.default.fileExists(atPath: shSocksFilePath)
-            else
-        {
-            print("\n🛑  Unable to find shadowsocks File")
-            return nil
-        }
-        
-        do
-        {
-            let optionsURL = URL(fileURLWithPath: shSocksFilePath)
-            let shSocksOptionsData = try Data(contentsOf: optionsURL, options: .uncached)
-            let rawOptions = String(data: shSocksOptionsData, encoding: String.Encoding.ascii)
-            let shSocksOptions = rawOptions?.replacingOccurrences(of: "\n", with: "")
-            return shSocksOptions
-        }
-        catch
-        {
-            print("\n⁉️ Unable to locate the needed shadowsocks options ⁉️.")
-            print(error)
             return nil
         }
     }
