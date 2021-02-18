@@ -72,12 +72,7 @@ func main()
   
     // FIXME: Currently the path on our test server for Linux is /root/swift-5.3.2-RELEASE-ubuntu20.04/usr/bin/swift Swift.build is failing
     let swift = Swift()
-    guard let _ = swift.build()
-    else
-    {
-        print("Failed to build Canary.")
-        return
-    }
+    let _ = swift.build()
     
     // Copy Canary Binary into our destination folder
     guard File.copy(sourcePath: sourceCanaryBinaryPath, destinationPath: destinationCanaryBinaryPath)
