@@ -15,27 +15,38 @@ let configs = ["ReplicantClientConfig.json",  "meek.json",  "obfs4.json", "shado
 struct BuildForLinux: ParsableCommand
 {
     @Argument(help: "IP address for the system to build on.")
-    var serverIP: String
-    
+    var buildServerIP: String
+
+    @Argument(help: "IP address for the system to test the build on.")
+    var testServerIP: String
+
     func validate() throws
     {
         // This pings the server ip and returns nil if it fails
-        guard let _ = SSH(username: "root", host: serverIP)
+        guard let _ = SSH(username: "root", host: buildServerIP)
         else
         {
-            throw ValidationError("'<ServerIP>' is not valid.")
+            throw ValidationError("'<BuildServerIP>' is not valid.")
+        }
+
+        // This pings the server ip and returns nil if it fails
+        guard let _ = SSH(username: "root", host: testServerIP)
+        else
+        {
+            throw ValidationError("'<TestServerIP>' is not valid.")
         }
     }
     
     func run()
     {
         buildForLinux()
+        testForLinux()
     }
 
     func buildForLinux()
     {
         //Upload the config files
-        guard let scp = SCP(username: "root", host: serverIP)
+        guard let scp = SCP(username: "root", host: buildServerIP)
         else
         {
             print("Failed to initialize scp.")
@@ -56,7 +67,7 @@ struct BuildForLinux: ParsableCommand
         
         // Download and build Canary on the remote server
         // Run Package Canary to zip the needed resources
-        let result = Bootstrap.bootstrap(username: "root", host: serverIP, source: "https://github.com/OperatorFoundation/Canary", branch: "main", target: "PackageCanary", packages: ["libpcap"])
+        let result = Bootstrap.bootstrap(username: "root", host: buildServerIP, source: "https://github.com/OperatorFoundation/Canary", branch: "main", target: "PackageCanary", packages: ["libpcap"])
         
         if result
         {
@@ -75,6 +86,34 @@ struct BuildForLinux: ParsableCommand
         {
             print("Failed to build Canary")
         }
+    }
+
+    func testForLinux()
+    {
+        //Upload the config files
+        guard let scp = SCP(username: "root", host: testServerIP)
+        else
+        {
+            print("Failed to initialize scp.")
+            return
+        }
+
+        guard let _ = scp.upload(remotePath: "Canary.zip", localPath: "Canary/Canary.zip")
+        else
+        {
+            print("SCP Failed to copy the Canary zip file from the remote server.")
+            return
+        }
+
+        guard let ssh = SSH(username: "root", host: testServerIP)
+        else
+        {
+            print("SCP Failed to copy the Canary zip file to the test server.")
+            return
+        }
+
+        let _ = ssh.unzip(path: "Canary.zip")
+        let _ = ssh.remote(command: "Canary/Canary")
     }
 }
 
