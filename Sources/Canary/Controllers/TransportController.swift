@@ -12,10 +12,10 @@ import Replicant
 import ReplicantSwift
 import Shadow
 import Transport
-import Wisp
 
 #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
 import Network
+import Wisp
 #else
 import NetworkLinux
 #endif

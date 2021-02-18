@@ -91,6 +91,7 @@ let package = Package(
                            .product(name: "ArgumentParser",
                                     package: "swift-argument-parser"),
                            .product(name: "Logging", package: "swift-log"),
+                           .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "Shadow", package: "Shapeshifter-Swift-Transports")
             ]),
         .target(name: "PackageCanary",
