@@ -54,6 +54,10 @@ struct CanaryTest: ParsableCommand
         {
             resourcesDirectoryPath = rPath
         }
+        else
+        {
+            resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
+        }
         
         for i in 1...runs
         {
