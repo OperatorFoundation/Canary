@@ -21,7 +21,7 @@ let package = Package(
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
                  from: "0.0.32"),
-        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.11"),
+        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.13"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/apple/swift-log.git",
@@ -69,7 +69,7 @@ let package = Package(
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener",
                  from: "0.0.32"),
-        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.11"),
+        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.13"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/apple/swift-log.git",
@@ -90,7 +90,8 @@ let package = Package(
                                     package: "AdversaryLabClientSwift"),
                            .product(name: "ArgumentParser",
                                     package: "swift-argument-parser"),
-                           .product(name: "Logging", package: "swift-log")
+                           .product(name: "Logging", package: "swift-log"),
+                           .product(name: "Shadow", package: "Shapeshifter-Swift-Transports")
             ]),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),
