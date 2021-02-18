@@ -35,12 +35,12 @@ class AdversaryLabController
     static let sharedInstance = AdversaryLabController()
     private var adversaryLabClient: AdversaryLabClient?
         
-    func launchAdversaryLab(transportName: String, port: String)
+    func launchAdversaryLab(transportName: String, port: String, interface: String?)
     {
         adversaryLabClient = AdversaryLabClientCore.AdversaryLabClient(transport: transportName, port: UInt16(string: port), allowBlock: nil)
         
         print("🔬  Launching Adversary Lab.")
-        adversaryLabClient?.startRecording()
+        adversaryLabClient?.startRecording(interface)
     }
     
     func stopAdversaryLab(testResult: TestResult?)

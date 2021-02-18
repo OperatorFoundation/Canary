@@ -12,10 +12,10 @@ import Replicant
 import ReplicantSwift
 import Shadow
 import Transport
-import Wisp
 
 #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
 import Network
+import Wisp
 #else
 import NetworkLinux
 #endif
@@ -47,8 +47,10 @@ class TransportController
                 launchReplicant()
             case shadowsocks:
                 launchShadow()
+            #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
             case obfs4:
                 launchObfs4()
+            #endif
             default:
                 print("Cannot start \(transport.name), this transport is not currently supported.")
                 return
@@ -84,13 +86,7 @@ class TransportController
         guard let shadowConfig = ShadowConfig(path: configPath)
         else { return }
         
-        guard let port = NWEndpoint.Port(rawValue: shsocksServerPort)
-        else
-        {
-            print("Could not create NWEndpoint.Port from \(shsocksServerPort)")
-            return
-        }
-        
+        let port = NWEndpoint.Port(integerLiteral: shsocksServerPort)
         let host = NWEndpoint.Host(serverIP)
         let shadowFactory = ShadowConnectionFactory(host: host, port: port, config: shadowConfig, logger: log)
         
@@ -134,6 +130,7 @@ class TransportController
         replicantConnection.start(queue: transportQueue)
     }
     
+    #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
     func launchObfs4()
     {
         let configPath = "\(resourcesDirectoryPath)/\(obfs4FilePath)"
@@ -162,4 +159,5 @@ class TransportController
         wispConnection.stateUpdateHandler = self.handleStateUpdate
         wispConnection.start(queue: transportQueue)
     }
+    #endif
 }

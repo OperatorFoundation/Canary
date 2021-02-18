@@ -31,8 +31,11 @@ struct CanaryTest: ParsableCommand
     @Argument(help: "Optionally set the path to the directory where Canary's required resources can be found. It is recommended that you only use this if the default directory does not work for you.")
     var resourceDirPath: String?
     
-    @Option(help:"Set how many times you would like Canary to run its tests.")
+    @Option(name: NameSpecification.shortAndLong, parsing: SingleValueParsingStrategy.next, help:"Set how many times you would like Canary to run its tests.")
     var runs: Int = 1
+    
+    @Option(name: NameSpecification.shortAndLong, parsing: SingleValueParsingStrategy.next, help: "Optionally specify the interface name.")
+    var interface: String?
     
     func validate() throws
     {
@@ -50,6 +53,12 @@ struct CanaryTest: ParsableCommand
         if let rPath = resourceDirPath
         {
             resourcesDirectoryPath = rPath
+            print("User selected resources directory: \(resourcesDirectoryPath)")
+        }
+        else
+        {
+            resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
+            print("Default resources directory: \(resourcesDirectoryPath)")
         }
         
         for i in 1...runs
@@ -59,13 +68,13 @@ struct CanaryTest: ParsableCommand
             for transport in allTransports
             {
                 print("\n 🧪 Starting test for \(transport.name) 🧪\n")
-                TestController.sharedInstance.test(name: transport.name, serverIPString: serverIP, port: transport.port, webAddress: nil)
+                TestController.sharedInstance.test(name: transport.name, serverIPString: serverIP, port: transport.port, interface: interface, webAddress: nil)
             }
             
             for webTest in allWebTests
             {
                 print("\n 🧪 Starting web test for \(webTest.website) 🧪\n")
-                TestController.sharedInstance.test(name: webTest.name, serverIPString: serverIP, port: webTest.port, webAddress: webTest.website)
+                TestController.sharedInstance.test(name: webTest.name, serverIPString: serverIP, port: webTest.port, interface: interface, webAddress: webTest.website)
             }
             
             // This directory contains our test results.
