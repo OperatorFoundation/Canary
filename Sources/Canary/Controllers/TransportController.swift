@@ -84,13 +84,7 @@ class TransportController
         guard let shadowConfig = ShadowConfig(path: configPath)
         else { return }
         
-        guard let port = NWEndpoint.Port(rawValue: shsocksServerPort)
-        else
-        {
-            print("Could not create NWEndpoint.Port from \(shsocksServerPort)")
-            return
-        }
-        
+        let port = NWEndpoint.Port(integerLiteral: shsocksServerPort)
         let host = NWEndpoint.Host(serverIP)
         let shadowFactory = ShadowConnectionFactory(host: host, port: port, config: shadowConfig, logger: log)
         
@@ -134,6 +128,7 @@ class TransportController
         replicantConnection.start(queue: transportQueue)
     }
     
+    #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
     func launchObfs4()
     {
         let configPath = "\(resourcesDirectoryPath)/\(obfs4FilePath)"
@@ -162,4 +157,5 @@ class TransportController
         wispConnection.stateUpdateHandler = self.handleStateUpdate
         wispConnection.start(queue: transportQueue)
     }
+    #endif
 }
