@@ -40,7 +40,7 @@ let package = Package(
                            "ZIPFoundation",
                            .product(name: "AdversaryLabClientCore", package: "AdversaryLabClientSwift"),
                            .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                           .product(name: "Logging", package: "swift-log")
+                           .product(name: "Logging", package: "swift-log"),
                            .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "Shadow", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "Wisp", package: "Shapeshifter-Swift-Transports")

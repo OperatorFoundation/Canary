@@ -53,10 +53,12 @@ struct CanaryTest: ParsableCommand
         if let rPath = resourceDirPath
         {
             resourcesDirectoryPath = rPath
+            print("User selected resources directory: \(resourcesDirectoryPath)")
         }
         else
         {
             resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
+            print("Default resources directory: \(resourcesDirectoryPath)")
         }
         
         for i in 1...runs
