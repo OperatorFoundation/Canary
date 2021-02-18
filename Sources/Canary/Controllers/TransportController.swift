@@ -47,8 +47,10 @@ class TransportController
                 launchReplicant()
             case shadowsocks:
                 launchShadow()
+            #if (os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
             case obfs4:
                 launchObfs4()
+            #endif
             default:
                 print("Cannot start \(transport.name), this transport is not currently supported.")
                 return
