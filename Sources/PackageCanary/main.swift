@@ -71,18 +71,28 @@ func main()
     }
   
     // FIXME: Currently the path on our test server for Linux is /root/swift-5.3.2-RELEASE-ubuntu20.04/usr/bin/swift Swift.build is failing
-//    let swift = Swift()
-//    guard let _ = swift.build()
-//    else
-//    {
-//        print("Failed to build Canary.")
-//        return
-//    }
+    let swift = Swift()
+    guard let _ = swift.build()
+    else
+    {
+        print("Failed to build Canary.")
+        return
+    }
     
+    // Copy Canary Binary into our destination folder
     guard File.copy(sourcePath: sourceCanaryBinaryPath, destinationPath: destinationCanaryBinaryPath)
     else
     {
         print("Failed to copy Canary binary from \(sourceCanaryBinaryPath) to \(destinationCanaryBinaryPath)")
+        return
+    }
+    
+    // Copy our needed supporting libraries into our destination folder
+    // TODO: Path is hard-coded "swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/"
+    guard File.copy(sourcePath: "~/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/", destinationPath: destinationCanaryBinaryPath)
+    else
+    {
+        print("Failed to copy libraries from ~/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/ to \(destinationCanaryBinaryPath)")
         return
     }
     
