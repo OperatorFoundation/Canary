@@ -144,15 +144,15 @@ class ShapeshifterController
             switch transport
             {
             case obfs4:
-                maybeOptions = obfs4FilePath
+                maybeOptions = "\(resourcesDirectoryPath)/\(obfs4FilePath)"
             case obfs4iatMode:
-                maybeOptions = obfs4iatFilePath
+                maybeOptions = "\(resourcesDirectoryPath)/\(obfs4iatFilePath)"
             case shadowsocks:
-                maybeOptions = shSocksFilePath
+                maybeOptions = "\(resourcesDirectoryPath)/\(shSocksFilePath)"
             case meek:
-                maybeOptions = meekOptionsPath
+                maybeOptions = "\(resourcesDirectoryPath)/\(meekOptionsPath)"
             case replicant:
-                maybeOptions = replicantFilePath
+                maybeOptions = "\(resourcesDirectoryPath)/\(replicantFilePath)"
             default:
                 maybeOptions = nil
             }
