@@ -96,12 +96,12 @@ func main()
     
     for library in libraries
     {
-        if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryDirectoryPath)
+        if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: "\(destinationCanaryDirectoryPath)/\(library)")
         {
-            print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath)")
+            print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath)/\(library)")
         }
         
-        print("📚 Copied \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath). 📚")
+        print("📚 Copied \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath)/\(library). 📚")
     }
 
     // Copy config files into the configs directory
