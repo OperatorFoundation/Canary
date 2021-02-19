@@ -84,7 +84,7 @@ func main()
     
     // Copy our needed supporting libraries into our destination folder
     // TODO: Path is hard-coded "swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/"
-    let libraryPath = "~/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/"
+    let libraryPath = "/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/"
     
     guard let libraries = File.contentsOfDirectory(atPath: libraryPath)
     else { return }
