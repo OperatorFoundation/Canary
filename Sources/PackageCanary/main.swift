@@ -89,6 +89,7 @@ func main()
     guard let libraries = File.contentsOfDirectory(atPath: libraryPath)
     else {
         print("Current directory: \(File.currentDirectory())")
+        print("Library path: \(libraryPath)")
         return }
     
     for library in libraries
