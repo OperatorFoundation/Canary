@@ -87,7 +87,9 @@ func main()
     let libraryPath = "/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux/"
     
     guard let libraries = File.contentsOfDirectory(atPath: libraryPath)
-    else { return }
+    else {
+        print("Current directory: \(File.currentDirectory())")
+        return }
     
     for library in libraries
     {
