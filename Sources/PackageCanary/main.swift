@@ -97,10 +97,9 @@ func main()
         if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryBinaryPath)
         {
             print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryBinaryPath)")
-            return
         }
         
-        print("📚 Copied \(library) to \(libraryPath). 📚")
+        print("📚 Copied \(libraryPath)/\(library) to \(destinationCanaryBinaryPath). 📚")
     }
 
     // Copy config files into the configs directory
