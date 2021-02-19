@@ -94,10 +94,9 @@ func main()
     
     for library in libraries
     {
-        guard File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryBinaryPath)
-        else
+        if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryBinaryPath)
         {
-            print("Failed to copy libraries from \(libraryPath) to \(destinationCanaryBinaryPath)")
+            print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryBinaryPath)")
             return
         }
         
