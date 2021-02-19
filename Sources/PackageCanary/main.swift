@@ -87,19 +87,21 @@ func main()
     let libraryPath = "/root/swift-5.3.2-RELEASE-ubuntu20.04/usr/lib/swift/linux"
     
     guard let libraries = File.contentsOfDirectory(atPath: libraryPath)
-    else {
+    else
+    {
         print("Current directory: \(File.currentDirectory())")
         print("Library path: \(libraryPath)")
-        return }
+        return
+    }
     
     for library in libraries
     {
-        if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryBinaryPath)
+        if !File.copy(sourcePath: "\(libraryPath)/\(library)", destinationPath: destinationCanaryDirectoryPath)
         {
-            print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryBinaryPath)")
+            print("Failed to copy library from \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath)")
         }
         
-        print("📚 Copied \(libraryPath)/\(library) to \(destinationCanaryBinaryPath). 📚")
+        print("📚 Copied \(libraryPath)/\(library) to \(destinationCanaryDirectoryPath). 📚")
     }
 
     // Copy config files into the configs directory
