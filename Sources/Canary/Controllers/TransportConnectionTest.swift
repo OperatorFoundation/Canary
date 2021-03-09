@@ -20,6 +20,7 @@ class TransportConnectionTest
 {
     var transportConnection: Connection
     var canaryString: String?
+    var readBuffer = Data()
     
     init(transportConnection: Connection, canaryString: String?)
     {
@@ -41,12 +42,28 @@ class TransportConnectionTest
             if let error = maybeError
             {
                 print("Error reading data for transport connection: \(error)")
-                completionHandler(nil)
+                completionHandler(self.readBuffer)
                 return
             }
             
-            completionHandler(maybeData)
-            return
+            if let data = maybeData
+            {
+                self.readBuffer.append(data)
+                
+                
+                if self.readBuffer.string.contains("Yeah!\n")
+                {
+                    completionHandler(self.readBuffer)
+                    return
+                }
+                
+                self.read(completionHandler: completionHandler)
+            }
+            else
+            {
+                completionHandler(self.readBuffer)
+                return
+            }
         }
     }
     
@@ -82,7 +99,7 @@ class TransportConnectionTest
         guard substrings.count > 1
         else
         {
-            print("🚫 We received a response with only headers. 🚫")
+            print("🚫 We received a response with only headers: \(responseString) 🚫")
             return false
         }
         

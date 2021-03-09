@@ -37,10 +37,15 @@ let shShifterResourcePath = "shapeshifter-dispatcher"
 let obfs2ServerPort = "4567"
 let obfs4ServerPort = "1234"
 let shsocksServerPort: UInt16 = 2345
-let replicantServerPort = "3456"
 let meekServerPort = "443"
 
-let httpRequestString = "GET / HTTP/1.0\r\n\r\n"
+#if os(macOS)
+let replicantServerPort = "2277"
+#else
+let replicantServerPort = "3456"
+#endif
+
+let httpRequestString = "GET / HTTP/1.0\r\nConnection: close\r\n\r\n"
 let canaryString = "Yeah!\n"
 
 let meekOptionsPath = "Configs/meek.json"
@@ -65,7 +70,7 @@ let ymedio = WebTest(website: "https://www.14ymedio.com", name: "14ymedio", port
 let cnet = WebTest(website: "https://www.cubanet.org", name: "cnet", port: "443")
 let diario = WebTest(website: "https://diariodecuba.com", name: "diario", port: "443")
 
-let allTransports = [shadowsocks, obfs4, replicant]
+let allTransports = [shadowsocks, replicant, obfs4]
 let allWebTests = [facebook, cnn, wikipedia, ymedio, cnet, diario]
 
 let stateDirectoryPath = "TransportState"

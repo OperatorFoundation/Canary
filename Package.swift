@@ -10,6 +10,8 @@ let package = Package(
     products: [
         .executable(name: "Canary", targets: ["Canary"]),
         .executable(name: "BuildForLinux", targets:["BuildForLinux"]),
+        .executable(name: "LaunchReplicantServer", targets: ["LaunchReplicantServer"]),
+        .executable(name: "NotarizeCanary", targets: ["NotarizeCanary"]),
         .executable(name: "PackageCanary", targets:["PackageCanary"])
     ],
     dependencies: [
@@ -46,6 +48,14 @@ let package = Package(
                            .product(name: "Wisp", package: "Shapeshifter-Swift-Transports")
             ]),
         .target(name: "BuildForLinux",
+                dependencies: ["Gardener",
+                               .product(name: "ArgumentParser",
+                                        package: "swift-argument-parser")]),
+        .target(name: "LaunchReplicantServer",
+                dependencies: ["Gardener",
+                               .product(name: "ArgumentParser",
+                                        package: "swift-argument-parser")]),
+        .target(name: "NotarizeCanary",
                 dependencies: ["Gardener",
                                .product(name: "ArgumentParser",
                                         package: "swift-argument-parser")]),
