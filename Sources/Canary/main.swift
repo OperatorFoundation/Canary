@@ -23,6 +23,8 @@
 import ArgumentParser
 import Foundation
 
+import Transmission
+
 struct CanaryTest: ParsableCommand
 {
     @Argument(help: "IP address for the transport server.")
@@ -61,6 +63,9 @@ struct CanaryTest: ParsableCommand
             print("Default resources directory: \(resourcesDirectoryPath)")
         }
         
+        // Make sure we have everything we need first
+        guard checkSetup() else { return }
+        
         for i in 1...runs
         {
             print("\n***************************\nRunning test batch \(i) of \(runs)\n***************************")
@@ -83,6 +88,90 @@ struct CanaryTest: ParsableCommand
         
         ShapeshifterController.sharedInstance.killAllShShifter()
         print("\nCanary tests are complete.\n")
+    }
+    
+    func checkSetup() -> Bool
+    {
+        // Do we have root privileges
+        
+        // Find EUID environment variable (or userID) and see if it is 0
+        
+        // Is the transport server running
+        if !allTransports.isEmpty
+        {
+            guard let _ = Transmission.Connection(host: serverIP, port: Int(string: allTransports[0].port), type: .tcp)
+            else
+            {
+                print("Failed to connect to the transport server.")
+                return false
+            }
+        }
+        
+        // Does the Resources Directory Exist
+        guard FileManager.default.fileExists(atPath: resourcesDirectoryPath)
+        else
+        {
+            print("Resource directory does not exist at \(resourcesDirectoryPath).")
+            return false
+        }
+        
+        // Does it contain the files we need
+        // One config for every transport being tested
+        for transport in allTransports
+        {
+            switch transport
+            {
+            case obfs4:
+                guard FileManager.default.fileExists(atPath: "\(resourcesDirectoryPath)/\(obfs4FilePath)")
+                else
+                {
+                    print("obfs4 config not found at \(resourcesDirectoryPath)/\(obfs4FilePath)")
+                    return false
+                }
+            case obfs4iatMode:
+                guard FileManager.default.fileExists(atPath: "\(resourcesDirectoryPath)/\(obfs4iatFilePath)")
+                else
+                {
+                    print("obfs4 config not found at \(resourcesDirectoryPath)/\(obfs4iatFilePath)")
+                    return false
+                }
+            case shadowsocks:
+                guard FileManager.default.fileExists(atPath:"\(resourcesDirectoryPath)/\(shSocksFilePath)")
+                else
+                {
+                    print("Shadowsocks config not found at \(resourcesDirectoryPath)/\(shSocksFilePath)")
+                    return false
+                }
+            case meek:
+                guard FileManager.default.fileExists(atPath:"\(resourcesDirectoryPath)/\(meekOptionsPath)")
+                else
+                {
+                    print("meek config not found at \(resourcesDirectoryPath)/\(meekOptionsPath)")
+                    return false
+                }
+            case replicant:
+                guard FileManager.default.fileExists(atPath:"\(resourcesDirectoryPath)/\(replicantFilePath)")
+                else
+                {
+                    print("Replicant config not found at \(resourcesDirectoryPath)/\(replicantFilePath)")
+                    return false
+                }
+            default:
+                print("Tried to test a transport that has no config file. Transport name: \(transport.name)")
+            }
+        }
+        
+        // If this is Ubuntu, do we have the shapeshifter binary that we need
+        #if os(Linux)
+        guard FileManager.default.fileExists(atPath: "\(resourceDirPath)/\(shShifterResourcePath)")
+        else
+        {
+            print("Shapeshifter binary was not found at \(resourceDirPath)/\(shShifterResourcePath). Shapeshifter Dispatcher is required in order to run Canary on Linux systems.")
+            return false
+        }
+        #endif
+        
+        return true
     }
 }
 
