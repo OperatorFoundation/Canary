@@ -23,6 +23,8 @@
 import ArgumentParser
 import Foundation
 
+import Gardener
+
 import Transmission
 
 struct CanaryTest: ParsableCommand
@@ -92,9 +94,16 @@ struct CanaryTest: ParsableCommand
     
     func checkSetup() -> Bool
     {
-        // Do we have root privileges
-        
+        // Do we have root privileges?
         // Find EUID environment variable (or userID) and see if it is 0
+        let command = Command()
+        guard let (exitCode, resultData, errData) = command.run("echo", "\"$EUID\"")
+        else
+        {
+            return false
+        }
+        
+        print("EUID exit code: \(exitCode), resultData: \(resultData.array), errData: \(errData.array)")
         
         // Is the transport server running
         if !allTransports.isEmpty
