@@ -25,7 +25,11 @@ import Foundation
 
 import Gardener
 
+#if os(macOS)
 import Transmission
+#else
+import TransmissionLinux
+#endif
 
 struct CanaryTest: ParsableCommand
 {
