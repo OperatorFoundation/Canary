@@ -28,6 +28,7 @@ let package = Package(
                  from: "0.3.1"),
         .package(url: "https://github.com/apple/swift-log.git",
                  from: "1.4.0"),
+        .package(url: "https://github.com/OperatorFoundation/Transmission.git", from: "0.1.12"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git",
                  from: "0.9.11")
     ],
@@ -45,7 +46,8 @@ let package = Package(
                            .product(name: "Logging", package: "swift-log"),
                            .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "Shadow", package: "Shapeshifter-Swift-Transports"),
-                           .product(name: "Wisp", package: "Shapeshifter-Swift-Transports")
+                           .product(name: "Wisp", package: "Shapeshifter-Swift-Transports"),
+                           .product(name: "Transmission", package: "Transmission")
             ]),
         .target(name: "BuildForLinux",
                 dependencies: ["Gardener",
@@ -84,6 +86,7 @@ let package = Package(
                  from: "0.3.1"),
         .package(url: "https://github.com/apple/swift-log.git",
                  from: "1.4.0"),
+        .package(url: "https://github.com/OperatorFoundation/Transmission.git", from: "0.1.12"),
         .package(url: "https://github.com/weichsel/ZIPFoundation",
                  from: "0.9.11")
     ],
@@ -102,7 +105,8 @@ let package = Package(
                                     package: "swift-argument-parser"),
                            .product(name: "Logging", package: "swift-log"),
                            .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
-                           .product(name: "Shadow", package: "Shapeshifter-Swift-Transports")
+                           .product(name: "Shadow", package: "Shapeshifter-Swift-Transports"),
+                           .product(name: "TransmissionLinux", package: "Transmission")
             ]),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),

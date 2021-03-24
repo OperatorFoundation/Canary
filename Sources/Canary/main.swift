@@ -97,13 +97,14 @@ struct CanaryTest: ParsableCommand
         // Do we have root privileges?
         // Find EUID environment variable (or userID) and see if it is 0
         let command = Command()
-        guard let (exitCode, resultData, errData) = command.run("echo", "\"$EUID\"")
+        guard let (exitCode, resultData, errData) = command.run("echo", "$EUID")
         else
         {
             return false
         }
         
-        print("EUID exit code: \(exitCode), resultData: \(resultData.array), errData: \(errData.array)")
+        let resultString = String(bytes: resultData, encoding: .utf8)
+        print("EUID exit code: \(exitCode), resultData: \(resultString), errData: \(errData.array)")
         
         // Is the transport server running
         if !allTransports.isEmpty
