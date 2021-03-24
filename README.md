@@ -12,7 +12,7 @@
 Swift 5.2, included in Xcode 11
 Go 1.14 or higher
 
-## Ubuntu
+#### Ubuntu
 libcurl4
 
 ### Installing
