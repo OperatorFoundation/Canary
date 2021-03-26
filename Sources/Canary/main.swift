@@ -47,10 +47,10 @@ struct CanaryTest: ParsableCommand
     
     func validate() throws
     {
-        guard runs >= 1 && runs <= 10
+        guard runs >= 1 && runs <= 15
         else
         {
-            throw ValidationError("'<runs>' must be at least 1 and no more than 10.")
+            throw ValidationError("'<runs>' must be at least 1 and no more than 15.")
         }
     }
     

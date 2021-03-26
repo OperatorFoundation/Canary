@@ -98,7 +98,8 @@ struct BuildForLinux: ParsableCommand
             return
         }
 
-        guard let _ = scp.upload(remotePath: "Canary.zip", localPath: "Canary/Canary.zip")
+        let canaryOrigin = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/Canary.zip")
+        guard let _ = scp.upload(remotePath: "/root/Canary.zip", localPath: canaryOrigin.path)
         else
         {
             print("SCP Failed to copy the Canary zip file from the remote server.")
