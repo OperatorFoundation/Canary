@@ -80,12 +80,12 @@ struct LaunchReplicantServer: ParsableCommand
         
         // This pings the server ip and returns nil if it fails
         // TODO: Use transmission to make a connection and see if we have successfully created a server for this port
-        guard let connection = Transmission.Connection(host: serverIP, port: Int(string: serverPort), type: .tcp)
-        else
-        {
-            print("Failed to connect to the new server.")
-            return
-        }
+//        guard let connection = Transmission.Connection(host: serverIP, port: Int(string: serverPort), type: .tcp)
+//        else
+//        {
+//            print("Failed to connect to the new server.")
+//            return
+//        }
         
         print("💅🏻 Finished launching the Replicant server \(LaunchReplicantServer.serverName) at \(serverIP) listening on port \(serverPort) 💅🏻")
     }

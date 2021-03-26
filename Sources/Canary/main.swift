@@ -26,8 +26,10 @@ import Foundation
 import Gardener
 
 #if os(macOS)
+import Darwin
 import Transmission
 #else
+import Glibc
 import TransmissionLinux
 #endif
 
@@ -99,16 +101,19 @@ struct CanaryTest: ParsableCommand
     func checkSetup() -> Bool
     {
         // Do we have root privileges?
-        // Find EUID environment variable (or userID) and see if it is 0
-        let command = Command()
-        guard let (exitCode, resultData, errData) = command.run("echo", "$EUID")
+        #if os(macOS)
+        let euid = Darwin.geteuid()
+        #else
+        let euid = Glibc.geteuid()
+        #endif
+        
+        guard euid == 0
         else
         {
+            print("You must run this program as root.")
+            print("example: sudo ./Canary <transport server IP>")
             return false
         }
-        
-        let resultString = String(bytes: resultData, encoding: .utf8)
-        print("EUID exit code: \(exitCode), resultData: \(resultString), errData: \(errData.array)")
         
         // Is the transport server running
         if !allTransports.isEmpty
