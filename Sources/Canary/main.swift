@@ -119,7 +119,7 @@ struct CanaryTest: ParsableCommand
         if !allTransports.isEmpty
         {
             #if os(macOS)
-            guard let _ = Transmission.Connection(host: serverIP, port: Int(string: allTransports[0].port), type: .tcp)
+            guard let _ = Transmission.Connection(host: serverIP, port: Int(string: allTransports[0].port))
             else
             {
                 print("Failed to connect to the transport server.")
