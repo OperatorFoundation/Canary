@@ -11,6 +11,7 @@ import Foundation
 import Gardener
 
 let configs = ["ReplicantClientConfig.json",  "meek.json",  "obfs4.json", "shadowsocks.json"]
+let canaryTarName = "Canary.tar.gz"
 
 struct BuildForLinux: ParsableCommand
 {
@@ -19,7 +20,7 @@ struct BuildForLinux: ParsableCommand
 
     @Argument(help: "IP address for the system to test the build on.")
     var testServerIP: String
-
+    
     func validate() throws
     {
         // This pings the server ip and returns nil if it fails
@@ -71,12 +72,12 @@ struct BuildForLinux: ParsableCommand
         
         if result
         {
-            // Download the zip file from the remote server
-            let canaryDestination = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/Canary.zip")
-            guard let _ = scp.download(remotePath: "Canary/Canary.zip", localPath: canaryDestination.path)
+            // Download the tar file from the remote server
+            let canaryDestination = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/\(canaryTarName)")
+            guard let _ = scp.download(remotePath: "Canary/\(canaryTarName)", localPath: canaryDestination.path)
             else
             {
-                print("SCP Failed to copy the Canary zip file from the remote server.")
+                print("SCP Failed to copy the Canary tar file from the remote server.")
                 return
             }
             
@@ -98,27 +99,24 @@ struct BuildForLinux: ParsableCommand
             return
         }
 
-        let canaryOrigin = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/Canary.zip")
-        guard let _ = scp.upload(remotePath: "/root/Canary.zip", localPath: canaryOrigin.path)
+        let canaryOrigin = File.homeDirectory().appendingPathComponent("Documents/Operator/Canary/\(canaryTarName)")
+        guard let _ = scp.upload(remotePath: "/root/\(canaryTarName)", localPath: canaryOrigin.path)
         else
         {
-            print("SCP Failed to copy the Canary zip file from the remote server.")
+            print("SCP Failed to copy the Canary tar file from the remote server.")
             return
         }
 
         guard let ssh = SSH(username: "root", host: testServerIP)
         else
         {
-            print("SCP Failed to copy the Canary zip file to the test server.")
+            print("SCP Failed to copy the Canary tar file to the test server.")
             return
         }
 
-        let _ = ssh.unzip(path: "Canary.zip")
+        let _ = ssh.untargzip(path: canaryTarName)
         let _ = ssh.remote(command: "Canary/Canary")
     }
 }
 
 BuildForLinux.main()
-
-
-

@@ -10,20 +10,14 @@ import Foundation
 import Gardener
 
 let configs = ["ReplicantClientConfig.json",  "meek.json",  "obfs4.json", "shadowsocks.json"]
+let destinationConfigsPath = "Canary/Sources/Resources/Configs"
 let destinationCanaryDirectoryPath = "Canary"
-
 let sourceCanaryBinaryPath = ".build/x86_64-unknown-linux-gnu/debug/Canary"
 let destinationCanaryBinaryPath = "Canary/Canary"
-
 let sourceShapeshifterPath = "Sources/Resources/shapeshifter-dispatcher"
 let destinationShapeshifterPath = "Canary/Sources/Resources/shapeshifter-dispatcher"
-
 let destinationResourcesPath = "Canary/Sources/Resources"
-
-//let sourceConfigsPath = "Configs"
-let destinationConfigsPath = "Canary/Sources/Resources/Configs"
-
-let canaryZipName = "Canary.zip"
+let canaryTarName = "Canary.tar.gz"
 
 func main()
 {
@@ -116,22 +110,22 @@ func main()
     }
     
     // Check to see if there is an old zip file already, and delete it if there is
-    if File.exists(canaryZipName)
+    if File.exists(canaryTarName)
     {
-        guard File.delete(atPath: canaryZipName)
+        guard File.delete(atPath: canaryTarName)
         else
         {
-            print("Failed to delete \(canaryZipName)")
+            print("Failed to delete \(canaryTarName)")
             return
         }
         
     }
     
-    // Zip our new directories
-    guard File.zip(sourcePath: destinationCanaryDirectoryPath, outputPath: canaryZipName)
+    // Create tar.gz of our new directory
+    guard File.targzip(name: canaryTarName, directoryPath: destinationCanaryDirectoryPath)
     else
     {
-        print("Failed to zip \(destinationCanaryDirectoryPath)")
+        print("Failed to tar \(destinationCanaryDirectoryPath)")
         return
     }
     
