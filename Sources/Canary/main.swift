@@ -191,10 +191,10 @@ struct CanaryTest: ParsableCommand
         
         // If this is Ubuntu, do we have the shapeshifter binary that we need
         #if os(Linux)
-        guard FileManager.default.fileExists(atPath: "\(resourceDirPath)/\(shShifterResourcePath)")
+        guard FileManager.default.fileExists(atPath: "\(resourcesDirectoryPath)/\(shShifterResourcePath)")
         else
         {
-            print("Shapeshifter binary was not found at \(resourceDirPath)/\(shShifterResourcePath). Shapeshifter Dispatcher is required in order to run Canary on Linux systems.")
+            print("Shapeshifter binary was not found at \(resourcesDirectoryPath)/\(shShifterResourcePath). Shapeshifter Dispatcher is required in order to run Canary on Linux systems.")
             return false
         }
         #endif
