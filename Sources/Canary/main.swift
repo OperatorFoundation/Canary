@@ -118,12 +118,21 @@ struct CanaryTest: ParsableCommand
         // Is the transport server running
         if !allTransports.isEmpty
         {
+            #if os(macOS)
             guard let _ = Transmission.Connection(host: serverIP, port: Int(string: allTransports[0].port), type: .tcp)
             else
             {
                 print("Failed to connect to the transport server.")
                 return false
             }
+            #else
+            guard let _ = TransmissionLinux.Connection(host: serverIP, port: Int(string: allTransports[0].port), type: .tcp)
+            else
+            {
+                print("Failed to connect to the transport server.")
+                return false
+            }
+            #endif
         }
         
         // Does the Resources Directory Exist
