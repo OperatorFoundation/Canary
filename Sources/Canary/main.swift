@@ -42,14 +42,14 @@ struct CanaryTest: ParsableCommand
     var resourceDirPath: String?
     
     @Option(name: NameSpecification.shortAndLong, parsing: SingleValueParsingStrategy.next, help:"Set how many times you would like Canary to run its tests.")
-    var runs: Int = 1
+    var numberOfTimesToRun: Int = 1
     
     @Option(name: NameSpecification.shortAndLong, parsing: SingleValueParsingStrategy.next, help: "Optionally specify the interface name.")
     var interface: String?
     
     func validate() throws
     {
-        guard runs >= 1 && runs <= 15
+        guard numberOfTimesToRun >= 1 && numberOfTimesToRun <= 15
         else
         {
             throw ValidationError("'<runs>' must be at least 1 and no more than 15.")
@@ -74,9 +74,9 @@ struct CanaryTest: ParsableCommand
         // Make sure we have everything we need first
         guard checkSetup() else { return }
         
-        for i in 1...runs
+        for i in 1...numberOfTimesToRun
         {
-            print("\n***************************\nRunning test batch \(i) of \(runs)\n***************************")
+            print("\n***************************\nRunning test batch \(i) of \(numberOfTimesToRun)\n***************************")
             
             for transport in allTransports
             {

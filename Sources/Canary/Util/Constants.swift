@@ -71,7 +71,7 @@ let cnet = WebTest(website: "https://www.cubanet.org", name: "cnet", port: "443"
 let diario = WebTest(website: "https://diariodecuba.com", name: "diario", port: "443")
 
 let allTransports = [obfs4, shadowsocks, replicant]
-let allWebTests = [facebook, cnn, wikipedia, ymedio, cnet, diario]
+let allWebTests = [facebook, cnn, wikipedia, ymedio]
 
 let stateDirectoryPath = "TransportState"
 
