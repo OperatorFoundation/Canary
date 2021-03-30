@@ -65,7 +65,13 @@ func main()
     }
   
     // FIXME: Currently the path on our test server for Linux is /root/swift-5.3.2-RELEASE-ubuntu20.04/usr/bin/swift Swift.build is failing
-    let swift = Swift()
+    guard let swift = Swift()
+    else
+    {
+        print("Failed to initialize Swift.")
+        return
+    }
+    
     let response = swift.build()
     if response == nil
     {
