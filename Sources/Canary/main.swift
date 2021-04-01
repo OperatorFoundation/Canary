@@ -64,12 +64,12 @@ struct CanaryTest: ParsableCommand
         if let rPath = resourceDirPath
         {
             resourcesDirectoryPath = rPath
-            print("User selected resources directory: \(resourcesDirectoryPath)")
+            print("\nUser selected resources directory: \(resourcesDirectoryPath)")
         }
         else
         {
             resourcesDirectoryPath = "\(FileManager.default.currentDirectoryPath)/Sources/Resources"
-            print("Default resources directory: \(resourcesDirectoryPath)")
+            print("\nYou did not indicate a preferred resources directory, using the default directory: \(resourcesDirectoryPath)")
         }
         
         // Make sure we have everything we need first
@@ -79,11 +79,16 @@ struct CanaryTest: ParsableCommand
         
         if interface != nil
         {
+            // Use the user provided interface name
             interfaceName = interface!
         }
         else
         {
-            interfaceName = guessUserInterface()
+            // Try to guess the interface, if we cannot then give up
+            guard let name = guessUserInterface()
+            else { return }
+            
+            interfaceName = name
         }
         
         for i in 1...numberOfTimesToRun
@@ -110,16 +115,33 @@ struct CanaryTest: ParsableCommand
         print("\nCanary tests are complete.\n")
     }
     
-    func guessUserInterface() -> String
+    func guessUserInterface() -> String?
     {
-        let allInterfaces = Interface.allInterfaces()
-        print("You did not indicate a preferred interface. Printing all available interfaces.")
-        for interface in allInterfaces
+        var allInterfaces = Interface.allInterfaces()
+        
+        // Get interfaces sorted by name
+        allInterfaces.sort(by: {
+            (interfaceA, interfaceB) -> Bool in
+            
+            return interfaceA.name < interfaceB.name
+        })
+        
+        print("\nYou did not indicate a preferred interface. Printing all available interfaces.")
+        for interface in allInterfaces { print("\(interface.name)")}
+        
+        // Return the first interface that begins with the letter e
+        // Note: this is just a best guess based on what we understand to be a common scenario
+        // The user should use the interface flag if they have something different
+        guard let bestGuess = allInterfaces.firstIndex(where: { $0.name.hasPrefix("e") })
+        else
         {
-            print("\(interface.name)")
+            print("\nWe were unable to identify a likely interface name. Please try running the program again using the interface flag and one of the other listed interfaces.\n")
+            return nil
         }
         
-        return ""
+        print("\nWe will try using the \(allInterfaces[bestGuess].name) interface. If Canary fails to capture data, it may be because this is not the correct interface. Please try running the program again using the interface flag and one of the other listed interfaces.\n")
+        
+        return allInterfaces[bestGuess].name
     }
     
     func checkSetup() -> Bool
@@ -134,7 +156,7 @@ struct CanaryTest: ParsableCommand
         guard euid == 0
         else
         {
-            print("You must run this program as root.")
+            print("\nYou must run this program as root.")
             print("example: sudo ./Canary <transport server IP>")
             return false
         }
