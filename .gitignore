@@ -93,3 +93,4 @@ Sources/Resources/Configs/meek.json
 Canary.pkg
 Canary.entitlements
 .swiftpm/xcode/xcshareddata/xcschemes/Canary.xcscheme
+*.gz

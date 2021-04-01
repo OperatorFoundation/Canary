@@ -24,6 +24,7 @@ import ArgumentParser
 import Foundation
 
 import Gardener
+import NetUtils
 
 #if os(macOS)
 import Darwin
@@ -74,6 +75,17 @@ struct CanaryTest: ParsableCommand
         // Make sure we have everything we need first
         guard checkSetup() else { return }
         
+        var interfaceName: String
+        
+        if interface != nil
+        {
+            interfaceName = interface!
+        }
+        else
+        {
+            interfaceName = guessUserInterface()
+        }
+        
         for i in 1...numberOfTimesToRun
         {
             print("\n***************************\nRunning test batch \(i) of \(numberOfTimesToRun)\n***************************")
@@ -81,13 +93,13 @@ struct CanaryTest: ParsableCommand
             for transport in allTransports
             {
                 print("\n 🧪 Starting test for \(transport.name) 🧪\n")
-                TestController.sharedInstance.test(name: transport.name, serverIPString: serverIP, port: transport.port, interface: interface, webAddress: nil)
+                TestController.sharedInstance.test(name: transport.name, serverIPString: serverIP, port: transport.port, interface: interfaceName, webAddress: nil)
             }
             
             for webTest in allWebTests
             {
                 print("\n 🧪 Starting web test for \(webTest.website) 🧪\n")
-                TestController.sharedInstance.test(name: webTest.name, serverIPString: serverIP, port: webTest.port, interface: interface, webAddress: webTest.website)
+                TestController.sharedInstance.test(name: webTest.name, serverIPString: serverIP, port: webTest.port, interface: interfaceName, webAddress: webTest.website)
             }
             
             // This directory contains our test results.
@@ -96,6 +108,18 @@ struct CanaryTest: ParsableCommand
         
         ShapeshifterController.sharedInstance.killAllShShifter()
         print("\nCanary tests are complete.\n")
+    }
+    
+    func guessUserInterface() -> String
+    {
+        let allInterfaces = Interface.allInterfaces()
+        print("You did not indicate a preferred interface. Printing all available interfaces.")
+        for interface in allInterfaces
+        {
+            print("\(interface.name)")
+        }
+        
+        return ""
     }
     
     func checkSetup() -> Bool

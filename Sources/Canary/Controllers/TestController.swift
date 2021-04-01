@@ -202,8 +202,8 @@ class TestController
         
         if webAddress == nil
         {
+            // macOS uses the swift transports library in stead of the shapeshifter-dispatcher binary written in go
             #if os(macOS)
-            
             print("***Running transport test using Swift!***")
             if let transportTestResult = self.runSwiftTransportTest(serverIP: serverIPString, forTransport: Transport(name: name, port: port))
             {
