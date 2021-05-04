@@ -41,8 +41,10 @@ let meekServerPort = "443"
 
 #if os(macOS)
 let replicantServerPort = "2277"
+let allTransports = [shadowsocks, replicant]
 #else
 let replicantServerPort = "3456"
+let allTransports = [obfs4, shadowsocks, replicant]
 #endif
 
 let httpRequestString = "GET / HTTP/1.0\r\nConnection: close\r\n\r\n"
@@ -70,7 +72,7 @@ let ymedio = WebTest(website: "https://www.14ymedio.com", name: "14ymedio", port
 let cnet = WebTest(website: "https://www.cubanet.org", name: "cnet", port: "443")
 let diario = WebTest(website: "https://diariodecuba.com", name: "diario", port: "443")
 
-let allTransports = [obfs4, shadowsocks, replicant]
+
 let allWebTests = [facebook, cnn, wikipedia, ymedio]
 
 let stateDirectoryPath = "TransportState"

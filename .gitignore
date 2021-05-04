@@ -94,3 +94,4 @@ Canary.pkg
 Canary.entitlements
 .swiftpm/xcode/xcshareddata/xcschemes/Canary.xcscheme
 *.gz
+Canary-1.0.0.pkg

@@ -80,7 +80,7 @@ func main()
     else
     {
         let (exitCode, responseData, errorData) = response!
-        print("swift build response: \(exitCode), \(responseData), \(errorData)")
+        print("swift build response: \(exitCode), \(responseData.string), \(errorData)")
     }
     
     // Copy Canary Binary into our destination folder
