@@ -23,7 +23,7 @@ let package = Package(
                  from: "3.0.3"),
         .package(url: "https://github.com/OperatorFoundation/Gardener.git",
                  from: "0.0.41"),
-        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.23"),
+        .package(url: "https://github.com/OperatorFoundation/Shapeshifter-Swift-Transports.git", from: "2.3.24"),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  from: "0.3.1"),
         .package(url: "https://github.com/apple/swift-log.git",
@@ -113,7 +113,8 @@ let package = Package(
                            .product(name: "Replicant", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "Shadow", package: "Shapeshifter-Swift-Transports"),
                            .product(name: "TransmissionLinux", package: "Transmission")
-            ]),
+            ],
+            linkerSettings: [.linkedFramework("Clibsodium")]),
         .target(name: "PackageCanary",
                 dependencies: ["Gardener"]),
         .testTarget(
